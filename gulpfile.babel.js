@@ -215,7 +215,7 @@ gulp.task('watch', ['setWatch', 'browserSync'], ()=> {
     gulp.watch([appPath + '/assets/**/*.es6'], ['babel', reload]);
     gulp.watch([appPath + '/assets/**/*.{scss,css}'], ['styles', reload]);
     gulp.watch([appPath + '/assets/js/**/*.js'], ['lint', 'scripts']);
-    gulp.watch([appPath + '/assets/images/**/*'], ['images','reload']);
+    gulp.watch([appPath + '/assets/images/**/*'], ['images',reload]);
     gulp.watch([appPath + '/assets/**/*.{scss,css}'], ['styles', reload]);
 });
 
@@ -245,7 +245,7 @@ gulp.task('images', () =>
 gulp.task('default', cb => {
     runSequence(
         'styles',
-        ['lint', 'jade', 'scripts', 'babel' ],
+        ['lint', 'scripts', 'babel' ],
         'watch',
         'images',
         cb
@@ -261,7 +261,7 @@ gulp.task('default', cb => {
 gulp.task('build', cb => {
     runSequence(
         'styles',
-        ['lint', 'jade', 'scripts', 'babel', 'images'],
+        ['lint', 'scripts', 'babel', 'images'],
         cb
     )
 });
