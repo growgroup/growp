@@ -9,31 +9,24 @@
  */
 ?>
 
-<header id="masthead" class="header header-normal" role="banner">
-	<div class="row">
-		<div class="large-12 columns">
-			<p class="header__description"><?php bloginfo('description') ?></p>
-
-			<h1 class="header__logo">
-				<a href="<?php echo home_url(); ?>">
-					<?php
-					if (get_theme_mod('logo_image', '')) {
-						?>
-						<img src="<?php echo get_theme_mod('logo_image', '') ?>" alt="<?php bloginfo('name'); ?>"/>
+<header class="l-header" role="banner">
+	<div class="l-container">
+		<div class="row">
+			<div class="large-12">
+				<p class="l-header__description"><?php bloginfo( 'description' ) ?></p>
+				<h1 class="l-header__logo">
+					<a href="<?php echo home_url(); ?>">
 						<?php
-					} else {
-						bloginfo('name');
-					} ?>
-
-				</a>
-			</h1>
-		</div>
-		<div class="large-12 columns">
-			<?php
-
-			growp_dynamic_sidebar('header-primary');
-			do_action('get_header');
-			?>
+						if ( get_theme_mod( 'logo_image', '' ) ) {
+							?>
+							<img src="<?php echo get_theme_mod( 'logo_image','' ) ?>" alt="<?php bloginfo( 'name' ); ?>"/>
+							<?php
+						} else {
+							bloginfo( 'name' );
+						} ?>
+					</a>
+				</h1>
+			</div>
 		</div>
 	</div>
 </header>

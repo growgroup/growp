@@ -16,7 +16,7 @@ function growp_scripts() {
 	 * メインとなるCSS
 	 * @since 1.0.0
 	 */
-	wp_enqueue_style( 'growp_main', growp_STYLESHEET_URL, false, null );
+	wp_enqueue_style( 'growp_main', GROWP_STYLESHEET_URL, false, null );
 
 	/**
 	 * 追加用CSS
@@ -27,7 +27,7 @@ function growp_scripts() {
 	 * テーマのメインjsファイル
 	 * @since 1.0.0
 	 */
-	wp_register_script( 'growp_scripts', growp_JAVASCRIPT_URL, array('jquery'), null, true );
+	wp_register_script( 'growp_scripts', GROWP_JAVASCRIPT_URL, array('jquery'), null, true );
 
 	/**
 	 * コメント欄が有効なページでは、

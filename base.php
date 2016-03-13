@@ -10,57 +10,32 @@
  * =====================================================
  */
 
+// modules/head.php を取得
 get_template_part( 'modules/head' );
 
-growp_get_header(); ?>
+// ヘッダーを取得
+growp_get_header();
 
+do_action( 'get_main_template_before' );
 
-	<div class="<?php echo esc_html( growp_layout_class() ); ?> row wrapper">
-
-		<div class="large-12 columns main-visual">
-		 	<?php
-			growp_dynamic_sidebar( 'main-visual' ); ?>
-		</div>
-
-		<section class="l-main main columns">
-
-			<main role="main">
-
-				<?php
-				growp_dynamic_sidebar( 'content-primary' );
-
-				// Action hook before loading the main template.
-				do_action( 'get_main_template_before' );
-
-				load_template( growp_template_path() ); ?>
-
-				<?php
-				growp_dynamic_sidebar( 'content-secondary' );
-				// Action hook after loading the main template
-				do_action( 'get_main_template_after' ); ?>
-
-			</main>
-		</section>
-
-		<aside class="l-sidebar sidebar columns" role="aside">
-
-			<?php
-			/**
-			 * Action Hook
-			 */
-			do_action( 'get_sidebar_template' );
-
-			// Get sidebar
-			get_template_part( 'modules/sidebar' ); ?>
-
-		</aside>
-
+?>
+	<div class="l-container">
+		<?php
+		load_template( growp_template_path() );
+		?>
 	</div>
-
 <?php
-/**
- * Action hook "get_footer"
- */
+// テンプレート取得後のアクションフック
+do_action( 'get_main_template_after' );
+
+// サイドバー取得時のアクションフック
+do_action( 'get_sidebar_template' );
+
+// サイドバーを取得
+get_template_part( 'modules/sidebar' );
+
+// フッター取得前のアクションフック
 do_action( 'get_footer' );
 
+// フッターを取得
 get_template_part( 'modules/footer' );

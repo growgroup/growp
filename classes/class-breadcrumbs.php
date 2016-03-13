@@ -8,7 +8,7 @@
  * @since 1.0.1
  * =====================================================
  */
-class growp_Breadcrumbs {
+class Growp_Breadcrumbs {
 	/**
 	 * The list of breadcrumb items.
 	 *

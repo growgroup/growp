@@ -7,7 +7,8 @@
  * =====================================================
  */
 ?>
-	<footer id="colophon" class="footer" role="contentinfo">
+<footer id="colophon" class="l-footer" role="contentinfo">
+	<div class="l-container">
 
 		<div class="row">
 			<div class="footer__contents">
@@ -18,10 +19,12 @@
 		</div>
 		<div class="footer__copyright site-info">
 			<div class="row text-center">
-				<span class="sep"> <?php echo get_theme_mod( 'copyright_text', 'copyright © ' . date( 'Y' ) . ' | ' . get_bloginfo( 'name' ) ); ?></span>
+				<span class="sep"> <?php echo get_theme_mod( 'copyright_text',
+						'copyright © ' . date( 'Y' ) . ' | ' . get_bloginfo( 'name' ) ); ?></span>
 			</div>
 		</div>
-	</footer>
+	</div>
+</footer>
 </div>
 
 <?php wp_footer(); ?>

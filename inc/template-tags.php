@@ -87,19 +87,22 @@ function growp_page_nav() {
 }
 
 
-function next_post_link_addclass($format){
-	$format = str_replace('href=', 'class="c-button is-angle is-right" href=', $format);
-	return $format;
-}
-function pre_post_link_addclass($format){
-	$format = str_replace('href=', 'class="c-button is-angle is-left" href=', $format);
+function next_post_link_addclass( $format ) {
+	$format = str_replace( 'href=', 'class="c-button is-angle is-right" href=', $format );
+
 	return $format;
 }
 
-add_filter('next_post_link', 'next_post_link_addclass');
-add_filter('previous_post_link', 'pre_post_link_addclass');
-add_filter('next_posts_link', 'next_post_link_addclass');
-add_filter('previous_posts_link', 'pre_post_link_addclass');
+function pre_post_link_addclass( $format ) {
+	$format = str_replace( 'href=', 'class="c-button is-angle is-left" href=', $format );
+
+	return $format;
+}
+
+add_filter( 'next_post_link', 'next_post_link_addclass' );
+add_filter( 'previous_post_link', 'pre_post_link_addclass' );
+add_filter( 'next_posts_link', 'next_post_link_addclass' );
+add_filter( 'previous_posts_link', 'pre_post_link_addclass' );
 
 function next_posts_link_attributes() {
 	return 'class="c-button is-angle is-left"';
@@ -126,19 +129,19 @@ function growp_posted_on() {
 	$posted_string = __( '<i class="fa fa-calendar-o"></i> <span class="posted-on">Posted on %1$s</span> ', 'growp' );
 	$author_string = __( '<i class="fa fa-user"></i><span class="byline"> by %1$s</span>', 'growp' );
 
-	if ( "true" ==  get_theme_mod( 'single_post_date', "true" ) ) {
-		printf($posted_string, sprintf('<a href="%1$s" rel="bookmark">%2$s</a>',
-			esc_url(get_permalink()),
+	if ( "true" == get_theme_mod( 'single_post_date', "true" ) ) {
+		printf( $posted_string, sprintf( '<a href="%1$s" rel="bookmark">%2$s</a>',
+			esc_url( get_permalink() ),
 			$time_string
-		));
+		) );
 	}
 
-	if ( "true" ==  get_theme_mod( 'single_post_author', "true" ) ) {
+	if ( "true" == get_theme_mod( 'single_post_author', "true" ) ) {
 		printf(
 			$author_string,
-			sprintf('<span class="author"><a class="url fn n" href="%1$s">%2$s</a></span>',
-				esc_url(get_author_posts_url(get_the_author_meta('ID'))),
-				esc_html(get_the_author())
+			sprintf( '<span class="author"><a class="url fn n" href="%1$s">%2$s</a></span>',
+				esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
+				esc_html( get_the_author() )
 			)
 		);
 	}
@@ -195,7 +198,7 @@ function growp_breadcrumb() {
 
 	$options = array(
 		'show_htfpt' => true,
-		'separator' => ''
+		'separator'  => ''
 	);
 
 	// init
@@ -203,51 +206,13 @@ function growp_breadcrumb() {
 
 }
 
-/**
- * For function for outputting pagination
- *
- * @param boolean $output
- *
- * @return void
- */
-function growp_pagination( $output = true ) {
-
-	global $wp_query, $wp_rewrite;
-
-	$base   = trailingslashit( get_pagenum_link( 1 ) ) . '%_%';
-	$format = ( $wp_rewrite->using_permalinks() ) ? 'page/%#%' : '?paged=%#%';
-	$args   = array(
-		'base'      => $base,
-		'format'    => $format,
-		'current'   => max( 1, get_query_var( 'paged' ) ),
-		'total'     => $wp_query->max_num_pages,
-		'prev_next' => true,
-		'prev_text' => '&larr;' . __( 'Previous', 'growp' ),
-		'next_text' => __( 'Next', 'growp' ) . '&rarr;',
-	);
-
-	$before     = apply_filters( 'growp_paginavi_before', '<nav class="pagination primary-links">' );
-	$pagination = paginate_links( $args );
-	$after      = apply_filters( 'growp_paginavi_after', '</nav>' );
-
-	if ( $output && $pagination ) {
-		echo $before . wp_kses_post( $pagination ) . $after;
-
-		return false;
-	}
-
-	return $pagination;
-
-}
 
 /**
- * get_header
+ * ヘッダーを読み込む
  *
  * @return void
  */
 function growp_get_header() {
-
-	$header_style = get_theme_mod( 'header_style', '' );
 
 	get_template_part( 'modules/header' );
 
@@ -255,48 +220,7 @@ function growp_get_header() {
 
 
 /**
- * Social Icon
- */
-add_action( 'get_header', 'growp_social_icon' );
-
-function growp_social_icon() {
-
-	$icons                 = '';
-	$social['facebook']    = get_theme_mod( 'socal_facebook', '' );
-	$social['twitter']     = get_theme_mod( 'socal_twitter', '' );
-	$social['github']      = get_theme_mod( 'socal_github', '' );
-	$social['google_plus'] = get_theme_mod( 'socal_google_plus', '' );
-
-	if ( $social['facebook'] ) {
-		$icons .= '	<a href="' . esc_url( $social['facebook'] ) . '" target="_blank"><i class="fa fa-facebook"></i></a>
-		';
-	}
-
-	if ( $social['twitter'] ) {
-		$icons .= '	<a href="' . esc_url( $social['twitter'] ) . '" target="_blank"><i class="fa fa-twitter"></i></a>
-		';
-	}
-
-	if ( $social['github'] ) {
-		$icons .= '	<a href="' . esc_url( $social['github'] ) . '" target="_blank"><i class="fa fa-github"></i></a>
-		';
-	}
-
-	if ( $social['google_plus'] ) {
-		$icons .= '	<a href="' . esc_url( $social['google_plus'] ) . '" target="_blank"><i class="fa fa-google-plus"></i></a>
-		';
-	}
-
-	if ( $icons ) {
-		echo '<div class="social-icons">
-		' . $icons . '</div>
-		';
-	}
-
-}
-
-/**
- * growp_template_path
+ * テンプレートのパスを取得する
  *
  * @return template path
  * @since 0.0.1
@@ -306,7 +230,7 @@ function growp_template_path() {
 }
 
 /**
- * growp_template_base
+ * テンプレートベースとなるファイルを取得する
  *
  * @return string template path
  * @since 0.0.1
@@ -316,57 +240,15 @@ function growp_template_base() {
 	return Theme_Wrapper::$base;
 }
 
-/**
- * Return layout class
- *
- * @return string
- * @since 0.0.1
- */
-function growp_layout_class() {
-
-	$class = '';
-
-	$layouts['top']    = get_theme_mod( 'growp_layout_top', 'l-two-column' );
-	$layouts['page']   = get_theme_mod( 'growp_layout_page', 'l-two-column' );
-	$layouts['single'] = get_theme_mod( 'growp_layout_single', 'l-two-column' );
-
-	if ( is_home() || is_front_page() ) {
-
-		$class = $layouts['top'];
-
-	} elseif ( is_archive() || is_page() ) {
-
-		$class = $layouts['page'];
-
-	} elseif ( is_single() ) {
-
-		$class = $layouts['single'];
-
-	}
-
-	return $class;
-
-}
-
-/**
- * 静的なファイルのURLを出力
- *
- * @param string $filename ファイルのパス
- *
- * @return string  URL
- */
-function e_assets_url( $filename = "" ) {
-	echo esc_url( get_stylesheet_directory_uri() .  $filename );
-}
-
 
 function growp_get_previous_posts_link( $label = null ) {
 	global $paged;
 
-	if ( null === $label )
+	if ( null === $label ) {
 		$label = __( '&laquo; Previous Page' );
+	}
 
-	if ( !is_single() && $paged > 1 ) {
+	if ( ! is_single() && $paged > 1 ) {
 		/**
 		 * Filter the anchor tag attributes for the previous posts page link.
 		 *
@@ -375,7 +257,8 @@ function growp_get_previous_posts_link( $label = null ) {
 		 * @param string $attributes Attributes for the anchor tag.
 		 */
 
-		return '<a href="' . previous_posts( false ) . "\" class=\"c-button is-angle is-left\"><span>". preg_replace( '/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $label ) .'</span></a>';
+		return '<a href="' . previous_posts( false ) . "\" class=\"c-button is-angle is-left\"><span>" . preg_replace( '/&([^#])(?![a-z]{1,8};)/i',
+			'&#038;$1', $label ) . '</span></a>';
 	}
 }
 
@@ -384,28 +267,32 @@ function growp_get_previous_posts_link( $label = null ) {
  *
  * @since 2.7.0
  *
- * @global int      $paged
+ * @global int $paged
  * @global WP_Query $wp_query
  *
- * @param string $label    Content for link text.
- * @param int    $max_page Optional. Max pages.
+ * @param string $label Content for link text.
+ * @param int $max_page Optional. Max pages.
+ *
  * @return string|void HTML-formatted next posts page link.
  */
 function growp_get_next_posts_link( $label = null, $max_page = 0 ) {
 	global $paged, $wp_query;
 
-	if ( !$max_page )
+	if ( ! $max_page ) {
 		$max_page = $wp_query->max_num_pages;
+	}
 
-	if ( !$paged )
+	if ( ! $paged ) {
 		$paged = 1;
+	}
 
-	$nextpage = intval($paged) + 1;
+	$nextpage = intval( $paged ) + 1;
 
-	if ( null === $label )
+	if ( null === $label ) {
 		$label = __( 'Next Page &raquo;' );
+	}
 
-	if ( !is_single() && ( $nextpage <= $max_page ) ) {
+	if ( ! is_single() && ( $nextpage <= $max_page ) ) {
 		/**
 		 * Filter the anchor tag attributes for the next posts page link.
 		 *
@@ -415,9 +302,12 @@ function growp_get_next_posts_link( $label = null, $max_page = 0 ) {
 		 */
 
 
-		return '<a href="' . next_posts( $max_page, false ) . "\" class=\"c-button is-angle is-right\"><span>" . preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $label) . '</span></a>';
+		return '<a href="' . next_posts( $max_page,
+			false ) . "\" class=\"c-button is-angle is-right\"><span>" . preg_replace( '/&([^#])(?![a-z]{1,8};)/i',
+			'&#038;$1', $label ) . '</span></a>';
 	}
 }
+
 function growp_posts_navigation( $args = array() ) {
 	$navigation = '';
 
@@ -445,3 +335,31 @@ function growp_posts_navigation( $args = array() ) {
 
 	echo $navigation;
 }
+
+
+/**
+ * 静的なファイルのURLを出力
+ *
+ * @param string $filename ファイルのパス
+ *
+ * @return string  URL
+ */
+function g_assets_url( $filename = "" ) {
+	echo esc_url( get_stylesheet_directory_uri() . $filename );
+}
+
+/**
+ * 投稿サムネイルを出力
+ * @return bool
+ */
+function growp_post_thumbnail() {
+	// サムネイルがあったら
+	if ( has_post_thumbnail() ) {
+		the_post_thumbnail();
+
+		return true;
+	}
+
+	echo '<img src="' . get_stylesheet_directory_uri() . '" />';
+}
+

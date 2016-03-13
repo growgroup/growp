@@ -53,7 +53,7 @@ function growp_setup(){
 	register_nav_menus( array( 'primary' => __( 'Header Primary Navigation', 'growp' ) ) );
 
 	// editor-style を登録
-	add_editor_style( 'assets/css/editor-style.css' );
+	add_editor_style( GROWP_STYLESHEET_URL );
 
 }
 
@@ -131,8 +131,8 @@ add_filter( 'get_search_form', 'epinoge_search_form' );
  */
 function growp_include_breadcrumbs(){
 
-	if ( current_theme_supports( 'growp-breadcrumbs' ) ) {
-		get_template_part( 'modules/breadcrumbs' );
+	if ( current_theme_supports( 'growp-breadcrumb' ) ) {
+		get_template_part( 'modules/breadcrumb' );
 	}
 
 }
