@@ -2,7 +2,7 @@
 /**
  * サイドバーの登録
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================
@@ -17,7 +17,7 @@
  * @param $index
  * @return mixed
  */
-function epigone_dynamic_sidebar( $index ){
+function growp_dynamic_sidebar( $index ){
 	return dynamic_sidebar( $index );
 }
 
@@ -26,10 +26,10 @@ function epigone_dynamic_sidebar( $index ){
  * サイドバーの登録
  * @return void
  */
-function epigone_pc_sidebar() {
+function growp_pc_sidebar() {
 
 	register_sidebar( array(
-		'name'          => __( 'Sidebar Primary', 'epigone' ),
+		'name'          => __( 'Sidebar Primary', 'growp' ),
 		'id'            => 'sidebar-primary',
 		'before_widget' => '<div class="widget widget-sidebar %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -38,7 +38,7 @@ function epigone_pc_sidebar() {
 	) );
 
 	register_sidebar( array(
-		'name'          => __( 'Header Primary Area', 'epigone' ),
+		'name'          => __( 'Header Primary Area', 'growp' ),
 		'id'            => 'header-primary',
 		'before_widget' => '<div class="widget widget-header %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -47,7 +47,7 @@ function epigone_pc_sidebar() {
 	) );
 
 	register_sidebar( array(
-		'name'          => __( 'Main Visual', 'epigone' ),
+		'name'          => __( 'Main Visual', 'growp' ),
 		'id'            => 'main-visual',
 		'before_widget' => '<div class="widget widget-header %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -56,7 +56,7 @@ function epigone_pc_sidebar() {
 	) );
 
 	register_sidebar( array(
-		'name'          => __( 'Above Contents', 'epigone' ),
+		'name'          => __( 'Above Contents', 'growp' ),
 		'id'            => 'content-primary',
 		'before_widget' => '<div class="widget widget-content %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -65,7 +65,7 @@ function epigone_pc_sidebar() {
 	) );
 
 	register_sidebar( array(
-		'name'          => __( 'Under Content', 'epigone' ),
+		'name'          => __( 'Under Content', 'growp' ),
 		'id'            => 'content-secondary',
 		'before_widget' => '<div class="widget widget-content %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -74,7 +74,7 @@ function epigone_pc_sidebar() {
 	) );
 
 	register_sidebar( array(
-		'name'          => __( 'Under title (single post)', 'epigone' ),
+		'name'          => __( 'Under title (single post)', 'growp' ),
 		'id'            => 'single-under-title',
 		'before_widget' => '<div class="widget widget-content %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -83,7 +83,7 @@ function epigone_pc_sidebar() {
 	) );
 
 	register_sidebar( array(
-		'name'          => __( 'Footer Primary', 'epigone' ),
+		'name'          => __( 'Footer Primary', 'growp' ),
 		'id'            => 'footer-primary',
 		'before_widget' => '<div class="widget large-3 columns widget-footer %1$s %2$s">',
 		'after_widget'  => '</div>',
@@ -93,4 +93,4 @@ function epigone_pc_sidebar() {
 
 }
 
-add_action( 'widgets_init', 'epigone_pc_sidebar' );
+add_action( 'widgets_init', 'growp_pc_sidebar' );

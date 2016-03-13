@@ -1,12 +1,12 @@
 <?php
 /**
- * epigone breadcrumbs
+ * growp breadcrumbs
  *
- * @package epigone
+ * @package growp
  * @since 1.0.0
  */
 
 /**
  * @see inc/template-tags.php
  */
-epigone_breadcrumb();
+growp_breadcrumb();

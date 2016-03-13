@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: epigone\n"
+"Project-Id-Version: growp\n"
 "POT-Creation-Date: 2015-09-28 01:44+0900\n"
 "PO-Revision-Date: 2015-09-28 01:45+0900\n"
 "Last-Translator: ishihara <ishihara@grow-group.jp>\n"
@@ -455,7 +455,7 @@ msgstr "はい"
 #: inc/modification.php:501 inc/modification.php:530 inc/modification.php:546
 #: inc/modification.php:562 inc/modification.php:578 inc/modification.php:594
 #: inc/modification.php:610 inc/modification.php:721
-#: vendor/1shiharat/epigone-theme-customizer/fields/select/class-taxonomy-dropdown-custom-control.php:30
+#: vendor/1shiharat/growp-theme-customizer/fields/select/class-taxonomy-dropdown-custom-control.php:30
 msgid "None"
 msgstr "いいえ"
 
@@ -971,11 +971,11 @@ msgstr ""
 msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
 msgstr "続きを読む <span class=\"meta-nav\">&rarr;</span>"
 
-#: vendor/1shiharat/epigone-theme-customizer/fields/image/class-multi-image-custom-control.php:123
+#: vendor/1shiharat/growp-theme-customizer/fields/image/class-multi-image-custom-control.php:123
 msgid "Upload"
 msgstr "アップロード"
 
-#: vendor/1shiharat/epigone-theme-customizer/fields/image/class-multi-image-custom-control.php:126
+#: vendor/1shiharat/growp-theme-customizer/fields/image/class-multi-image-custom-control.php:126
 msgid "Remove"
 msgstr "削除"
 

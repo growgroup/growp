@@ -2,7 +2,7 @@
 /**
  * Navbar module
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================
@@ -39,7 +39,7 @@
 						'after' => '',
 						'link_before' => '',                            // before each link text
 						'link_after' => '',
-						'walker' => new Epigone_Walker_Nav(),
+						'walker' => new growp_Walker_Nav(),
 					)
 				);
 				?>

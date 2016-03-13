@@ -2,7 +2,7 @@
 /**
  * 投稿テンプレート
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * @see http://codex.wordpress.org/Template_Hierarchy
@@ -18,10 +18,10 @@ while ( have_posts() ) :
 
 		get_template_part( 'templates/content', 'single' );
 
-		epigone_post_nav();
+		growp_post_nav();
 
 		// 関連する記事を取得
-		epigone_related_post();
+		growp_related_post();
 
 		if ( "true" == get_theme_mod('single_comment_num', 'true') && ( comments_open() || '0' != get_comments_number() ) ) {
 			comments_template();

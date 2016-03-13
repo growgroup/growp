@@ -2,7 +2,7 @@
 /**
  * 必要なファイルを読み込む
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================''
@@ -31,7 +31,7 @@ $include_files = array(
 /**
  * 読み込むファイルにフィルターを設ける
  */
-$include_files = apply_filters( 'epigone_init_files', $include_files );
+$include_files = apply_filters( 'growp_init_files', $include_files );
 
 foreach ( $include_files as $key => $files ) {
 	if ( $filename = locate_template( $files, false ) ) {

@@ -2,7 +2,7 @@
 /**
  * デフォルトのコンテンツテンプレート
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================
@@ -14,7 +14,7 @@
     <header class="relatedpost__item__header">
         <?php if ('post' == get_post_type()) : ?>
             <div class="relatedpost__item__meta">
-                <?php epigone_posted_on(); ?>
+                <?php growp_posted_on(); ?>
             </div><!-- .relatedpost__meta -->
         <?php endif; ?>
 
@@ -44,11 +44,11 @@
             <?php
             if ('post' == get_post_type()) :
                 if ("true" == get_theme_mod('single_post_category', 'true')) {
-                    $categories_list = get_the_category_list(__(', ', 'epigone'));
-                    if ($categories_list && epigone_categorized_blog()) :
+                    $categories_list = get_the_category_list(__(', ', 'growp'));
+                    if ($categories_list && growp_categorized_blog()) :
                         ?>
                         <span class="cat-links">
-						<i class="fa fa-folder"></i> <?php printf(__('Posted in %1$s', 'epigone'), $categories_list); ?>
+						<i class="fa fa-folder"></i> <?php printf(__('Posted in %1$s', 'growp'), $categories_list); ?>
 					</span>
                         <?php
                     endif; // End if categories
@@ -57,11 +57,11 @@
                 <?php
                 if ("true" == get_theme_mod('single_post_tags', 'true')) {
                     /* translators: used between list items, there is a space after the comma */
-                    $tags_list = get_the_tag_list('', __(', ', 'epigone'));
+                    $tags_list = get_the_tag_list('', __(', ', 'growp'));
                     if ($tags_list) :
                         ?>
                         <span class="tags-links">
-						<i class="fa fa-tags"></i> <?php printf(__('Tagged %1$s', 'epigone'), $tags_list); ?>
+						<i class="fa fa-tags"></i> <?php printf(__('Tagged %1$s', 'growp'), $tags_list); ?>
 					</span>
                         <?php
                     endif; // End if $tags_list
@@ -70,7 +70,7 @@
 
             if (!post_password_required() && (comments_open() || '0' !== get_comments_number())) : ?>
                 <span
-                    class="comments-link"><?php comments_popup_link(__('Leave a comment', 'epigone'), __('1 Comment', 'epigone'), __('% Comments', 'epigone')); ?></span>        <?php
+                    class="comments-link"><?php comments_popup_link(__('Leave a comment', 'growp'), __('1 Comment', 'growp'), __('% Comments', 'growp')); ?></span>        <?php
             endif; ?>
 
         </footer>

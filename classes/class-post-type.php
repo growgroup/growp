@@ -3,7 +3,7 @@
 /**
  * Custom Post Type Helper
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================
@@ -28,7 +28,7 @@
  * `);
  *
  */
-class Epigone_Custom_Post_Type {
+class growp_Custom_Post_Type {
 	public $post_type_name;
 
 	public $post_type_args;
@@ -76,19 +76,19 @@ class Epigone_Custom_Post_Type {
 		$labels = array_merge(
 
 			array(
-				'name'               => sprintf( __( '%s', 'epigone' ), $plural ),
-				'singular_name'      => sprintf( __( '%s', 'epigone' ), $name ),
-				'add_new'            => sprintf( __( 'Add New %s', 'epigone' ), strtolower( $name ) ),
-				'add_new_item'       => sprintf( __( 'Add New %s', 'epigone' ), $name ),
-				'edit_item'          => sprintf( __( 'Edit %s', 'epigone' ), $name ),
-				'new_item'           => sprintf( __( 'New %s', 'epigone' ), $name ),
-				'all_items'          => sprintf( __( 'All %s', 'epigone' ), $plural ),
-				'view_item'          => sprintf( __( 'View %s', 'epigone' ), $name ),
-				'search_items'       => sprintf( __( 'Search %s', 'epigone' ), $plural ),
-				'not_found'          => sprintf( __( 'No %s found', 'epigone' ), strtolower( $plural ) ),
-				'not_found_in_trash' => sprintf( __( 'No %s found in Trash', 'epigone' ), strtolower( $plural ) ),
+				'name'               => sprintf( __( '%s', 'growp' ), $plural ),
+				'singular_name'      => sprintf( __( '%s', 'growp' ), $name ),
+				'add_new'            => sprintf( __( 'Add New %s', 'growp' ), strtolower( $name ) ),
+				'add_new_item'       => sprintf( __( 'Add New %s', 'growp' ), $name ),
+				'edit_item'          => sprintf( __( 'Edit %s', 'growp' ), $name ),
+				'new_item'           => sprintf( __( 'New %s', 'growp' ), $name ),
+				'all_items'          => sprintf( __( 'All %s', 'growp' ), $plural ),
+				'view_item'          => sprintf( __( 'View %s', 'growp' ), $name ),
+				'search_items'       => sprintf( __( 'Search %s', 'growp' ), $plural ),
+				'not_found'          => sprintf( __( 'No %s found', 'growp' ), strtolower( $plural ) ),
+				'not_found_in_trash' => sprintf( __( 'No %s found in Trash', 'growp' ), strtolower( $plural ) ),
 				'parent_item_colon'  => '',
-				'menu_name'          => sprintf( __( '%s', 'epigone' ), $plural ),
+				'menu_name'          => sprintf( __( '%s', 'growp' ), $plural ),
 			),
 
 			// Given labels
@@ -151,14 +151,14 @@ class Epigone_Custom_Post_Type {
 						'name'              => _x( $plural, 'taxonomy general name' ),
 						'singular_name'     => _x( $name, 'taxonomy singular name' ),
 						'search_items'      => __( 'Search ' . $plural ),
-						'all_items'         => sprintf( __( 'All %s', 'epigone' ), $name ),
-						'parent_item'       => sprintf( __( 'Parent %s', 'epigone' ), $name ),
-						'parent_item_colon' => sprintf( __( 'Parent: %s', 'epigone' ), $name ),
-						'edit_item'         => sprintf( __( 'Edit: %s', 'epigone' ), $name ),
-						'update_item'       => sprintf( __( 'Update %s', 'epigone' ), $name ),
-						'add_new_item'      => sprintf( __( 'Add new %s', 'epigone' ), $name ),
-						'new_item_name'     => sprintf( __( 'New %s Name', 'epigone' ), $name ),
-						'menu_name'         => sprintf( __( '%s', 'epigone' ), $name ),
+						'all_items'         => sprintf( __( 'All %s', 'growp' ), $name ),
+						'parent_item'       => sprintf( __( 'Parent %s', 'growp' ), $name ),
+						'parent_item_colon' => sprintf( __( 'Parent: %s', 'growp' ), $name ),
+						'edit_item'         => sprintf( __( 'Edit: %s', 'growp' ), $name ),
+						'update_item'       => sprintf( __( 'Update %s', 'growp' ), $name ),
+						'add_new_item'      => sprintf( __( 'Add new %s', 'growp' ), $name ),
+						'new_item_name'     => sprintf( __( 'New %s Name', 'growp' ), $name ),
+						'menu_name'         => sprintf( __( '%s', 'growp' ), $name ),
 					),
 
 					// Given labels

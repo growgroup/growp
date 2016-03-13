@@ -3,14 +3,14 @@
 /**
  * Navigation Walker
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * Original Author: Edward McIntyre - @twittem
  * GitHub URI: https://github.com/twittem/wp-bootstrap-navwalker
  * =====================================================
  */
-class Epigone_Walker_Nav extends Walker_Nav_Menu {
+class growp_Walker_Nav extends Walker_Nav_Menu {
 
 
 	function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ) {

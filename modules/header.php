@@ -2,7 +2,7 @@
 /**
  * ヘッダーテンプレート
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================
@@ -31,7 +31,7 @@
 		<div class="large-12 columns">
 			<?php
 
-			epigone_dynamic_sidebar('header-primary');
+			growp_dynamic_sidebar('header-primary');
 			do_action('get_header');
 			?>
 		</div>

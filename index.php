@@ -2,7 +2,7 @@
 /**
  * メインインデックステンプレート
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @since 1.0.0
  * =====================================================
  */
@@ -12,7 +12,7 @@ if ( have_posts() ) :
 		the_post();
 		get_template_part( 'templates/content', get_post_format() );
 	endwhile;
-	epigone_paging_nav();
+	growp_paging_nav();
 else :
 	get_template_part( 'templates/content', 'none' );
 endif;

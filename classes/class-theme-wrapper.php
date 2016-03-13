@@ -2,7 +2,7 @@
 /**
  * Theme wrapper class.
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * @see http://scribu.net/wordpress/theme-wrappers.html

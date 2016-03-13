@@ -6,7 +6,7 @@
  *   というテンプレートを作ることで、
  *   ベーステンプレートをオリジナルで作ることができます。
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.2.0
  * =====================================================
@@ -14,7 +14,7 @@
 
 get_template_part( 'modules/head' );
 
-epigone_get_header();
+growp_get_header();
 
 dynamic_sidebar( 'main-visual' );
 ?>
@@ -31,7 +31,7 @@ dynamic_sidebar( 'main-visual' );
 		 */
 		do_action( 'get_main_template_before' );
 
-		load_template( epigone_template_path() ); ?>
+		load_template( growp_template_path() ); ?>
 
 		<?php
 		/**

@@ -3,12 +3,12 @@
 /**
  * class Breadcrumbs
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.1
  * =====================================================
  */
-class Epigone_Breadcrumbs {
+class growp_Breadcrumbs {
 	/**
 	 * The list of breadcrumb items.
 	 *
@@ -82,13 +82,13 @@ class Epigone_Breadcrumbs {
 		 * @var [type]
 		 */
 		$this->strings = wp_parse_args( $strings, array(
-			'home'      =>  '<i class="fa fa-home"></i> ' . __( 'Home', 'epigone' ),
+			'home'      =>  '<i class="fa fa-home"></i> ' . __( 'Home', 'growp' ),
 			'search'    => array(
-				'singular' => __( 'Search Result for <em>%s</em>', 'epigone' ),
-				'plural'   => __( '%s Search results for <em>%s</em>', 'epigone' ),
+				'singular' => __( 'Search Result for <em>%s</em>', 'growp' ),
+				'plural'   => __( '%s Search results for <em>%s</em>', 'growp' ),
 			),
-			'paged'     => __( 'page %d', 'epigone' ),
-			'404_error' => __( 'Error: Page not found', 'epigone' ),
+			'paged'     => __( 'page %d', 'growp' ),
+			'404_error' => __( 'Error: Page not found', 'growp' ),
 		) );
 
 		// Generate breadcrumb

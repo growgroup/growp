@@ -5,7 +5,7 @@
 /**
  * Template of the one-column page
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.2.0
  * =====================================================
@@ -23,15 +23,15 @@ the_post();
 
 		the_content();
 
-		if ( ! current_theme_supports( 'epigone-pagination' ) ) {
+		if ( ! current_theme_supports( 'growp-pagination' ) ) {
 			wp_link_pages( array(
-				'before' => '<div class="page-links">' . __( 'Pages:', 'epigone' ),
+				'before' => '<div class="page-links">' . __( 'Pages:', 'growp' ),
 				'after'  => '</div>',
 			) );
 		}
 		?>
 	</div><!-- .entry-content -->
 	<?php
-	edit_post_link( __( 'Edit', 'epigone' ), '<footer class="entry-footer"><span class="edit-link">', '</span></footer>' );
+	edit_post_link( __( 'Edit', 'growp' ), '<footer class="entry-footer"><span class="edit-link">', '</span></footer>' );
 	?>
 </article><!-- #post-## -->

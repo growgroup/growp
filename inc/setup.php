@@ -2,7 +2,7 @@
 /**
  * Setup script for this theme
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================''
@@ -14,19 +14,19 @@
  */
 
 
-function epigone_setup(){
+function growp_setup(){
 
-	load_theme_textdomain( 'epigone', get_template_directory() . '/languages' );
+	load_theme_textdomain( 'growp', get_template_directory() . '/languages' );
 	load_theme_textdomain( 'tgmpa', get_template_directory() . '/languages' );
 
 	// automatic feed をサポート
 	add_theme_support( 'automatic-feed-links' );
 
 	// パンくず をサポート
-	add_theme_support( 'epigone-breadcrumbs' );
+	add_theme_support( 'growp-breadcrumbs' );
 
 	// ページネーション をサポート
-	add_theme_support( 'epigone-pagination' );
+	add_theme_support( 'growp-pagination' );
 
 	// アイキャッチ画像のサポート
 	add_theme_support( 'post-thumbnails' );
@@ -50,21 +50,21 @@ function epigone_setup(){
 	);
 
 	// ヘッダーナビゲーションを登録
-	register_nav_menus( array( 'primary' => __( 'Header Primary Navigation', 'epigone' ) ) );
+	register_nav_menus( array( 'primary' => __( 'Header Primary Navigation', 'growp' ) ) );
 
 	// editor-style を登録
 	add_editor_style( 'assets/css/editor-style.css' );
 
 }
 
-add_action( 'after_setup_theme', 'epigone_setup' );
+add_action( 'after_setup_theme', 'growp_setup' );
 
 /**
  * wp_head() で出力されるタグの調整
  *
  * @return void
  */
-function epigone_head_cleanup(){
+function growp_head_cleanup(){
 
 	remove_action( 'wp_head', 'feed_links', 2 );
 	remove_action( 'wp_head', 'feed_links_extra', 3 );
@@ -84,7 +84,7 @@ function epigone_head_cleanup(){
 	);
 }
 
-add_filter( 'init', 'epigone_head_cleanup', 10 );
+add_filter( 'init', 'growp_head_cleanup', 10 );
 
 
 /**
@@ -94,7 +94,7 @@ add_filter( 'init', 'epigone_head_cleanup', 10 );
  * @return string
  */
 
-function epigone_get_avatar( $avatar, $type ){
+function growp_get_avatar( $avatar, $type ){
 
 	if ( ! is_object( $type ) ) {
 		return $avatar;
@@ -105,7 +105,7 @@ function epigone_get_avatar( $avatar, $type ){
 	return $avatar;
 
 }
-add_filter( 'get_avatar', 'epigone_get_avatar', 10, 2 );
+add_filter( 'get_avatar', 'growp_get_avatar', 10, 2 );
 
 /**
  * 検索テンプレートを変更
@@ -129,13 +129,13 @@ add_filter( 'get_search_form', 'epinoge_search_form' );
  *
  * @return void
  */
-function epigone_include_breadcrumbs(){
+function growp_include_breadcrumbs(){
 
-	if ( current_theme_supports( 'epigone-breadcrumbs' ) ) {
+	if ( current_theme_supports( 'growp-breadcrumbs' ) ) {
 		get_template_part( 'modules/breadcrumbs' );
 	}
 
 }
 
-add_action( 'get_footer', 'epigone_include_breadcrumbs' );
+add_action( 'get_footer', 'growp_include_breadcrumbs' );
 

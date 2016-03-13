@@ -2,7 +2,7 @@
 /**
  * テーマカスタマイザーの設定
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.2.0
  * =====================================================''
@@ -11,52 +11,52 @@
  * テーマカスタマイザーを拡張
  * @since 1.2.0
  */
-function epigone_customizer_settings()
+function growp_customizer_settings()
 {
 
-	$settings['epigone_general'] = array(
-		'title' => __('General', 'epigone'),
-		'description' => __('Please have a set of general setting.', 'epigone'),
+	$settings['growp_general'] = array(
+		'title' => __('General', 'growp'),
+		'description' => __('Please have a set of general setting.', 'growp'),
 		'section' => array(
-			'epigone_google_analytics' => array(
-				'title' => __('Google Analytics - Tracking code', 'epigone'),
+			'growp_google_analytics' => array(
+				'title' => __('Google Analytics - Tracking code', 'growp'),
 				'setting' => array(
 					'tracking_code' => array(
-						'label' => __('Tracking Code', 'epigone'),
+						'label' => __('Tracking Code', 'growp'),
 						'default' => '',
 						'type' => 'textarea',
 						'sanitaize_call_back' => '',
 					),
 				),
 			),
-			'epigone_meta_description' => array(
-				'title' => __('Meta Description', 'epigone'),
+			'growp_meta_description' => array(
+				'title' => __('Meta Description', 'growp'),
 				'setting' => array(
 					'meta_description' => array(
-						'label' => __('Meta Description', 'epigone'),
+						'label' => __('Meta Description', 'growp'),
 						'default' => get_bloginfo('description'),
 						'type' => 'textarea',
 						'sanitaize_call_back' => '',
 					),
 				),
 			),
-			'epigone_meta_keyword' => array(
-				'title' => __('Meta Keyword', 'epigone'),
+			'growp_meta_keyword' => array(
+				'title' => __('Meta Keyword', 'growp'),
 				'setting' => array(
 					'meta_keyword' => array(
-						'label' => __('Meta Keyword', 'epigone'),
+						'label' => __('Meta Keyword', 'growp'),
 						'default' => '',
 						'type' => 'text',
 						'sanitaize_call_back' => '',
 					),
 				),
 			),
-			'epigone_favicon' => array(
-				'title' => __('Favicon', 'epigone'),
-				'description' => __('16  16 px .ico file or .png', 'epigone'),
+			'growp_favicon' => array(
+				'title' => __('Favicon', 'growp'),
+				'description' => __('16  16 px .ico file or .png', 'growp'),
 				'setting' => array(
 					'meta_favicon' => array(
-						'label' => __('Favicon', 'epigone'),
+						'label' => __('Favicon', 'growp'),
 						'default' => '',
 						'type' => 'multi-image',
 						'sanitaize_call_back' => '',
@@ -68,34 +68,34 @@ function epigone_customizer_settings()
 	/**
 	 * 01. ヘッダーの設定
 	 */
-	$settings['epigone_header'] = array(
-		'title' => __('Header', 'epigone'), // Panel title
-		'description' => __('Please have a set of headers.', 'epigone'),
+	$settings['growp_header'] = array(
+		'title' => __('Header', 'growp'), // Panel title
+		'description' => __('Please have a set of headers.', 'growp'),
 		'section' => array(
-			'epigone_header_style' => array(
-				'title' => __('Header Style', 'epigone'),
+			'growp_header_style' => array(
+				'title' => __('Header Style', 'growp'),
 				'setting' => array(
 					'header_style' => array(
-						'label' => __('Header Style', 'epigone'),
+						'label' => __('Header Style', 'growp'),
 						'default' => 'top',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'top' => __('Navigation : Top', 'epigone'),
-							'bottom' => __('Navigation : Bottom', 'epigone'),
-							'none' => __('Navigation : None', 'epigone'),
-							'header_none' => __('Header : None', 'epigone'),
+							'top' => __('Navigation : Top', 'growp'),
+							'bottom' => __('Navigation : Bottom', 'growp'),
+							'none' => __('Navigation : None', 'growp'),
+							'header_none' => __('Header : None', 'growp'),
 						),
 					),
 					'header_text_align' => array(
-						'label' => __('Header Text Align', 'epigone'),
+						'label' => __('Header Text Align', 'growp'),
 						'default' => 'left',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'left' => __('Text Align: Left', 'epigone'),
-							'center' => __('Text Align: Center', 'epigone'),
-							'right' => __('Text Align: Right', 'epigone'),
+							'left' => __('Text Align: Left', 'growp'),
+							'center' => __('Text Align: Center', 'growp'),
+							'right' => __('Text Align: Right', 'growp'),
 						),
 						'output' => array(
 							'.header' => 'text-align',
@@ -103,17 +103,17 @@ function epigone_customizer_settings()
 					),
 				),
 			),
-			'epigone_logo' => array(
-				'title' => __('Logo', 'epigone'),
+			'growp_logo' => array(
+				'title' => __('Logo', 'growp'),
 				'setting' => array(
 					'logo_image' => array(
-						'label' => __('Logo Image', 'epigone'),
+						'label' => __('Logo Image', 'growp'),
 						'default' => '',
 						'type' => 'multi-image',
 						'sanitaize_call_back' => '',
 					),
 					'logo_font_size' => array(
-						'label' => __('Font Size', 'epigone'),
+						'label' => __('Font Size', 'growp'),
 						'default' => 1.0,
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -136,7 +136,7 @@ function epigone_customizer_settings()
 						'output_unit' => 'em',
 					),
 					'logo_color' => array(
-						'label' => __('Color', 'epigone'),
+						'label' => __('Color', 'growp'),
 						'default' => '#FFFFFF',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -147,11 +147,11 @@ function epigone_customizer_settings()
 				)
 			),
 
-			'epigone_header' => array(
-				'title' => __('Background', 'epigone'),
+			'growp_header' => array(
+				'title' => __('Background', 'growp'),
 				'setting' => array(
 					'header_background_image' => array(
-						'label' => __('Background Image', 'epigone'),
+						'label' => __('Background Image', 'growp'),
 						'default' => '',
 						'type' => 'multi-image',
 						'sanitaize_call_back' => '',
@@ -160,20 +160,20 @@ function epigone_customizer_settings()
 						)
 					),
 					'header_background_attachment' => array(
-						'label' => __('Background Attachment', 'epigone'),
+						'label' => __('Background Attachment', 'growp'),
 						'default' => 'fixed',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'fixed' => __('Fixed', 'epigone'),
-							'scroll' => __('Scroll', 'epigone'),
+							'fixed' => __('Fixed', 'growp'),
+							'scroll' => __('Scroll', 'growp'),
 						),
 						'output' => array(
 							'#masthead' => 'background-attachment',
 						)
 					),
 					'header_background_color' => array(
-						'label' => __('Background Color', 'epigone'),
+						'label' => __('Background Color', 'growp'),
 						'default' => '#e8e8e8',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -182,15 +182,15 @@ function epigone_customizer_settings()
 						),
 					),
 					'header_background_size' => array(
-						'label' => __('Background Size', 'epigone'),
+						'label' => __('Background Size', 'growp'),
 						'default' => '100% auto',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'auto auto' => __('Horizontal : auto Vertical : auto', 'epigone'),
-							'100% auto' => __('Horizontal : 100%, Vertical : auto', 'epigone'),
-							'auto 100%' => __('Horizontal : auto, Vertical : 100%', 'epigone'),
-							'100% 100%' => __('Horizontal : 100%, Vertical : 100%', 'epigone'),
+							'auto auto' => __('Horizontal : auto Vertical : auto', 'growp'),
+							'100% auto' => __('Horizontal : 100%, Vertical : auto', 'growp'),
+							'auto 100%' => __('Horizontal : auto, Vertical : 100%', 'growp'),
+							'100% 100%' => __('Horizontal : 100%, Vertical : 100%', 'growp'),
 						),
 						'output' => array(
 							'#masthead' => 'background-size',
@@ -204,21 +204,21 @@ function epigone_customizer_settings()
 	/**
 	 * 02. テーマカラー
 	 */
-	$settings['epigone_theme_color'] = array(
-		'title' => __('Theme Style', 'epigone'), // Panel title
+	$settings['growp_theme_color'] = array(
+		'title' => __('Theme Style', 'growp'), // Panel title
 		'section' => array(
-			'epigone_theme_style' => array(
-				'title' => __('Theme Style ', 'epigone'),
-				'description' => __('Setting for Theme color.', 'epigone'),
+			'growp_theme_style' => array(
+				'title' => __('Theme Style ', 'growp'),
+				'description' => __('Setting for Theme color.', 'growp'),
 				'setting' => array(
-					'epigone_theme_style' => array(
-						'label' => __('Theme Style', 'epigone'),
+					'growp_theme_style' => array(
+						'label' => __('Theme Style', 'growp'),
 						'default' => 'left',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'normal' => __('Normal', 'epigone'),
-							'blog' => __('Blog', 'epigone'),
+							'normal' => __('Normal', 'growp'),
+							'blog' => __('Blog', 'growp'),
 						),
 						'output' => array(
 							'.header' => 'text-align',
@@ -227,12 +227,12 @@ function epigone_customizer_settings()
 				),
 			),
 			// theme color section
-			'epigone_theme_color' => array(
-				'title' => __('Theme Color ', 'epigone'),
-				'description' => __('Setting for Theme color.', 'epigone'),
+			'growp_theme_color' => array(
+				'title' => __('Theme Color ', 'growp'),
+				'description' => __('Setting for Theme color.', 'growp'),
 				'setting' => array(
 					'theme_color' => array(
-						'label' => __('Theme Color', 'epigone'),
+						'label' => __('Theme Color', 'growp'),
 						'default' => '#3695b5',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -269,15 +269,15 @@ function epigone_customizer_settings()
 	/**
 	 * 03. ボディ設定
 	 */
-	$settings['epigone_body'] = array(
-		'title' => __('Body Settings', 'epigone'), // Panel title
-		'description' => __('Please have a set of body.', 'epigone'),
+	$settings['growp_body'] = array(
+		'title' => __('Body Settings', 'growp'), // Panel title
+		'description' => __('Please have a set of body.', 'growp'),
 		'section' => array(
-			'epigone_body' => array(
-				'title' => __('Body ', 'epigone'),
+			'growp_body' => array(
+				'title' => __('Body ', 'growp'),
 				'setting' => array(
 					'body_background_color' => array(
-						'label' => __('Background Color', 'epigone'),
+						'label' => __('Background Color', 'growp'),
 						'default' => '#FFFFFF',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -286,7 +286,7 @@ function epigone_customizer_settings()
 						),
 					),
 					'body_background_image' => array(
-						'label' => __('Background Image', 'epigone'),
+						'label' => __('Background Image', 'growp'),
 						'default' => 'transparent',
 						'type' => 'multi-image',
 						'sanitaize_call_back' => '',
@@ -295,28 +295,28 @@ function epigone_customizer_settings()
 						)
 					),
 					'body_background_attachment' => array(
-						'label' => __('Background Attachment', 'epigone'),
+						'label' => __('Background Attachment', 'growp'),
 						'default' => 'fixed',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'fixed' => __('Fixed', 'epigone'),
-							'initial' => __('Initial', 'epigone'),
+							'fixed' => __('Fixed', 'growp'),
+							'initial' => __('Initial', 'growp'),
 						),
 						'output' => array(
 							'body' => 'background-attachment',
 						)
 					),
 					'body_background_size' => array(
-						'label' => __('Background Size', 'epigone'),
+						'label' => __('Background Size', 'growp'),
 						'default' => '100% auto',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'auto auto' => __('Horizontal : auto Vertical : auto', 'epigone'),
-							'100% auto' => __('Horizontal : 100%, Vertical : auto', 'epigone'),
-							'auto 100%' => __('Horizontal : auto, Vertical : 100%', 'epigone'),
-							'100% 100%' => __('Horizontal : 100%, Vertical : 100%', 'epigone'),
+							'auto auto' => __('Horizontal : auto Vertical : auto', 'growp'),
+							'100% auto' => __('Horizontal : 100%, Vertical : auto', 'growp'),
+							'auto 100%' => __('Horizontal : auto, Vertical : 100%', 'growp'),
+							'100% 100%' => __('Horizontal : 100%, Vertical : 100%', 'growp'),
 						),
 						'output' => array(
 							'body' => 'background-size',
@@ -324,11 +324,11 @@ function epigone_customizer_settings()
 					),
 				)
 			),
-			'epigone_heading' => array(
-				'title' => __('Headings', 'epigone'),
+			'growp_heading' => array(
+				'title' => __('Headings', 'growp'),
 				'setting' => array(
 					'heading_color' => array(
-						'label' => __('Heading Color', 'epigone'),
+						'label' => __('Heading Color', 'growp'),
 						'default' => '#3695b5',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -337,7 +337,7 @@ function epigone_customizer_settings()
 						),
 					),
 					'heading_1_font_size' => array(
-						'label' => __('H1 Font Size', 'epigone'),
+						'label' => __('H1 Font Size', 'growp'),
 						'default' => '2.0',
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -350,7 +350,7 @@ function epigone_customizer_settings()
 						'output_unit' => 'em',
 					),
 					'heading_2_font_size' => array(
-						'label' => __('H2 Font Size', 'epigone'),
+						'label' => __('H2 Font Size', 'growp'),
 						'default' => '1.8',
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -362,7 +362,7 @@ function epigone_customizer_settings()
 						'output_unit' => 'em',
 					),
 					'heading_3_font_size' => array(
-						'label' => __('H3 Font Size', 'epigone'),
+						'label' => __('H3 Font Size', 'growp'),
 						'default' => '1.6',
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -375,7 +375,7 @@ function epigone_customizer_settings()
 						'output_unit' => 'em',
 					),
 					'heading_4_font_size' => array(
-						'label' => __('H4 Font Size', 'epigone'),
+						'label' => __('H4 Font Size', 'growp'),
 						'default' => '1.4',
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -387,7 +387,7 @@ function epigone_customizer_settings()
 						'output_unit' => 'em',
 					),
 					'heading_5_font_size' => array(
-						'label' => __('H5 Font Size', 'epigone'),
+						'label' => __('H5 Font Size', 'growp'),
 						'default' => '1.2',
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -399,7 +399,7 @@ function epigone_customizer_settings()
 						'output_unit' => 'em',
 					),
 					'heading_6_font_size' => array(
-						'label' => __('H6 Font Size', 'epigone'),
+						'label' => __('H6 Font Size', 'growp'),
 						'default' => '1.1',
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -412,11 +412,11 @@ function epigone_customizer_settings()
 					),
 				)
 			),
-			'epigone_text' => array(
-				'title' => __('Text', 'epigone'),
+			'growp_text' => array(
+				'title' => __('Text', 'growp'),
 				'setting' => array(
 					'text_color' => array(
-						'label' => __('Text Color', 'epigone'),
+						'label' => __('Text Color', 'growp'),
 						'default' => '#333',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -426,7 +426,7 @@ function epigone_customizer_settings()
 						),
 					),
 					'text_font_size' => array(
-						'label' => __('Base Font Size', 'epigone'),
+						'label' => __('Base Font Size', 'growp'),
 						'default' => 1.0,
 						'type' => 'select',
 						'sanitaize_call_back' => '',
@@ -455,22 +455,22 @@ function epigone_customizer_settings()
 			),
 		)
 	);
-	$settings['epigone_home'] = array(
-		'title' => __('Home Page Settings', 'epigone'), // Panel title
-		'description' => __('Please settings for home page.', 'epigone'),
+	$settings['growp_home'] = array(
+		'title' => __('Home Page Settings', 'growp'), // Panel title
+		'description' => __('Please settings for home page.', 'growp'),
 		'section' => array(
-			'epigone_home_post_list' => array(
-				'title' => __('Post List Style', 'epigone'),
-				'description' => __('Please select the style of Posts List', 'epigone'),
+			'growp_home_post_list' => array(
+				'title' => __('Post List Style', 'growp'),
+				'description' => __('Please select the style of Posts List', 'growp'),
 				'setting' => array(
 					'home_post_list' => array(
-						'label' => __('Post List Style', 'epigone'),
+						'label' => __('Post List Style', 'growp'),
 						'default' => 'normal',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'normal' => __('Normal', 'epigone'),
-							'tile' => __('Tile', 'epigone'),
+							'normal' => __('Normal', 'growp'),
+							'tile' => __('Tile', 'growp'),
 						),
 					),
 				)
@@ -483,32 +483,32 @@ function epigone_customizer_settings()
 	 * 03. 投稿記事設定
 	 */
 
-	$settings['epigone_single'] = array(
-		'title' => __('Single Post Settings', 'epigone'), // Panel title
-		'description' => __('Please settings for single post.', 'epigone'),
+	$settings['growp_single'] = array(
+		'title' => __('Single Post Settings', 'growp'), // Panel title
+		'description' => __('Please settings for single post.', 'growp'),
 		'section' => array(
-			'epigone_single_thumbnail' => array(
-				'title' => __('Display Thumbnail', 'epigone'),
-				'description' => __('Do you want to display a thumbnail?', 'epigone'),
+			'growp_single_thumbnail' => array(
+				'title' => __('Display Thumbnail', 'growp'),
+				'description' => __('Do you want to display a thumbnail?', 'growp'),
 				'setting' => array(
 					'single_thumbnail' => array(
-						'label' => __('Display Thumbnail', 'epigone'),
+						'label' => __('Display Thumbnail', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
 			),
-			'epigone_single_char_num' => array(
-				'title' => __('Except Number of characters', 'epigone'),
-				'description' => __('Do you want to display a excerpt?', 'epigone'),
+			'growp_single_char_num' => array(
+				'title' => __('Except Number of characters', 'growp'),
+				'description' => __('Do you want to display a excerpt?', 'growp'),
 				'setting' => array(
 					'single_char_num' => array(
-						'label' => __('Except Number of characters', 'epigone'),
+						'label' => __('Except Number of characters', 'growp'),
 						'default' => '100',
 						'type' => 'number',
 						'sanitaize_call_back' => '',
@@ -516,98 +516,98 @@ function epigone_customizer_settings()
 					),
 				)
 			),
-			'epigone_single_post_date' => array(
-				'title' => __('Display Date', 'epigone'),
-				'description' => __('Do you want to display a posted date?', 'epigone'),
+			'growp_single_post_date' => array(
+				'title' => __('Display Date', 'growp'),
+				'description' => __('Do you want to display a posted date?', 'growp'),
 				'setting' => array(
 					'single_post_date' => array(
-						'label' => __('Display Date', 'epigone'),
+						'label' => __('Display Date', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
 			),
-			'epigone_single_post_author' => array(
-				'title' => __('Display Author', 'epigone'),
-				'description' => __('Do you want to display a posted author?', 'epigone'),
+			'growp_single_post_author' => array(
+				'title' => __('Display Author', 'growp'),
+				'description' => __('Do you want to display a posted author?', 'growp'),
 				'setting' => array(
 					'single_post_author' => array(
-						'label' => __('Display Author', 'epigone'),
+						'label' => __('Display Author', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
 			),
-			'epigone_single_post_category' => array(
-				'title' => __('Display Category', 'epigone'),
-				'description' => __('Do you want to display a category?', 'epigone'),
+			'growp_single_post_category' => array(
+				'title' => __('Display Category', 'growp'),
+				'description' => __('Do you want to display a category?', 'growp'),
 				'setting' => array(
 					'single_post_category' => array(
-						'label' => __('Display Category', 'epigone'),
+						'label' => __('Display Category', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
 			),
-			'epigone_single_post_tags' => array(
-				'title' => __('Display Tags', 'epigone'),
-				'description' => __('Do you want to display a tag?', 'epigone'),
+			'growp_single_post_tags' => array(
+				'title' => __('Display Tags', 'growp'),
+				'description' => __('Do you want to display a tag?', 'growp'),
 				'setting' => array(
 					'single_post_tags' => array(
-						'label' => __('Display Tags', 'epigone'),
+						'label' => __('Display Tags', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
 			),
-			'epigone_single_comment_num' => array(
-				'title' => __('Display Comment Number', 'epigone'),
-				'description' => __('Do you want to display the comment number?', 'epigone'),
+			'growp_single_comment_num' => array(
+				'title' => __('Display Comment Number', 'growp'),
+				'description' => __('Do you want to display the comment number?', 'growp'),
 				'setting' => array(
 					'single_comment_num' => array(
-						'label' => __('Do you want to display the comment number?', 'epigone'),
+						'label' => __('Do you want to display the comment number?', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
 			),
-			'epigone_single_related_post' => array(
-				'title' => __('Display Related Post', 'epigone'),
-				'description' => __('Do you want to display the associated article?', 'epigone'),
+			'growp_single_related_post' => array(
+				'title' => __('Display Related Post', 'growp'),
+				'description' => __('Do you want to display the associated article?', 'growp'),
 				'setting' => array(
 					'single_related_post' => array(
-						'label' => __('Do you want to display the associated article?', 'epigone'),
+						'label' => __('Do you want to display the associated article?', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						),
 					),
 				)
@@ -618,40 +618,40 @@ function epigone_customizer_settings()
 	 * 03. Layout
 	 */
 
-	$settings['epigone_layout'] = array(
-		'title' => __('Layout Settings', 'epigone'), // Panel title
-		'description' => __('Please have a set of layout.', 'epigone'),
+	$settings['growp_layout'] = array(
+		'title' => __('Layout Settings', 'growp'), // Panel title
+		'description' => __('Please have a set of layout.', 'growp'),
 		'section' => array(
-			'epigone_layout_top' => array(
-				'title' => __('Top Page', 'epigone'),
-				'description' => __('Please select the layout.', 'epigone'),
+			'growp_layout_top' => array(
+				'title' => __('Top Page', 'growp'),
+				'description' => __('Please select the layout.', 'growp'),
 				'setting' => array(
-					'epigone_layout_top' => array(
-						'label' => __('Layout of top page', 'epigone'),
+					'growp_layout_top' => array(
+						'label' => __('Layout of top page', 'growp'),
 						'default' => 'l-right-sidebar',
 						'type' => 'layout-picker',
 						'sanitaize_call_back' => '',
 					),
 				)
 			),
-			'epigone_layout_page' => array(
-				'title' => __('static page', 'epigone'),
-				'description' => __('Please select the layout.', 'epigone'),
+			'growp_layout_page' => array(
+				'title' => __('static page', 'growp'),
+				'description' => __('Please select the layout.', 'growp'),
 				'setting' => array(
-					'epigone_layout_page' => array(
-						'label' => __('Layout of static page', 'epigone'),
+					'growp_layout_page' => array(
+						'label' => __('Layout of static page', 'growp'),
 						'default' => 'l-right-sidebar',
 						'type' => 'layout-picker',
 						'sanitaize_call_back' => '',
 					),
 				)
 			),
-			'epigone_layout_single' => array(
-				'title' => __('single page', 'epigone'),
-				'description' => __('Please select the layout.', 'epigone'),
+			'growp_layout_single' => array(
+				'title' => __('single page', 'growp'),
+				'description' => __('Please select the layout.', 'growp'),
 				'setting' => array(
-					'epigone_layout_single' => array(
-						'label' => __('Layout of single page', 'epigone'),
+					'growp_layout_single' => array(
+						'label' => __('Layout of single page', 'growp'),
 						'default' => 'l-right-sidebar',
 						'type' => 'layout-picker',
 						'sanitaize_call_back' => '',
@@ -664,16 +664,16 @@ function epigone_customizer_settings()
 	/**
 	 * 04. Footer
 	 */
-	$settings['epigone_footer'] = array(
-		'title' => __('Footer', 'epigone'), // Panel title
-		'description' => __('Please have a set of footer.', 'epigone'),
+	$settings['growp_footer'] = array(
+		'title' => __('Footer', 'growp'), // Panel title
+		'description' => __('Please have a set of footer.', 'growp'),
 		'section' => array(
 
-			'epigone_footer' => array(
-				'title' => __('Background', 'epigone'),
+			'growp_footer' => array(
+				'title' => __('Background', 'growp'),
 				'setting' => array(
 					'footer_background_image' => array(
-						'label' => __('Background Image', 'epigone'),
+						'label' => __('Background Image', 'growp'),
 						'default' => get_template_directory_uri() . '/assets/images/footer-bg.png',
 						'type' => 'multi-image',
 						'sanitaize_call_back' => '',
@@ -682,20 +682,20 @@ function epigone_customizer_settings()
 						)
 					),
 					'footer_background_attachment' => array(
-						'label' => __('Background Attachment', 'epigone'),
+						'label' => __('Background Attachment', 'growp'),
 						'default' => 'fixed',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'fixed' => __('Fixed', 'epigone'),
-							'scroll' => __('Scroll', 'epigone'),
+							'fixed' => __('Fixed', 'growp'),
+							'scroll' => __('Scroll', 'growp'),
 						),
 						'output' => array(
 							'#colophon' => 'background-attachment',
 						)
 					),
 					'footer_background_color' => array(
-						'label' => __('Background Color', 'epigone'),
+						'label' => __('Background Color', 'growp'),
 						'default' => '#666666',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -707,22 +707,22 @@ function epigone_customizer_settings()
 			),
 
 			// navigation section
-			'epigone_scrolltop' => array(
-				'title' => __('Scroll Top', 'epigone'),
-				'description' => __('Setting for Scroll top.', 'epigone'),
+			'growp_scrolltop' => array(
+				'title' => __('Scroll Top', 'growp'),
+				'description' => __('Setting for Scroll top.', 'growp'),
 				'setting' => array(
 					'scroll_display' => array(
-						'label' => __('Display', 'epigone'),
+						'label' => __('Display', 'growp'),
 						'default' => 'true',
 						'type' => 'radio',
 						'sanitaize_call_back' => '',
 						'choices' => array(
-							'true' => __('Yes', 'epigone'),
-							'false' => __('None', 'epigone'),
+							'true' => __('Yes', 'growp'),
+							'false' => __('None', 'growp'),
 						)
 					),
 					'scroll_background_color' => array(
-						'label' => __('Page Top Background', 'epigone'),
+						'label' => __('Page Top Background', 'growp'),
 						'default' => '#3695b5',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -733,18 +733,18 @@ function epigone_customizer_settings()
 				),
 			),
 			// navigation section
-			'epigone_copyright' => array(
-				'title' => __('Copyright', 'epigone'),
-				'description' => __('Setting for Copyright.', 'epigone'),
+			'growp_copyright' => array(
+				'title' => __('Copyright', 'growp'),
+				'description' => __('Setting for Copyright.', 'growp'),
 				'setting' => array(
 					'copyright_text' => array(
-						'label' => __('Copyright text', 'epigone'),
+						'label' => __('Copyright text', 'growp'),
 						'default' => 'copyright © ' . get_the_date('Y') . get_bloginfo('name'),
 						'type' => 'text',
 						'sanitaize_call_back' => '',
 					),
 					'copyright_background' => array(
-						'label' => __('Copyright Background', 'epigone'),
+						'label' => __('Copyright Background', 'growp'),
 						'default' => '#3695b5',
 						'type' => 'color',
 						'sanitaize_call_back' => '',
@@ -760,28 +760,28 @@ function epigone_customizer_settings()
 	return $settings;
 }
 
-add_filter('epigone_theme_customizer_settings', 'epigone_customizer_settings', 1);
+add_filter('growp_theme_customizer_settings', 'growp_customizer_settings', 1);
 
 /**
  * Theme Scroll top
  * @since 1.2.0
  */
 
-function epigone_scroll_top()
+function growp_scroll_top()
 {
 	if ('true' === get_theme_mod('scroll_display', false)) {
 		echo '<div id="scroll-top"><a href="#"><i class="fa fa-angle-up"></i></a></div>';
 	}
 }
 
-add_action('get_footer', 'epigone_scroll_top');
+add_action('get_footer', 'growp_scroll_top');
 
 /**
  * Google Analytics - Tracking
  * @since 1.2.0
  */
 
-function epigone_tracking_code()
+function growp_tracking_code()
 {
 	$traking_code = get_theme_mod('tracking_code', false);
 	if ($traking_code) {
@@ -792,14 +792,14 @@ function epigone_tracking_code()
 	}
 }
 
-add_action('wp_footer', 'epigone_tracking_code');
+add_action('wp_footer', 'growp_tracking_code');
 
 /**
  * output meta tag to wp_head
  * @since 1.2.0
  */
 
-function epigone_meta_tag()
+function growp_meta_tag()
 {
 
 	$meta_tag = '';
@@ -818,14 +818,14 @@ function epigone_meta_tag()
 
 }
 
-add_action('wp_head', 'epigone_meta_tag', 10);
+add_action('wp_head', 'growp_meta_tag', 10);
 
 /**
  * output favicon tag to wp_head
  * @since 1.2.0
  */
 
-function epigone_favicon()
+function growp_favicon()
 {
 
 	$favicon_tag = '';
@@ -840,7 +840,7 @@ function epigone_favicon()
 
 }
 
-add_action('wp_head', 'epigone_favicon', 10);
+add_action('wp_head', 'growp_favicon', 10);
 
 
 /**
@@ -848,14 +848,14 @@ add_action('wp_head', 'epigone_favicon', 10);
  * @param $length
  * @return string
  */
-function epigone_excerpt_length($length)
+function growp_excerpt_length($length)
 {
 	$thememod = get_theme_mod('single_char_num', $length);
 
 	return $thememod;
 }
 
-add_filter('excerpt_length', 'epigone_excerpt_length', 999);
+add_filter('excerpt_length', 'growp_excerpt_length', 999);
 
 
 /**
@@ -863,14 +863,14 @@ add_filter('excerpt_length', 'epigone_excerpt_length', 999);
  * @param $classes
  * @return mixed
  */
-function epigone_body_class($classes)
+function growp_body_class($classes)
 {
 
-	$layouts['top'] = get_theme_mod('epigone_layout_top', 'l-two-column');
-	$layouts['page'] = get_theme_mod('epigone_layout_page', 'l-two-column');
-	$layouts['single'] = get_theme_mod('epigone_layout_single', 'l-two-column');
+	$layouts['top'] = get_theme_mod('growp_layout_top', 'l-two-column');
+	$layouts['page'] = get_theme_mod('growp_layout_page', 'l-two-column');
+	$layouts['single'] = get_theme_mod('growp_layout_single', 'l-two-column');
 
-	$theme_style = get_theme_mod('epigone_theme_style', 'normal');
+	$theme_style = get_theme_mod('growp_theme_style', 'normal');
 
 	if (is_home() || is_front_page() || is_archive()) {
 
@@ -893,11 +893,11 @@ function epigone_body_class($classes)
 	}
 
 	if ( $theme_style == 'blog' ){
-		$classes[] = 'epigone-blog';
+		$classes[] = 'growp-blog';
 	}
 
 
 	return $classes;
 }
 
-add_filter('body_class', 'epigone_body_class');
+add_filter('body_class', 'growp_body_class');

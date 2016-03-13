@@ -4,7 +4,7 @@
  *
  * Eventually, some of the functionality here could be replaced by core features
  *
- * @package epigone
+ * @package growp
  */
 
 /**
@@ -13,11 +13,11 @@
  * @param array $args Configuration arguments.
  * @return array
  */
-function epigone_page_menu_args( $args ) {
+function growp_page_menu_args( $args ) {
 	$args['show_home'] = true;
 	return $args;
 }
-add_filter( 'wp_page_menu_args', 'epigone_page_menu_args' );
+add_filter( 'wp_page_menu_args', 'growp_page_menu_args' );
 
 /**
  * Adds custom classes to the array of body classes.
@@ -25,7 +25,7 @@ add_filter( 'wp_page_menu_args', 'epigone_page_menu_args' );
  * @param array $classes Classes for the body element.
  * @return array
  */
-function epigone_body_classes( $classes ) {
+function growp_body_classes( $classes ) {
 	// Adds a class of group-blog to blogs with more than 1 published author.
 	if ( is_multi_author() ) {
 		$classes[] = 'group-blog';
@@ -35,7 +35,7 @@ function epigone_body_classes( $classes ) {
 
 	return $classes;
 }
-add_filter( 'body_class', 'epigone_body_classes' );
+add_filter( 'body_class', 'growp_body_classes' );
 
 /**
  * Filters wp_title to print a neat <title> tag based on what is being viewed.
@@ -44,7 +44,7 @@ add_filter( 'body_class', 'epigone_body_classes' );
  * @param string $sep Optional separator.
  * @return string The filtered title.
  */
-function epigone_wp_title( $title, $sep ) {
+function growp_wp_title( $title, $sep ) {
 	if ( is_feed() ) {
 		return $title;
 	}
@@ -62,13 +62,13 @@ function epigone_wp_title( $title, $sep ) {
 
 	// Add a page number if necessary:
 	if ( $paged >= 2 || $page >= 2 ) {
-		$title .= " $sep " . sprintf( __( 'Page %s', 'epigone' ), max( $paged, $page ) );
+		$title .= " $sep " . sprintf( __( 'Page %s', 'growp' ), max( $paged, $page ) );
 	}
 
 	return $title;
 }
 
-add_filter( 'wp_title', 'epigone_wp_title', 10, 2 );
+add_filter( 'wp_title', 'growp_wp_title', 10, 2 );
 
 /**
  * Sets the authordata global when viewing an author archive.
@@ -82,9 +82,9 @@ add_filter( 'wp_title', 'epigone_wp_title', 10, 2 );
  * @global WP_Query $wp_query WordPress Query object.
  * @return void
  */
-add_action( 'wp', 'epigone_setup_author' );
+add_action( 'wp', 'growp_setup_author' );
 
-function epigone_setup_author() {
+function growp_setup_author() {
 	global $wp_query;
 
 	if ( $wp_query->is_author() && isset( $wp_query->post ) ) {
@@ -100,13 +100,13 @@ function epigone_setup_author() {
  * @return void
  */
 
-add_action( 'excerpt_more', 'epigone_change_more' );
+add_action( 'excerpt_more', 'growp_change_more' );
 
-function epigone_change_more( $more ) {
+function growp_change_more( $more ) {
 	if ( 0 == get_theme_mod('single_char_num', 50) ) {
 		return "";
 	}
-	$more = ' &hellip; <a href="' . get_permalink() . '" class="btn btn-more">' . __( 'More', 'epigone' ) . '</a>';
-	return apply_filters( 'epigone_readmore', $more );
+	$more = ' &hellip; <a href="' . get_permalink() . '" class="btn btn-more">' . __( 'More', 'growp' ) . '</a>';
+	return apply_filters( 'growp_readmore', $more );
 
 }

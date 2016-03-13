@@ -2,7 +2,7 @@
 /**
  * カスタム登録タイプ、カスタムタクソノミーの追加記述
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================''
@@ -11,7 +11,7 @@
 // Example
 //
 // # Create Custom Post Type
-// $project = new Epigone_Helper_Custom_Post_Type( 'Project' );
+// $project = new growp_Helper_Custom_Post_Type( 'Project' );
 //
 // # Create Taxonomy
 // $project->add_taxonomy( 'freelance' );

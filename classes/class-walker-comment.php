@@ -2,13 +2,13 @@
 /**
  * Extend comment form
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @license  GPLv2 or later
  * @since 1.0.0
  * =====================================================
  */
 
-class Epigone_Walker_Comment extends Walker_Comment {
+class growp_Walker_Comment extends Walker_Comment {
 
 	var $tree_type = 'comment';
 
@@ -19,7 +19,7 @@ class Epigone_Walker_Comment extends Walker_Comment {
 
 	public function __construct() {
 
-		echo '<h3 id="comment-title" class="comment-title">' . __( 'Comments', 'epigone' ) . '</h3>';
+		echo '<h3 id="comment-title" class="comment-title">' . __( 'Comments', 'growp' ) . '</h3>';
 		echo '<ul id="comment-list" class="comments-list">';
 
 	}
@@ -68,7 +68,7 @@ class Epigone_Walker_Comment extends Walker_Comment {
 					<a href="<?php
 					echo esc_url( get_comment_link( get_comment_ID() ) );
 					?>">
-					<?php comment_date(); ?> at <?php comment_time(); ?></a> <?php edit_comment_link( __( '(Edit)', 'epigone' ) ); ?>
+					<?php comment_date(); ?> at <?php comment_time(); ?></a> <?php edit_comment_link( __( '(Edit)', 'growp' ) ); ?>
 				</div><!-- /.comment-meta -->
 
 				<div class="reply">

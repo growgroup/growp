@@ -3,7 +3,7 @@
  * 関連記事クラス
  */
 
-class Epigone_Related_Post {
+class growp_Related_Post {
 
 	/**
 	 * 源氏亜
@@ -102,7 +102,7 @@ class Epigone_Related_Post {
 		}
 
 		if ( $this->show_title ){
-			echo sprintf( '<h2 class="relatedpost__title entry__title">%s</h2>', __( 'Related Posts', 'epigone' ) );
+			echo sprintf( '<h2 class="relatedpost__title entry__title">%s</h2>', __( 'Related Posts', 'growp' ) );
 		}
 
 		global $post;
@@ -128,8 +128,8 @@ class Epigone_Related_Post {
 }
 
 
-function epigone_related_post(){
+function growp_related_post(){
 	if ( 'true' ===  get_theme_mod( 'single_related_post', 'true' ) ) {
-		new Epigone_Related_Post();
+		new growp_Related_Post();
 	}
 }

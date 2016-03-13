@@ -2,7 +2,7 @@
 /**
  * フッターテンプレート
  * =====================================================
- * @package  epigone
+ * @package  growp
  * @since 1.0.0
  * =====================================================
  */
@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="footer__contents">
 				<?php
-				epigone_dynamic_sidebar( 'footer-primary' );
+				growp_dynamic_sidebar( 'footer-primary' );
 				?>
 			</div>
 		</div>
