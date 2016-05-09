@@ -5,8 +5,8 @@
 
 // // 登録のサンプル
 // add_action( "registered_taxonomy", function () {
-//	new MenuManagePosts( 'sales_posts', 'セールス' );
-//	new MenuManagePosts( 'featured_posts', '特集' );
+//	new MenuPosts( 'sales_posts', 'セールス' );
+//	new MenuPosts( 'featured_posts', '特集' );
 // } );
 
 class MenuPosts {
@@ -54,6 +54,30 @@ class MenuPosts {
 	}
 
 	/**
+	 * 投稿一覧を取得
+	 * @return void
+	 */
+	public function get_menus() {
+		$this->set_menus();
+		$temp_menus = [];
+
+		// ツリー構造のメニューを整形する
+		foreach( $this->menus as $menu ){
+
+			if ( $menu->menu_item_parent === "0" ){
+				$temp_menus[$menu->ID] = $menu;
+			} else {
+				if ( empty($temp_menus[$menu->menu_item_parent]->subposts) ){
+					$temp_menus[$menu->menu_item_parent]->subposts = [];
+				}
+				$temp_menus[$menu->menu_item_parent]->subposts[$menu->ID] = $menu;
+			}
+		}
+
+		return $temp_menus;
+	}
+
+	/**
 	 * レンダリング
 	 * @return void
 	 */
@@ -91,3 +115,8 @@ class MenuPosts {
 
 
 
+// 登録のサンプル
+// add_action( "registered_taxonomy", function () {
+// 	new MenuPosts( 'global_nav', 'グローバルナビゲーション' );
+// 	new MenuPosts( 'footer_nav', 'フッターナビゲーション' );
+// } );
