@@ -363,3 +363,68 @@ function growp_post_thumbnail() {
 	echo '<img src="' . get_stylesheet_directory_uri() . '" />';
 }
 
+/**
+ * URLを安全に出力
+ *
+ * esc_url + home_url
+ *
+ * @param string $path
+ */
+function ehu( $path = "" ) {
+	echo esc_url( home_url( $path ) );
+}
+
+
+/**
+ * 最初のカテゴリ名のみ取得
+ *
+ * @param string $key
+ * @return string
+ */
+function growp_the_one_category( $key = "name" ) {
+	$category = get_the_category();
+
+	return isset( $category[0] ) ? $category[0]->${$key} : "";
+}
+
+
+/**
+ * 親ページを判断
+ *
+ * @param $slug
+ *
+ * @return bool
+ */
+function growp_is_parent_page( $slug ) {
+	global $post;
+	$return = false;
+	if ( is_string( $slug ) ) {
+		$return = growp_is_prent_page_func( $slug );
+	}
+	if ( is_array( $slug ) ) {
+		foreach ( $slug as $s ) {
+			$return = growp_is_prent_page_func( $s );
+			if ( $return === true ) {
+				break;
+			}
+		}
+	}
+
+	return $return;
+}
+
+function growp_is_prent_page_func( $slug ) {
+	global $post;
+	if ( $post->post_name === $slug ) {
+		return true;
+	}
+
+	if ( ! $post->post_parent ) {
+		return false;
+	}
+
+	$parent_post = get_post( $post->post_parent );
+	if ( $parent_post->post_name === $slug ) {
+		return true;
+	}
+}
