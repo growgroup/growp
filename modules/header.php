@@ -13,7 +13,6 @@
 	<div class="l-container">
 		<div class="row">
 			<div class="large-12">
-				<p class="l-header__description"><?php bloginfo( 'description' ) ?></p>
 				<h1 class="l-header__logo">
 					<a href="<?php echo home_url(); ?>">
 						<?php

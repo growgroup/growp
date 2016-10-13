@@ -10,26 +10,25 @@
  * =====================================================
  */
 
-// modules/head.php を取得
+// modules/head.php を呼び出す
 get_template_part( 'modules/head' );
 
-// ヘッダーを取得
-growp_get_header();
+// ヘッダーを呼び出す
+get_template_part( 'modules/header' );
 
-do_action( 'get_main_template_before' );
+// グローバルナビゲーションを呼び出す
+get_template_part( 'modules/global-nav' );
+
+// ページヘッダーを呼び出す
+get_template_part( 'modules/page-header' );
 
 ?>
-	<div class="l-container">
+	<div class="l-main">
 		<?php
 		load_template( growp_template_path() );
 		?>
 	</div>
 <?php
-// テンプレート取得後のアクションフック
-do_action( 'get_main_template_after' );
-
-// サイドバー取得時のアクションフック
-do_action( 'get_sidebar_template' );
 
 // サイドバーを取得
 get_template_part( 'modules/sidebar' );

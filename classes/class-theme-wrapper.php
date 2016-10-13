@@ -39,7 +39,7 @@ class Theme_Wrapper {
 
 		if ( self::$base ) {
 
-			array_unshift( $templates, sprintf( 'wrapper-%s.php', self::$base ) );
+			array_unshift( $templates, sprintf( 'base-%s.php', self::$base ) );
 
 			return locate_template( $templates );
 

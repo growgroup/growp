@@ -6,8 +6,24 @@
  * $posts = array(
  *      'page' => [
  *          [
+ *             'post_title' => "私たちについて",
+ *             'post_name' => "test",
+ *             'post_content' => "",
+ *          ]*          [
+ *             'post_title' => "ページ2",
+ *             'post_name' => "",
+ *             'post_content' => "",
+ *          ]*          [
  *             'post_title' => "",
  *             'post_name' => "",
+ *             'post_content' => "",xx
+ *          ]*          [
+ *             'post_title' => "",
+ *             'post_name' => "",
+ *             'post_content' => "",
+ *          ]*          [
+ *             'post_title' => "",
+ *          x  'post_name' => "",
  *             'post_content' => "",
  *          ]
  *      ]

@@ -10,25 +10,34 @@
  */
 
 
-while ( have_posts() ) :
-	the_post();
-	?>
-	<div class="post-wrapper">
-		<?php
+while (have_posts()) :
+    the_post();
+    ?>
 
-		get_template_part( 'templates/content', 'single' );
+    <article id="post-<?php the_ID(); ?>" <?php post_class('entry'); ?>>
 
-		growp_post_nav();
+        <h1 class="heading is-xlg"><?php the_title(); ?></h1>
 
-		// 関連する記事を取得
-		growp_related_post();
+        <div class="l-post-content">
+            <?php
 
-		if ( "true" == get_theme_mod('single_comment_num', 'true') && ( comments_open() || '0' != get_comments_number() ) ) {
-			comments_template();
-		}
-		?>
+            the_content();
 
-	</div><!--/.post-wrapper-->
-	<?php
+            wp_link_pages(array(
+                'before' => '<div class="page-links">' . __('Pages:', 'growp'),
+                'after'  => '</div>',
+            ));
+            ?>
+        </div>
+    </article><!-- #post-## -->
+    <?php
+    GNav::the_post_nav();
+
+
+    if ((comments_open() || '0' != get_comments_number())) {
+        comments_template();
+    }
+    ?>
+    <?php
 
 endwhile; // end of the loop.

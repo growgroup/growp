@@ -9,3 +9,11 @@
  */
 ?>
 
+<nav class="l-global-navigation">
+    <div class="l-container">
+        <?php
+        // メニューをレンダリング
+        GNav::render_menus("global_nav");
+        ?>
+    </div>
+</nav>

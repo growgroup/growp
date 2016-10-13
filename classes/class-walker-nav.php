@@ -13,7 +13,7 @@
 class growp_Walker_Nav extends Walker_Nav_Menu {
 
 
-	function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ) {
+	public function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ) {
 		$element->has_children = !empty( $children_elements[$element->ID] );
 		$element->classes[] = ( $element->current || $element->current_item_ancestor ) ? 'active' : '';
 		$element->classes[] = ( $element->has_children ) ? 'has-dropdown' : '';
@@ -21,7 +21,7 @@ class growp_Walker_Nav extends Walker_Nav_Menu {
 		parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
 	}
 
-	function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
+    public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 ) {
 		$item_html = '';
 		parent::start_el( $item_html, $object, $depth, $args );
 

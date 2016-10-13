@@ -9,23 +9,21 @@
  * =====================================================
  */
 
-if ( have_posts() ) :
-	?>
-	<div class="clearfix">
-		<?php
-		while ( have_posts() ) :
-			the_post();
-			if ( 'normal' == get_theme_mod( 'home_post_list', 'normal' ) ) {
-				get_template_part( 'templates/content', get_post_format() );
-			} else {
-				get_template_part( 'templates/content-tile', get_post_format() );
-			}
-		endwhile;
-		?>
-	</div>
-	<?php
-	growp_paging_nav();
+if (have_posts()) :
+    ?>
+    <div class="l-container">
+        <?php
+        while (have_posts()) :
+            the_post();
+            get_template_part('templates/content', get_post_format());
+        endwhile;
+        ?>
+    </div>
+
+    <?php
+    // ページネーション
+    echo GNav::get_paging_nav();
 else :
-	get_template_part( 'templates/content', 'none' );
+    get_template_part('templates/content', 'none');
 endif;
 

@@ -8,17 +8,27 @@
  * @see http://codex.wordpress.org/Template_Hierarchy
  * =====================================================
  */
+while (have_posts()) :
+    the_post();
+    ?>
+    <div class="l-container">
+        <article id="post-<?php the_ID(); ?>" <?php post_class('entry'); ?>>
 
-while ( have_posts() ) :
-	the_post();
+            <h1 class="heading is-xlg"><?php the_title(); ?></h1>
 
-	get_template_part( 'templates/content', 'page' );
+            <div class="l-post-content">
+                <?php
 
-	if ( "true" == get_theme_mod('single_comment_num', 'true') && ( comments_open() || '0' != get_comments_number() ) ) {
-		comments_template();
-	}
+                the_content();
+
+                wp_link_pages(array(
+                    'before' => '<div class="page-links">' . __('Pages:', 'growp'),
+                    'after'  => '</div>',
+                ));
+                ?>
+            </div>
+        </article>
+    </div>
+    <?php
 
 endwhile; // end of the loop.
-
-
-

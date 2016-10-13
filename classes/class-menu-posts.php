@@ -89,7 +89,6 @@ class MenuPosts {
 		foreach ( $this->menus as $menu ) {
 			global $post;
 			$post = get_post( $menu->object_id );
-
 			setup_postdata( $post );
 			get_template_part( "templates/content" );
 		}

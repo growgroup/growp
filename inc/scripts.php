@@ -21,7 +21,7 @@ function growp_scripts() {
 	/**
 	 * 追加用CSS
 	 */
-	wp_enqueue_style( 'growp_main', get_template_directory_uri() . "/shame.css", false, null );
+	wp_enqueue_style( 'growp_overwrite', get_template_directory_uri() . "/overwrite.css", false, null );
 
 	/**
 	 * テーマのメインjsファイル
