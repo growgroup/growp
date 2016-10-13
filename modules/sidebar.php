@@ -8,9 +8,10 @@
  * =====================================================
  */
 ?>
-<div id="secondary" class="widget-area" role="complementary">
-    <div class="l-container">
-        <?php
-        growp_dynamic_sidebar('sidebar-primary') ?>
-    </div>
+<div class="l-sidebar">
+
+    <?php
+    // ウィジェットを呼び出す
+    growp_dynamic_sidebar('sidebar-primary') ?>
+
 </div><!-- #secondary -->

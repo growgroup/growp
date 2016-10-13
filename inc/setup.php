@@ -86,6 +86,20 @@ function growp_head_cleanup()
 add_filter('init', 'growp_head_cleanup', 10);
 
 
+/**
+ * 著者一覧を表示しない
+ */
+function growp_protect_authorpage()
+{
+    if (is_author()) {
+        wp_redirect(home_url('/404/'));
+        exit;
+    }
+}
+
+add_action('template_redirect', 'growp_protect_authorpage');
+
+
 // 登録のサンプル
 function growp_register_menus()
 {

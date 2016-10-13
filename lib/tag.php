@@ -122,5 +122,46 @@ class GTag
         return $title;
 
     }
+    /**
+     * 親ページを判断
+     *
+     * @param $slug
+     *
+     * @return bool
+     */
+    function is_parent_page($slug)
+    {
+        global $post;
+        $return = false;
+        if (is_string($slug)) {
+            $return = self::_is_parent_page($slug);
+        }
+        if (is_array($slug)) {
+            foreach ($slug as $s) {
+                $return = self::_is_parent_page($s);
+                if ($return === true) {
+                    break;
+                }
+            }
+        }
+        return $return;
+    }
+
+
+    private static function _is_parent_page( $slug ){
+        global $post;
+        if ($post->post_name === $slug) {
+            return true;
+        }
+
+        if ( ! $post->post_parent) {
+            return false;
+        }
+
+        $parent_post = get_post($post->post_parent);
+        if ($parent_post->post_name === $slug) {
+            return true;
+        }
+    }
 
 }
