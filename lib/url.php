@@ -20,14 +20,37 @@ class GUrl
     }
 
     /**
+     * URLを出力
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function the_url($path = "")
+    {
+        echo esc_url(home_url($path));
+    }
+
+    /**
      * 子テーマディレクトリのURLを取得する
      *
      * @param $path
      *
      * @return string
      */
-    public static function asset($path = "/assets"){
+    public static function asset($path = ""){
         return esc_url( get_stylesheet_directory_uri() . $path );
+    }
+
+    /**
+     * 子テーマディレクトリのURLを出力
+     *
+     * @param $path
+     *
+     * @return string
+     */
+    public static function the_asset($path = ""){
+        echo esc_url( get_stylesheet_directory_uri() . $path );
     }
 
 }
