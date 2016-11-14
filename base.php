@@ -11,30 +11,27 @@
  */
 
 // modules/head.php を呼び出す
-get_template_part( 'modules/head' );
 
-// ヘッダーを呼び出す
-get_template_part( 'modules/header' );
+GTemplate::get_template("foundation/head");
 
-// グローバルナビゲーションを呼び出す
-get_template_part( 'modules/global-nav' );
+GTemplate::get_layout("header");
 
-// ページヘッダーを呼び出す
-get_template_part( 'modules/page-header' );
+GTemplate::get_layout("global-nav");
+
+GTemplate::get_component("page-header");
 
 ?>
 	<div class="l-main">
 		<?php
-		load_template( growp_template_path() );
+		load_template( GTag::get_template_path() );
 		?>
 	</div>
 <?php
 
-// サイドバーを取得
-get_template_part( 'modules/sidebar' );
+GTemplate::get_layout("sidebar");
 
 // フッター取得前のアクションフック
 do_action( 'get_footer' );
 
 // フッターを取得
-get_template_part( 'modules/footer' );
+GTemplate::get_layout("footer");

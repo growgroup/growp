@@ -1,12 +1,10 @@
 <?php
 /**
- * growp breadcrumbs
+ * パンくずコンポーネント
  *
+ * @category components
  * @package growp
  * @since 1.0.0
- */
-/**
- * @see inc/template-tags.php
  */
 
 // WordPress SEO by Yoast のパンくずを利用する

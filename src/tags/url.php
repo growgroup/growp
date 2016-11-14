@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class GUrl
  * URL関連の処理
@@ -38,8 +37,9 @@ class GUrl
      *
      * @return string
      */
-    public static function asset($path = ""){
-        return esc_url( get_stylesheet_directory_uri() . $path );
+    public static function asset($path = "")
+    {
+        return esc_url(get_stylesheet_directory_uri() . $path);
     }
 
     /**
@@ -49,8 +49,9 @@ class GUrl
      *
      * @return string
      */
-    public static function the_asset($path = ""){
-        echo esc_url( get_stylesheet_directory_uri() . $path );
+    public static function the_asset($path = "")
+    {
+        echo esc_url(get_stylesheet_directory_uri() . $path);
     }
 
 }

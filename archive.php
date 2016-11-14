@@ -14,15 +14,8 @@
     if (have_posts()) :
         /* ループをスタート */
         while (have_posts()) : the_post();
-            ?>
-
-            <?php
-
             get_template_part('templates/content');
-            ?>
 
-
-            <?php
         endwhile;
         echo GNav::get_paging_nav();
 

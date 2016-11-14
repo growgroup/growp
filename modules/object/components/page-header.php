@@ -1,6 +1,10 @@
 <?php
 /**
- * ページヘッダーテンプレート
+ * サイト共通 ページヘッダー
+ *
+ * @category components
+ * @package growp
+ * @since 1.0.0
  */
 
 /**

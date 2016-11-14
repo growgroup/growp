@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Class GTag
+ * オリジナルテンプレートタグ
+ */
 class GTag
 {
 
@@ -22,6 +25,7 @@ class GTag
         if ($imageurl) {
             return $imageurl;
         }
+
         return GUrl::asset("/assets/images/img-default-thumbnail.jpg");
     }
 
@@ -34,11 +38,12 @@ class GTag
      *
      * @return string
      */
-    public static function the_thumbnail_style_attribute($post_id = false, $size = "full"){
-        $url = self::get_thumbnail_url($post_id,$size);
+    public static function the_thumbnail_style_attribute($post_id = false, $size = "full")
+    {
+        $url = self::get_thumbnail_url($post_id, $size);
 
         $attr = "";
-        $attr = ' style="background-image: url('.$url.');"';
+        $attr = ' style="background-image: url(' . $url . ');"';
         echo $attr;
     }
 
@@ -122,6 +127,7 @@ class GTag
         return $title;
 
     }
+
     /**
      * 親ページを判断
      *
@@ -129,7 +135,7 @@ class GTag
      *
      * @return bool
      */
-    function is_parent_page($slug)
+    public static function is_parent_page($slug)
     {
         global $post;
         $return = false;
@@ -144,11 +150,13 @@ class GTag
                 }
             }
         }
+
         return $return;
     }
 
 
-    private static function _is_parent_page( $slug ){
+    private static function _is_parent_page($slug)
+    {
         global $post;
         if ($post->post_name === $slug) {
             return true;
@@ -162,6 +170,18 @@ class GTag
         if ($parent_post->post_name === $slug) {
             return true;
         }
+    }
+
+    /**
+     * テンプレートのパスを取得する
+     * @return mixed
+     */
+    public static function get_template_path(){
+        return Theme_Wrapper::$main_template;
+    }
+
+    public static function get_template_base(){
+        return Theme_Wrapper::$base;
     }
 
 }

@@ -1,11 +1,10 @@
 <?php
 /**
- * HTML HEAD タグ
- * =====================================================
- * @package  growp
- * @license  GPLv2 or later
+ * サイト共通 head 内 タグ
+ *
+ * @category components
+ * @package growp
  * @since 1.0.0
- * =====================================================
  */
 ?>
 <!doctype html>

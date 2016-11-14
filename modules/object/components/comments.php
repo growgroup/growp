@@ -1,11 +1,10 @@
 <?php
 /**
- * The template for displaying Comments.
+ * コメント
  *
- * The area of the page that contains both current comments
- * and the comment form.
- *
+ * @category components
  * @package growp
+ * @since 1.0.0
  */
 
 /*
