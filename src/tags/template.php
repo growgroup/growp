@@ -16,7 +16,7 @@ class GTemplate
      */
     public static function get_template($path)
     {
-        $file_path = MODULES_PATH . "/modules/" . $path . ".php";
+        $file_path = TEMPLATE_PATH . "/views/" . $path . ".php";
         if (file_exists($file_path)) {
             include $file_path;
 
@@ -34,7 +34,7 @@ class GTemplate
      */
     public static function get_layout($file)
     {
-        $file_path = MODULES_PATH . "/modules/layout/" . $file . ".php";
+        $file_path = TEMPLATE_PATH . "/views/layout/" . $file . ".php";
         if (file_exists($file_path)) {
             include $file_path;
 
@@ -52,7 +52,7 @@ class GTemplate
      */
     public static function get_component($file)
     {
-        $file_path = MODULES_PATH . "/modules/object/components/" . $file . ".php";
+        $file_path = TEMPLATE_PATH . "/views/object/components/" . $file . ".php";
 
         if (file_exists($file_path)) {
             include $file_path;
@@ -71,7 +71,7 @@ class GTemplate
      */
     public static function get_project($file)
     {
-        $file_path = MODULES_PATH . "/modules/object/project/" . $file . ".php";
+        $file_path = TEMPLATE_PATH . "/views/object/project/" . $file . ".php";
 
         if (file_exists($file_path)) {
             include $file_path;

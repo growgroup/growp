@@ -9,7 +9,7 @@
 
 
 // テンプレートのパス
-define('MODULES_PATH', __DIR__ );
+define('TEMPLATE_PATH', __DIR__ );
 
 // CSSファイル
 define("GROWP_STYLESHEET_URL", get_stylesheet_directory_uri() . "/assets/css/style.css");
