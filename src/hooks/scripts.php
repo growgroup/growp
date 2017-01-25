@@ -29,7 +29,7 @@ function growp_scripts()
         array(
             'handle' => "overwrite",
             'src'    => get_template_directory_uri() . "/overwrite.css",
-            'deps'   => array("main"),
+            'deps'   => array(),
             'media'  => "all",
         ),
     );
