@@ -1,22 +1,21 @@
 <?php
+
 /**
  * Class GTemplate
  * テンプレートの操作関連
  */
-
-
 class GTemplate
 {
     /**
-     * テンプレートを取得する
-     *
-     * @param $path ファイル名
+     * テンプレートをインクルード
+     * @param $file
+     * @param array $data
      *
      * @return bool
      */
-    public static function get_template($path)
+    public static function get_template($file, $data = array())
     {
-        $file_path = TEMPLATE_PATH . "/views/" . $path . ".php";
+        $file_path = TEMPLATE_PATH . "/views/" . $file . ".php";
         if (file_exists($file_path)) {
             include $file_path;
 
@@ -26,59 +25,33 @@ class GTemplate
     }
 
     /**
-     * レイアウトを取得する
-     *
-     * @param $file ファイル名
-     *
-     * @return bool
+     * レイアウト用コンポーネントをインクルード
+     * @param $file
+     * @param array $data
      */
-    public static function get_layout($file)
+    public static function get_layout($file, $data = array())
     {
-        $file_path = TEMPLATE_PATH . "/views/layout/" . $file . ".php";
-        if (file_exists($file_path)) {
-            include $file_path;
-
-            return true;
-        }
-        self::error();
+        self::get_template('layout/' . $file, $data);
     }
 
     /**
-     * コンポーネントを取得する
-     *
-     * @param $file コンポーネント名
-     *
-     * @return bool
+     * コンポーネントをインクルード
+     * @param $file
+     * @param array $data
      */
-    public static function get_component($file)
+    public static function get_component($file, $data = array())
     {
-        $file_path = TEMPLATE_PATH . "/views/object/components/" . $file . ".php";
-
-        if (file_exists($file_path)) {
-            include $file_path;
-
-            return true;
-        }
-        self::error();
+        self::get_template('object/components/' . $file, $data);
     }
 
     /**
-     * コンポーネントを取得する
-     *
-     * @param $file コンポーネント名
-     *
-     * @return bool
+     * プロジェクト依存コンポーネントをインクルード
+     * @param $file
+     * @param array $data
      */
-    public static function get_project($file)
+    public static function get_project($file, $data = array())
     {
-        $file_path = TEMPLATE_PATH . "/views/object/project/" . $file . ".php";
-
-        if (file_exists($file_path)) {
-            include $file_path;
-
-            return true;
-        }
-        self::error();
+        self::get_template('object/project/' . $file, $data);
     }
 
     /**
@@ -90,6 +63,5 @@ class GTemplate
             echo "テンプレートがありません";
         }
     }
-
 
 }

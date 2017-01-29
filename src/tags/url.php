@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class GUrl
  * URL関連の処理

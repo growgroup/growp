@@ -8,7 +8,7 @@
  * =====================================================
  */
 
-class growp_Walker_Comment extends Walker_Comment {
+class GROWP_Walker_Comment extends Walker_Comment {
 
 	var $tree_type = 'comment';
 

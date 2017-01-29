@@ -28,7 +28,7 @@
  * `);
  *
  */
-class Growp_Custom_Post_Type
+class GROWP_Custom_Post_Type
 {
     public $post_type_name;
 

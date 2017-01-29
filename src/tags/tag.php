@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class GTag
  * オリジナルテンプレートタグ
@@ -19,7 +20,6 @@ class GTag
         if ( ! $post_id) {
             $post_id = get_the_ID();
         }
-
         $thumbnail_id = get_post_meta($post_id, "_thumbnail_id", true);
         $imageurl     = wp_get_attachment_image_url($thumbnail_id, $size);
         if ($imageurl) {
@@ -176,12 +176,70 @@ class GTag
      * テンプレートのパスを取得する
      * @return mixed
      */
-    public static function get_template_path(){
-        return Theme_Wrapper::$main_template;
+    public static function get_template_path()
+    {
+        return GROWP_Theme_Wrapper::$main_template;
     }
 
-    public static function get_template_base(){
-        return Theme_Wrapper::$base;
+    public static function get_template_base()
+    {
+        return GROWP_Theme_Wrapper::$base;
+    }
+
+
+    /**
+     * 親タームまで判断する
+     *
+     * @param $post_id
+     * @param $term
+     * @param string $taxonomy
+     *
+     * @return bool
+     */
+    public static function in_parent_term($post_id, $term, $taxonomy = "category")
+    {
+
+        $terms = get_the_terms($post_id, $taxonomy);
+
+        if (is_wp_error($terms)) {
+            echo $terms->get_error_message();
+            exit;
+        }
+
+        /**
+         * 再帰関数
+         *
+         * @param $term
+         * @param $taxonomy
+         *
+         * @return mixed
+         */
+        function check($term, $taxonomy)
+        {
+            if ($term->parent) {
+                $_term  = get_term($term->parent, $taxonomy);
+                $return = check($_term, $taxonomy);
+            } else {
+                $return = $term;
+            }
+
+            return $return;
+        }
+
+
+        $check_term = get_term($term);
+
+        foreach ($terms as $_term) {
+            if ($_term->term_id === $check_term->term_id) {
+                return true;
+            }
+            $parent_term = check($_term, $taxonomy);
+            if ($parent_term->slug === $_term->slug) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

@@ -42,7 +42,7 @@ if (post_password_required()) {
         endif; // check for comment navigation
 
         wp_list_comments(array(
-            'walker'       => new growp_Walker_Comment,
+            'walker'       => new GROWP_Walker_Comment,
             'style'        => 'ul',
             'callback'     => null,
             'end-callback' => null,

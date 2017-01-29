@@ -103,7 +103,7 @@ add_action('template_redirect', 'growp_protect_authorpage');
 // 登録のサンプル
 function growp_register_menus()
 {
-    new MenuPosts('global_nav', 'グローバルナビゲーション');
+    new GROWP_MenuPosts('global_nav', 'グローバルナビゲーション');
 }
 
 add_action("registered_taxonomy", "growp_register_menus");

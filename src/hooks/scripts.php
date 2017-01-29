@@ -16,7 +16,6 @@ function growp_scripts()
      * 読み込むスタイルシートを定義
      */
     $styles = array(
-
         // 子テーマの方のスタイルシートを読み込み
         array(
             'handle' => "main",
@@ -37,7 +36,7 @@ function growp_scripts()
     foreach ($styles as $style_key => $style) {
         $style = wp_parse_args($style, array(
             'handle' => $style_key,
-            "src" => "",
+            "src"    => "",
             'deps'   => array(),
             'media'  => "all",
             'ver'    => "1.0.0",
@@ -70,11 +69,11 @@ function growp_scripts()
 
     foreach ($javascripts as $js_key => $js) {
         $js = wp_parse_args($js, array(
-            'handle' => $js_key,
-            'deps'   => array(),
-            'media'  => "all",
-            'in_footer'    => true,
-            'ver'    => "1.0.0",
+            'handle'    => $js_key,
+            'deps'      => array(),
+            'media'     => "all",
+            'in_footer' => true,
+            'ver'       => "1.0.0",
         ));
         extract($js);
         wp_enqueue_script("growp_" . $handle, $src, $deps, $ver, $in_footer);

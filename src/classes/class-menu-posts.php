@@ -9,7 +9,7 @@
 //	new MenuPosts( 'featured_posts', '特集' );
 // } );
 
-class MenuPosts
+class GROWP_MenuPosts
 {
 
     // メニューのロケーション
@@ -52,9 +52,15 @@ class MenuPosts
      */
     public function set_menus()
     {
-        $locations   = get_nav_menu_locations();
-        $menu        = wp_get_nav_menu_object($locations[$this->location]);
+        $locations = get_nav_menu_locations();
+
+        if (empty($locations[$this->location])) {
+            return false;
+        }
+        $menu = wp_get_nav_menu_object($locations[$this->location]);
+
         $this->menus = wp_get_nav_menu_items($menu->term_id, array('update_post_term_cache' => false));
+
     }
 
     /**

@@ -21,7 +21,6 @@ if (class_exists('TGM_Plugin_Activation')) {
                 'force_activation' => true,
             ),
 
-
             array(
                 'name'             => 'MW WP Form',
                 'slug'             => 'mw-wp-form',

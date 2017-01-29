@@ -10,7 +10,7 @@
  * GitHub URI: https://github.com/twittem/wp-bootstrap-navwalker
  * =====================================================
  */
-class growp_Walker_Nav extends Walker_Nav_Menu {
+class GROWP_Walker_Nav extends Walker_Nav_Menu {
 
 
 	public function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ) {

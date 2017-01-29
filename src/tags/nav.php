@@ -18,7 +18,7 @@ class GNav
     {
 
         if ($area) {
-            $menu = new MenuPosts($area, "");
+            $menu = new GROWP_MenuPosts($area, "");
             $menu->set_menus();
 
             return $menu->get_menus();
@@ -38,7 +38,7 @@ class GNav
     {
 
         if ($area) {
-            $menu = new MenuPosts($area, "");
+            $menu = new GROWP_MenuPosts($area, "");
             $menu->set_menus();
             $menus = $menu->get_menus();
             ?>
@@ -177,7 +177,7 @@ class GNav
 
 
     /**
-     * Retrieve paginated link for archive post pages.
+     * _paginate_links の細部を変更したメソッド
      *
      * @global WP_Query $wp_query
      * @global WP_Rewrite $wp_rewrite

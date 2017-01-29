@@ -9,7 +9,7 @@
 
 
 // テンプレートのパス
-define('TEMPLATE_PATH', __DIR__ );
+define('TEMPLATE_PATH', __DIR__);
 
 // CSSファイル
 define("GROWP_STYLESHEET_URL", get_stylesheet_directory_uri() . "/assets/css/style.css");
@@ -21,12 +21,12 @@ define("GROWP_JAVASCRIPT_URL", get_stylesheet_directory_uri() . "/assets/js/scri
  * テーマのための class
  */
 require_once __DIR__ . "/src/classes/class-theme-wrapper.php";
-require_once __DIR__ . "/src/classes/class-bulk-posts.php";
 require_once __DIR__ . "/src/classes/class-menu-posts.php";
 require_once __DIR__ . "/src/classes/class-post-type.php";
 require_once __DIR__ . "/src/classes/class-tgm-plugin-activation.php";
 require_once __DIR__ . "/src/classes/class-walker-comment.php";
 require_once __DIR__ . "/src/classes/class-walker-nav.php";
+require_once __DIR__ . "/src/classes/class-sitemap.php";
 
 /**
  * テンプレートタグ定義
@@ -35,7 +35,6 @@ require_once __DIR__ . "/src/tags/nav.php";
 require_once __DIR__ . "/src/tags/tag.php";
 require_once __DIR__ . "/src/tags/template.php";
 require_once __DIR__ . "/src/tags/url.php";
-
 /**
  * アクションフック定義
  */

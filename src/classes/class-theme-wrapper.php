@@ -9,12 +9,11 @@
  * =====================================================
  */
 
-
 /**
  * class Theme_Wrapper
  *
  */
-class Theme_Wrapper {
+class GROWP_Theme_Wrapper {
 	/**
 	 * Stores the full path to the main template file
 	 */
@@ -54,4 +53,4 @@ class Theme_Wrapper {
 }
 
 
-add_filter( 'template_include', array( 'Theme_Wrapper', 'wrap' ), 10, 1 );
+add_filter( 'template_include', array( 'GROWP_Theme_Wrapper', 'wrap' ), 10, 1 );
