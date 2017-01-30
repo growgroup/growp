@@ -8,6 +8,9 @@
  */
 
 
+/**
+ * デバッグモードのON/OFF
+ */
 // テンプレートのパス
 define('TEMPLATE_PATH', __DIR__);
 

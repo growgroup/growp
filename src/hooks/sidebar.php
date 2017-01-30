@@ -29,7 +29,6 @@ function growp_dynamic_sidebar($index)
  */
 function growp_sidebar()
 {
-
     register_sidebar(array(
         'name'          => __('Sidebar Primary', 'growp'),
         'id'            => 'sidebar-primary',

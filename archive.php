@@ -14,8 +14,7 @@
     if (have_posts()) :
         /* ループをスタート */
         while (have_posts()) : the_post();
-            get_template_part('templates/content');
-
+            GTemplate::get_project("post-item");
         endwhile;
         echo GNav::get_paging_nav();
 

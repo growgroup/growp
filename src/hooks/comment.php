@@ -20,7 +20,7 @@ add_filter('comments_template', 'growp_plugin_comment_template', 10, 1);
 function growp_plugin_comment_template($comment_template)
 {
 
-    return get_template_directory() . '/modules/comments.php';
+    return get_template_directory() . '/views/object/components/comments.php';
 
 }
 

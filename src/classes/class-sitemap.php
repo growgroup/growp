@@ -8,19 +8,11 @@
 
 class GROWP_Sitemap
 {
-
-    /**
-     * 取得する最大件数
-     * @var int
-     */
-    public $posts_per_page = 100;
-
     /**
      * 設定
      * @var array
      */
     public $settings = array();
-
 
     /**
      * GROWP_Sitemap constructor.
@@ -71,7 +63,6 @@ class GROWP_Sitemap
         if ($this->is_active_sitemap("taxonomy")) {
             $this->taxonomies();
         }
-
         if ($this->settings["cache"]) {
             $contents = ob_get_contents();
             ob_end_clean();
@@ -348,5 +339,3 @@ class GROWP_Sitemap
         return;
     }
 }
-
-//$sid = new GROWP_Sitemap("page");
