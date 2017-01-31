@@ -122,13 +122,14 @@ class GROWP_Sitemap
     }
 
     /**
-     * サイトマップを出力
+     * サイトマップを出力する
+     * @param array $settings
      *
-     * @param $settings
+     * @return GROWP_Sitemap
      */
     public static function output($settings = array())
     {
-        new self($settings);
+        return new self($settings);
     }
 
     /**
@@ -256,7 +257,7 @@ class GROWP_Sitemap
         $labels = get_post_type_labels($post_type_object);
         $posts  = get_posts(array(
             'post_type'      => "post",
-            'posts_per_page' => $this->posts_per_page
+            'posts_per_page' => $this->settings["posts_per_page"]
         ));
         $this->before();
         $this->title($labels->name);

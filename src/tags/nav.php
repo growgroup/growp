@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class GNav
  *
@@ -37,6 +38,22 @@ class GNav
     public static function render_menus($area = "")
     {
 
+        function render($menu,$depth)
+        {
+            foreach ((array)$menu as $m) {
+                if (empty($m->url)) {
+                    continue;
+                }
+                echo '<li><a href="' . $m->url . '">' . $m->title . '</a>';
+                if (isset($m->children) && $m->children) {
+                    echo '<ul class="c-menu-children is-depth-'. $depth . '">';
+                    render($m->children,$depth+1);
+                    echo '</ul>';
+                }
+                '</li>';
+            }
+        }
+
         if ($area) {
             $menu = new GROWP_MenuPosts($area, "");
             $menu->set_menus();
@@ -45,13 +62,7 @@ class GNav
             <ul>
                 <?php
                 if ($menus) {
-                    foreach ($menus as $menu) {
-                        ?>
-                        <li>
-                            <a href="<?php echo $menu->url ?>"><?php echo $menu->title ?></a>
-                        </li>
-                        <?php
-                    }
+                    render($menus,1);
                 }
                 ?>
             </ul>

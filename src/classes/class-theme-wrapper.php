@@ -1,6 +1,7 @@
 <?php
 /**
- * Theme wrapper class.
+ * テンプレート階層を書き換える
+ *
  * =====================================================
  * @package  growp
  * @license  GPLv2 or later

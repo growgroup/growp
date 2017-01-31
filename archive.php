@@ -17,11 +17,8 @@
             GTemplate::get_project("post-item");
         endwhile;
         echo GNav::get_paging_nav();
-
     else :
-
         get_template_part('content', 'none');
-
     endif;
 
     ?>
