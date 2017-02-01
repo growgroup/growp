@@ -23,7 +23,7 @@ class TestMock extends WP_UnitTestCase
                 $top_id) && $this->assertEquals(get_option('page_for_posts'), $home_id));
     }
 
-    
+
     function test_mw_wp_form_mock()
     {
         delete_option("mw-wp-form-mock");
