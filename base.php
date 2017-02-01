@@ -9,8 +9,6 @@
  * @since 1.0.0
  * =====================================================
  */
-
-// modules/head.php を呼び出す
 GTemplate::get_template("foundation/head");
 GTemplate::get_layout("header");
 GTemplate::get_layout("global-nav");
@@ -23,6 +21,7 @@ GTemplate::get_component("page-header");
     </div>
 <?php
 
+// サイドバー
 GTemplate::get_layout("sidebar");
 
 // フッター取得前のアクションフック

@@ -69,10 +69,10 @@ class GTag
         }
 
         if ($field && isset($terms[0]->{$field})) {
-            return $terms[0]->{$field};
+            return esc_html($terms[0]->{$field});
         }
 
-        return $terms[0];
+        return esc_html($terms[0]);
     }
 
 
@@ -241,5 +241,35 @@ class GTag
 
         return false;
     }
+
+    /**
+     * アタッチメントのURLを取得する
+     *
+     * @param $attachment_id アタッチメントID
+     * @param string $size
+     *
+     * @return string 存在する場合はファイルのURL。しない場合はデフォルト画像
+     */
+    public static function get_attachment_url($attachment_id, $size = "full")
+    {
+        $image_url = wp_get_attachment_image_url($attachment_id, $size, false);
+
+        if ($image_url) {
+            return $image_url;
+        }
+
+        return GUrl::asset("/assets/images/img-default-thumbnail.jpg");
+    }
+
+    /**
+     * スマートフォンかどうか判断
+     * @return bool
+     */
+    public static function is_smartphone(){
+        $mb = new Mobile_Detect();
+        return ( $mb->isMobile() && ! $mb->isTablet() );
+    }
+
+
 
 }

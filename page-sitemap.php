@@ -4,15 +4,13 @@
  *
  * class GROWP_Sitemap: サイトマップ出力用 class
  */
-
 while (have_posts()) {
     the_post();
     ?>
     <div class="l-section">
         <div class="l-container">
             <?php
-            // CSSを出力する
-            GROWP_Sitemap::output_css();
+            GROWP_Sitemap::output_css(); // CSSを出力する
             GROWP_Sitemap::output(array(
                 'active'               => array(
                     'pages'            => true, // true: 固定ページの出力を有効に false: 無効

@@ -16,9 +16,7 @@ while (have_posts()) :
             <article id="post-<?php the_ID(); ?>" <?php post_class('page'); ?>>
                 <div class="l-post-content">
                     <?php
-
                     the_content();
-
                     wp_link_pages(array(
                         'before' => '<div class="page-links">' . __('Pages:', 'growp'),
                         'after'  => '</div>',

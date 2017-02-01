@@ -20,7 +20,6 @@ if (have_posts()) : ?>
     </header><!-- .page-header -->
 
     <?php
-
     while (have_posts()) :
 
         the_post();

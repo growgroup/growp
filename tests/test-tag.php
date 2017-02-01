@@ -16,7 +16,7 @@ class TestTag extends WP_UnitTestCase
      */
     function test_get_thumbnail_url()
     {
-
         return false;
     }
+    
 }
