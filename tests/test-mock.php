@@ -20,7 +20,7 @@ class TestMock extends WP_UnitTestCase
         $home_id      = $frontandhome->get_insert_id("home");
 
         return ($this->assertEquals(get_option('page_on_front'),
-                $top_id) && $this->assertEquals(get_option('page_on_posts'), $home_id));
+                $top_id) && $this->assertEquals(get_option('page_for_posts'), $home_id));
     }
 
     function test_mw_wp_form_mock()

@@ -34,7 +34,8 @@ class GROWP_FrontAndHome_Mock extends GROWP_Create_Mock
         $home_id = $this->get_insert_id('home');
 
         update_option('page_on_front', $top_id);
-        update_option('page_on_posts', $home_id);
+        update_option('page_for_posts', $home_id);
+        update_option('show_on_front', "page");
     }
 }
 

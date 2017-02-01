@@ -18,5 +18,5 @@ class TestTag extends WP_UnitTestCase
     {
         return false;
     }
-    
+
 }
