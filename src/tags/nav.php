@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class GNav
  *
@@ -29,6 +28,28 @@ class GNav
     }
 
     /**
+     * メニュー用再帰メソッド
+     *
+     * @param array $menu
+     * @param int $de@th
+     */
+	public static function _render($menu,$depth)
+    {
+        foreach ((array)$menu as $m) {
+            if (empty($m->url)) {
+                continue;
+            }
+            echo '<li><a href="' . $m->url . '">' . $m->title . '</a>';
+            if (isset($m->children) && $m->children) {
+                echo '<ul class="c-menu-children is-depth-'. $depth . '">';
+                self::_render($m->children,$depth+1);
+                echo '</ul>';
+            }
+            '</li>';
+        }
+    }
+
+    /**
      * メニューを取得する
      *
      * @param string $area
@@ -38,22 +59,6 @@ class GNav
     public static function render_menus($area = "")
     {
 
-        function render($menu,$depth)
-        {
-            foreach ((array)$menu as $m) {
-                if (empty($m->url)) {
-                    continue;
-                }
-                echo '<li><a href="' . $m->url . '">' . $m->title . '</a>';
-                if (isset($m->children) && $m->children) {
-                    echo '<ul class="c-menu-children is-depth-'. $depth . '">';
-                    render($m->children,$depth+1);
-                    echo '</ul>';
-                }
-                '</li>';
-            }
-        }
-
         if ($area) {
             $menu = new GROWP_MenuPosts($area, "");
             $menu->set_menus();
@@ -62,12 +67,11 @@ class GNav
             <ul>
                 <?php
                 if ($menus) {
-                    render($menus,1);
+                    self::_render($menus,1);
                 }
                 ?>
             </ul>
             <?php
-
         }
 
         return false;
