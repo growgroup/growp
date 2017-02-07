@@ -24,7 +24,7 @@ class GROWP_Sitemap
     {
 
 
-        $this->settings = array_merge($settings, array(
+        $this->settings = wp_parse_args($settings, array(
             'active'            => array(
                 'pages'            => true, // 固定ページの出力を有効に
                 'posts'            => true, // 投稿の出力を有効に
