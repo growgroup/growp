@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class GNav
  *
@@ -34,7 +33,7 @@ class GNav
      * @param array $menu
      * @param int $de@th
      */
-	public static function _render($menu,$depth)
+    public static function _render($menu,$depth)
     {
         foreach ((array)$menu as $m) {
             if (empty($m->url)) {
