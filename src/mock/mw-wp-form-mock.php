@@ -202,5 +202,3 @@ class GROWP_Mw_Wp_Form_Mock extends GROWP_Create_Mock
         }
     }
 }
-
-new GROWP_Mw_Wp_Form_Mock();

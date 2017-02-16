@@ -37,7 +37,6 @@ require_once dirname(__FILE__) . "/src/classes/class-sitemap.php";
  */
 require_once dirname(__FILE__) . "/src/mock/mock.php";
 
-
 /**
  * テンプレートタグ定義
  */

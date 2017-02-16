@@ -21,5 +21,3 @@ class GROWP_Sitemap_Mock extends GROWP_Create_Mock
         ));
     }
 }
-
-new GROWP_Sitemap_Mock();

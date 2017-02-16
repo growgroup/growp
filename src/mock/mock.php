@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * モックの作成
+ */
 require_once dirname(__FILE__) . "/class-create-mock.php";
 require_once dirname(__FILE__) . "/frontandhome-mock.php";
 require_once dirname(__FILE__) . "/mw-wp-form-mock.php";

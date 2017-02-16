@@ -29,7 +29,6 @@ class GROWP_FrontAndHome_Mock extends GROWP_Create_Mock
             'post_status'  => "publish",
         ));
 
-
         $top_id  = $this->get_insert_id('top');
         $home_id = $this->get_insert_id('home');
 
@@ -38,5 +37,3 @@ class GROWP_FrontAndHome_Mock extends GROWP_Create_Mock
         update_option('show_on_front', "page");
     }
 }
-
-new GROWP_FrontAndHome_Mock();

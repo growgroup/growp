@@ -63,6 +63,18 @@ class GROWP_MenuPosts
 
     }
 
+    public static function createTree(&$list, $parent)
+    {
+            $tree = array();
+            foreach ($parent as $k => $l) {
+                if (isset($list[$l->ID])) {
+                    $l->children = self::createTree($list, $list[$l->ID]);
+                }
+                $tree[] = $l;
+            }
+            return $tree;
+    }
+
     /**
      * 投稿一覧を取得
      * @return void
@@ -80,18 +92,8 @@ class GROWP_MenuPosts
         foreach ($this->menus as $menu) {
             $parse_menus[$menu->menu_item_parent][] = $menu;
         }
-        function createTree(&$list, $parent)
-        {
-            $tree = array();
-            foreach ($parent as $k => $l) {
-                if (isset($list[$l->ID])) {
-                    $l->children = createTree($list, $list[$l->ID]);
-                }
-                $tree[] = $l;
-            }
-            return $tree;
-        }
-        $parse_menus = createTree($parse_menus, $parse_menus[0]);
+
+        $parse_menus = self::createTree($parse_menus, $parse_menus[0]);
         return $parse_menus;
     }
 

@@ -17,7 +17,9 @@ while (have_posts()) :
         <article id="post-<?php the_ID(); ?>" <?php post_class('entry'); ?>>
 
             <h1 class="heading is-xlg"><?php the_title(); ?></h1>
-
+            <div class="p-post__meta">
+                <?php echo GTag::get_the_terms_label_list() ?>
+            </div>
             <div class="l-post-content">
                 <?php
 
@@ -31,9 +33,9 @@ while (have_posts()) :
             </div>
         </article><!-- #post-## -->
 
-    <?php
-    GNav::the_post_nav();
-    ?>
+        <?php
+        GNav::the_post_nav();
+        ?>
     </div>
     <?php
     if ((comments_open() || '0' != get_comments_number())) {

@@ -270,6 +270,28 @@ class GTag
         return ( $mb->isMobile() && ! $mb->isTablet() );
     }
 
+    /**
+     * 投稿に付随するタームのラベルリスト
+     *
+     * @param int $post_id
+     * @param string $taxonomy
+     *
+     * @return string
+     */
+    public static function get_the_terms_label_list( $post_id = 0, $taxonomy = "category" ){
+
+        if ( ! $post_id ){
+            $post_id = get_the_ID();
+        }
+        $terms = get_the_terms($post_id,$taxonomy);
+        $list = "<ul>";
+        foreach ($terms as $t) {
+            $list .= '<li><a href="'. get_term_link($t,$taxonomy) .'" class="c-label">'. $t->name .'</a></li>';
+        }
+        $list .= "<ul>";
+        return $list;
+    }
+
 
 
 }

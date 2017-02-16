@@ -45,5 +45,3 @@ class GROWP_Privacy_Policy_Mock extends GROWP_Create_Mock
         ));
     }
 }
-
-new GROWP_Privacy_Policy_Mock();
