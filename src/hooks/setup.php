@@ -107,3 +107,32 @@ function growp_register_menus()
 }
 
 add_action("registered_taxonomy", "growp_register_menus");
+
+
+
+/**
+ * 編集者の権限を変更し、ユーザーを追加することができるように
+ */
+function growp_add_editor_roles()
+{
+    $role = get_role( 'editor' );
+    $role->add_cap( 'delete_users' );
+    $role->add_cap( 'create_users' );
+    $role->add_cap( 'remove_users' );
+    $role->add_cap( 'edit_users' );
+    $role->add_cap( 'list_users' );
+}
+add_action( 'admin_init', 'growp_add_editor_roles');
+
+/**
+ * 管理者以外は新規ユーザー登録で管理者権限アカウントを追加できないように
+ */
+function growp_filter_editable_roles($all_roles){
+
+	$current_user = wp_get_current_user();
+	if ( isset( $current_user->roles[0] ) && $current_user->roles[0] !== "administrator" ){
+		unset($all_roles["administrator"]);
+	}
+	return $all_roles;
+}
+add_filter("editable_roles","growp_filter_editable_roles");

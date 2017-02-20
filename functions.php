@@ -54,8 +54,3 @@ require_once dirname(__FILE__) . "/src/hooks/extras.php";
 require_once dirname(__FILE__) . "/src/hooks/scripts.php";
 require_once dirname(__FILE__) . "/src/hooks/setup.php";
 require_once dirname(__FILE__) . "/src/hooks/sidebar.php";
-
-
-
-
-

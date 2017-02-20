@@ -32,7 +32,6 @@ class GROWP_MenuPosts
 
         // メニューにセールス用を追加
         add_action('init', array($this, 'register_menu'));
-
         add_shortcode('menu_posts', array($this, 'register_shortcode'));
     }
 
@@ -63,16 +62,19 @@ class GROWP_MenuPosts
 
     }
 
+    /**
+     * 再帰
+     */
     public static function createTree(&$list, $parent)
     {
-            $tree = array();
-            foreach ($parent as $k => $l) {
-                if (isset($list[$l->ID])) {
-                    $l->children = self::createTree($list, $list[$l->ID]);
-                }
-                $tree[] = $l;
+        $tree = array();
+        foreach ($parent as $k => $l) {
+            if (isset($list[$l->ID])) {
+                $l->children = self::createTree($list, $list[$l->ID]);
             }
-            return $tree;
+            $tree[] = $l;
+        }
+        return $tree;
     }
 
     /**
