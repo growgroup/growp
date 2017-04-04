@@ -67,6 +67,28 @@ if (class_exists('TGM_Plugin_Activation')) {
                 'required'         => true,
                 'force_activation' => false,
             ),
+			
+            array(
+                'name'             => 'WP Admin UI Customize',
+                'slug'             => 'wp-admin-ui-customize',
+                'required'         => false,
+                'force_activation' => false,
+            ),
+			
+            array(
+                'name'             => 'SiteGuard WP Plugin',
+                'slug'             => 'siteguard',
+                'required'         => false,
+                'force_activation' => false,
+            ),
+			
+            array(
+                'name'             => 'Login rebuilder',
+                'slug'             => 'login-rebuilder',
+                'required'         => false,
+                'force_activation' => false,
+            ),
+			
 
         );
 
