@@ -78,6 +78,7 @@ class GTag
 
     /**
      * アーカイブのタイトルを取得する
+     *
      * @return string|void
      */
     public static function get_archive_title()
@@ -129,7 +130,7 @@ class GTag
     }
 
     /**
-     * 親ページを判断
+     * 親ページを判断する
      *
      * @param $slug
      *
@@ -137,7 +138,6 @@ class GTag
      */
     public static function is_parent_page($slug)
     {
-        global $post;
         $return = false;
         if (is_string($slug)) {
             $return = self::_is_parent_page($slug);
@@ -188,7 +188,27 @@ class GTag
 
 
     /**
-     * 親タームまで判断する
+     * 再帰関数
+     *
+     * @param $term
+     * @param $taxonomy
+     *
+     * @return mixed
+     */
+    public static function post_check_term($term, $taxonomy)
+    {
+        if ($term->parent) {
+            $_term  = get_term($term->parent, $taxonomy);
+            $return = self::post_check_term($_term, $taxonomy);
+        } else {
+            $return = $term;
+        }
+
+        return $return;
+    }
+
+    /**
+     * 投稿に対して、親カテゴリを指定し、その親タームに属するタームが設定されているかどうか判断する
      *
      * @param $post_id
      * @param $term
@@ -196,7 +216,7 @@ class GTag
      *
      * @return bool
      */
-    public static function in_parent_term($post_id, $term, $taxonomy = "category")
+    public static function post_in_parent_term($post_id, $term, $taxonomy = "category")
     {
 
         $terms = get_the_terms($post_id, $taxonomy);
@@ -206,34 +226,13 @@ class GTag
             exit;
         }
 
-        /**
-         * 再帰関数
-         *
-         * @param $term
-         * @param $taxonomy
-         *
-         * @return mixed
-         */
-        function check($term, $taxonomy)
-        {
-            if ($term->parent) {
-                $_term  = get_term($term->parent, $taxonomy);
-                $return = check($_term, $taxonomy);
-            } else {
-                $return = $term;
-            }
-
-            return $return;
-        }
-
-
         $check_term = get_term($term);
 
         foreach ($terms as $_term) {
             if ($_term->term_id === $check_term->term_id) {
                 return true;
             }
-            $parent_term = check($_term, $taxonomy);
+            $parent_term = self::post_check_term($_term, $taxonomy);
             if ($parent_term->slug === $_term->slug) {
                 return true;
             }
@@ -262,35 +261,103 @@ class GTag
     }
 
     /**
-     * スマートフォンかどうか判断
+     * スマートフォンかどうか判断する
      * @return bool
      */
-    public static function is_smartphone(){
-        $mb = new Mobile_Detect();
-        return ( $mb->isMobile() && ! $mb->isTablet() );
+    public static function is_smartphone()
+    {
+        $mb = new \Mobile_Detect();
+
+        return ($mb->isMobile() && ! $mb->isTablet());
     }
 
     /**
-     * 投稿に付随するタームのラベルリスト
+     * 投稿に設定されている特定のタクソノミーのタームのリストを出力する
      *
-     * @param int $post_id
-     * @param string $taxonomy
+     * @param int $post_id 投稿ID
+     * @param string $taxonomy タクソノミー
      *
      * @return string
      */
-    public static function get_the_terms_label_list( $post_id = 0, $taxonomy = "category" ){
+    public static function get_the_terms_label_list($post_id = 0, $taxonomy = "category")
+    {
 
-        if ( ! $post_id ){
+        if ( ! $post_id) {
             $post_id = get_the_ID();
         }
-        $terms = get_the_terms($post_id,$taxonomy);
-        $list = "<ul>";
+        $terms = get_the_terms($post_id, $taxonomy);
+        $list  = "<ul>";
         foreach ($terms as $t) {
-            $list .= '<li><a href="'. get_term_link($t,$taxonomy) .'" class="c-label">'. $t->name .'</a></li>';
+            $list .= '<li><a href="' . get_term_link($t, $taxonomy) . '" class="c-label">' . $t->name . '</a></li>';
         }
         $list .= "<ul>";
+
         return $list;
     }
+
+
+    /**
+     * タクソノミーアーカイブページにて、
+     * 現在表示しているタームを親カテゴリを含めて判断する
+     *
+     * @param $parent 含まれているかどうか判断したい親ターム
+     * @param string $taxonomy タクソノミー
+     *
+     * @return bool true: 親タームに属する false: 属さない
+     */
+    public static function archive_in_parent_term($parent, $taxonomy = "category")
+    {
+        global $wp_query;
+        if (empty($wp_query->queried_object->term_id)) {
+            return false;
+        }
+
+        /**
+         * IDではない場合にスラッグからterm_idを取得する
+         */
+        if ( ! is_numeric($parent)) {
+            $_term  = get_term_by("slug", $parent, $taxonomy);
+            $parent = $_term->term_id;
+        }
+
+        if ($wp_query->queried_object->term_id === $parent) {
+            return true;
+        }
+        $current_term_parent = $wp_query->queried_object->parent;
+
+        if ($current_term_parent) {
+            $is_parent = self::archive_check_term_parent($parent, $current_term_parent, $taxonomy);
+        }
+
+        return $is_parent;
+    }
+
+    /**
+     * 再帰
+     *
+     * @param $targetparent
+     * @param $term
+     * @param $taxonomy
+     *
+     * @return bool
+     */
+    public static function archive_check_term_parent($targetparent, $term, $taxonomy)
+    {
+        $_term = get_term($term, $taxonomy);
+
+        if ($targetparent === $_term->term_id) {
+            return true;
+        }
+        $return = false;
+        if ($_term->parent) {
+            $return = self::archive_check_term_parent($targetparent, $_term->parent, $taxonomy);
+        }
+
+        return $return;
+    }
+
+
+
 
 
 
