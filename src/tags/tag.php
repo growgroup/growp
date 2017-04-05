@@ -233,7 +233,7 @@ class GTag
                 return true;
             }
             $parent_term = self::post_check_term($_term, $taxonomy);
-            if ($parent_term->slug === $_term->slug) {
+            if ($parent_term->slug === $check_term->slug) {
                 return true;
             }
         }
