@@ -39,8 +39,7 @@ class GROWP_Theme_Wrapper {
 
 		if ( self::$base ) {
 
-			array_unshift( $templates,
-				apply_filters( "growp_theme_wrapper_base", sprintf( 'base-%s.php', self::$base ) ) );
+			array_unshift( $templates, sprintf( 'base-%s.php', apply_filters( "growp_theme_wrapper_base", self::$base ) ) );
 
 			return locate_template( $templates );
 
