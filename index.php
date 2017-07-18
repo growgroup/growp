@@ -10,9 +10,9 @@
 if ( have_posts() ) :
 	while ( have_posts() ) :
 		the_post();
-        GTemplate::get_project("post-item");
+		GTemplate::get_project( "post-item" );
 	endwhile;
-	growp_paging_nav();
+	GNav::the_paging_nav();
 else :
 	get_template_part( 'templates/content', 'none' );
 endif;

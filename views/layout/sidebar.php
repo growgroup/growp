@@ -9,8 +9,8 @@
 ?>
 
 <div class="l-sidebar">
-    <?php
-    // ウィジェットを呼び出す
-    growp_dynamic_sidebar('sidebar-primary') ?>
+	<?php
+	// ウィジェットを呼び出す
+	growp_dynamic_sidebar( 'sidebar-primary' ) ?>
 
 </div><!-- #secondary -->

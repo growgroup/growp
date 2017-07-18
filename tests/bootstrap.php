@@ -19,11 +19,12 @@ require_once $_tests_dir . '/includes/functions.php';
  */
 function _manually_load_plugin() {
 	register_theme_directory( dirname( __FILE__ ) . '/../../' );
-	switch_theme('growp');
+	switch_theme( 'growp' );
 	require_once dirname( dirname( __FILE__ ) ) . '/functions.php';
 	search_theme_directories();
 
 }
+
 tests_add_filter( 'after_setup_theme', '_manually_load_plugin' );
 
 // Start up the WP testing environment.

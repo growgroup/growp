@@ -17,9 +17,8 @@
  *
  * @return mixed
  */
-function growp_dynamic_sidebar($index)
-{
-    return dynamic_sidebar($index);
+function growp_dynamic_sidebar( $index ) {
+	return dynamic_sidebar( $index );
 }
 
 
@@ -27,16 +26,15 @@ function growp_dynamic_sidebar($index)
  * サイドバーの登録
  * @return void
  */
-function growp_sidebar()
-{
-    register_sidebar(array(
-        'name'          => __('Sidebar Primary', 'growp'),
-        'id'            => 'sidebar-primary',
-        'before_widget' => '<div class="widget widget-sidebar %1$s %2$s">',
-        'after_widget'  => '</div>',
-        'before_title'  => '<h3 class="widget-title">',
-        'after_title'   => '</h3>',
-    ));
+function growp_sidebar() {
+	register_sidebar( array(
+		'name'          => __( 'Sidebar Primary', 'growp' ),
+		'id'            => 'sidebar-primary',
+		'before_widget' => '<div class="widget widget-sidebar %1$s %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h3 class="widget-title">',
+		'after_title'   => '</h3>',
+	) );
 }
 
-add_action('widgets_init', 'growp_sidebar');
+add_action( 'widgets_init', 'growp_sidebar' );

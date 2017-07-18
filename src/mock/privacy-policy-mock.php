@@ -3,18 +3,15 @@
 /**
  * 個人情報保護方針ページの作成
  */
-class GROWP_Privacy_Policy_Mock extends GROWP_Create_Mock
-{
+class GROWP_Privacy_Policy_Mock extends GROWP_Create_Mock {
 
-    public function __construct()
-    {
-        parent::__construct("privacy-policy-mock");
-    }
+	public function __construct() {
+		parent::__construct( "privacy-policy-mock" );
+	}
 
-    protected function run()
-    {
-        $default_content = '<div class="l-container">
-                    <p>' . get_bloginfo("name") . '（以下「当社」）は、以下のとおり個人情報保護方針を定め、個人情報保護の仕組みを構築し、全従業員に個人情報保護の重要性の認識と取組みを徹底させることにより、個人情報の保護を推進致します。</p>
+	protected function run() {
+		$default_content = '<div class="l-container">
+                    <p>' . get_bloginfo( "name" ) . '（以下「当社」）は、以下のとおり個人情報保護方針を定め、個人情報保護の仕組みを構築し、全従業員に個人情報保護の重要性の認識と取組みを徹底させることにより、個人情報の保護を推進致します。</p>
                     <h4><strong>個人情報の管理</strong></h4>
                     <p>当社は、お客さまの個人情報を正確かつ最新の状態に保ち、個人情報への不正アクセス・紛失・破損・改ざん・漏洩などを防止するため、セキュリティシステムの維持・管理体制の整備・社員教育の徹底等の必要な措置を講じ、安全対策を実施し個人情報の厳重な管理を行ないます。</p>
                     <h4><strong>個人情報の利用目的</strong></h4>
@@ -36,12 +33,12 @@ class GROWP_Privacy_Policy_Mock extends GROWP_Create_Mock
                     <h4><strong>お問い合せ</strong></h4>
                     <p>当社の個人情報の取扱に関するお問い合せは下記までご連絡ください。</p>
         </div>';
-        $this->insert_post(array(
-            'post_title'   => "個人情報保護方針",
-            'post_type'    => 'page',
-            'post_content' => $default_content,
-            'post_name'    => "privacy-policy",
-            'post_status'  => "publish",
-        ));
-    }
+		$this->insert_post( array(
+			'post_title'   => "個人情報保護方針",
+			'post_type'    => 'page',
+			'post_content' => $default_content,
+			'post_name'    => "privacy-policy",
+			'post_status'  => "publish",
+		) );
+	}
 }

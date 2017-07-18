@@ -12,19 +12,18 @@
  *
  * @return array
  */
-function growp_body_classes($classes)
-{
-    global $post;
+function growp_body_classes( $classes ) {
+	global $post;
 
-    // スラッグが設定されている場合出力
-    if (isset($post->post_name)) {
-        $classes[] = $post->post_name;
-    }
+	// スラッグが設定されている場合出力
+	if ( isset( $post->post_name ) ) {
+		$classes[] = $post->post_name;
+	}
 
-    return $classes;
+	return $classes;
 }
 
-add_filter('body_class', 'growp_body_classes');
+add_filter( 'body_class', 'growp_body_classes' );
 
 
 /**
@@ -34,16 +33,15 @@ add_filter('body_class', 'growp_body_classes');
  * @return void
  */
 
-add_action('excerpt_more', 'growp_change_more');
+add_action( 'excerpt_more', 'growp_change_more' );
 
-function growp_change_more($more)
-{
-    if (0 == get_theme_mod('single_char_num', 50)) {
-        return "";
-    }
-    $more = ' &hellip; <span class="c-button is-more">' . __('More', 'growp') . '</span>';
+function growp_change_more( $more ) {
+	if ( 0 == get_theme_mod( 'single_char_num', 50 ) ) {
+		return "";
+	}
+	$more = ' &hellip; <span class="c-button is-more">' . __( 'More', 'growp' ) . '</span>';
 
-    return apply_filters('growp_readmore', $more);
+	return apply_filters( 'growp_readmore', $more );
 
 }
 
@@ -54,9 +52,8 @@ function growp_change_more($more)
  *
  * @return int
  */
-function growp_excerpt_length($length)
-{
-    return 80;
+function growp_excerpt_length( $length ) {
+	return 80;
 }
 
-add_filter('excerpt_length', 'growp_excerpt_length', 999);
+add_filter( 'excerpt_length', 'growp_excerpt_length', 999 );

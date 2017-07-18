@@ -10,16 +10,16 @@
  */
 ?>
 <div class="l-container">
-    <?php
-    if (have_posts()) :
-        /* ループをスタート */
-        while (have_posts()) : the_post();
-            GTemplate::get_project("post-item");
-        endwhile;
-        echo GNav::get_paging_nav();
-    else :
-        get_template_part('content', 'none');
-    endif;
+	<?php
+	if ( have_posts() ) :
+		/* ループをスタート */
+		while ( have_posts() ) : the_post();
+			GTemplate::get_project( "post-item" );
+		endwhile;
+		echo GNav::get_paging_nav();
+	else :
+		get_template_part( 'content', 'none' );
+	endif;
 
-    ?>
+	?>
 </div>

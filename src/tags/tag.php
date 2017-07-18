@@ -4,361 +4,390 @@
  * Class GTag
  * オリジナルテンプレートタグ
  */
-class GTag
-{
+class GTag {
 
-    /**
-     * サムネイル画像のURLを取得
-     *
-     * @param bool $post_id
-     * @param string $size
-     *
-     * @return false|string
-     */
-    public static function get_thumbnail_url($post_id = false, $size = "full")
-    {
-        if ( ! $post_id) {
-            $post_id = get_the_ID();
-        }
-        $thumbnail_id = get_post_meta($post_id, "_thumbnail_id", true);
-        $imageurl     = wp_get_attachment_image_url($thumbnail_id, $size);
-        if ($imageurl) {
-            return $imageurl;
-        }
+	/**
+	 * サムネイル画像のURLを取得
+	 *
+	 * @param bool $post_id
+	 * @param string $size
+	 *
+	 * @return false|string
+	 */
+	public static function get_thumbnail_url( $post_id = false, $size = "full" ) {
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
+		$thumbnail_id = get_post_meta( $post_id, "_thumbnail_id", true );
+		$imageurl     = wp_get_attachment_image_url( $thumbnail_id, $size );
+		if ( $imageurl ) {
+			return $imageurl;
+		}
 
-        return GUrl::asset("/assets/images/img-default-thumbnail.jpg");
-    }
+		return GUrl::asset( "/assets/images/img-default-thumbnail.jpg" );
+	}
 
 
-    /**
-     * サムネイル画像のstyle属性を出力
-     *
-     * @param bool $post_id
-     * @param string $size
-     *
-     * @return string
-     */
-    public static function the_thumbnail_style_attribute($post_id = false, $size = "full")
-    {
-        $url = self::get_thumbnail_url($post_id, $size);
+	/**
+	 * サムネイル画像のstyle属性を出力
+	 *
+	 * @param bool $post_id
+	 * @param string $size
+	 *
+	 * @return string
+	 */
+	public static function the_thumbnail_style_attribute( $post_id = false, $size = "full" ) {
+		$url = self::get_thumbnail_url( $post_id, $size );
 
-        $attr = "";
-        $attr = ' style="background-image: url(' . $url . ');"';
-        echo $attr;
-    }
+		$attr = "";
+		$attr = ' style="background-image: url(' . $url . ');"';
+		echo $attr;
+	}
 
-    /**
-     * 最初のタームを取得する
-     *
-     * @param bool $post_id 投稿のID
-     * @param bool $taxonomy タクソノミー
-     * @param string $field 取得したいフィールド
-     *
-     * @return bool
-     */
-    public static function get_first_term($post_id = false, $taxonomy = false, $field = "")
-    {
+	/**
+	 * 最初のタームを取得する
+	 *
+	 * @param bool $post_id 投稿のID
+	 * @param bool $taxonomy タクソノミー
+	 * @param string $field 取得したいフィールド
+	 *
+	 * @return bool
+	 */
+	public static function get_first_term( $post_id = false, $taxonomy = false, $field = "" ) {
 
-        if ( ! $post_id) {
-            $post_id = get_the_ID();
-        }
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
 
-        $terms = get_the_terms($post_id, $taxonomy);
-        if (is_wp_error($terms)) {
-            return false;
-        }
+		$terms = get_the_terms( $post_id, $taxonomy );
+		if ( is_wp_error( $terms ) ) {
+			return false;
+		}
 
-        if ($field && isset($terms[0]->{$field})) {
-            return esc_html($terms[0]->{$field});
-        }
+		if ( $field && isset( $terms[0]->{$field} ) ) {
+			return esc_html( $terms[0]->{$field} );
+		}
 
-        return esc_html($terms[0]);
-    }
+		return esc_html( $terms[0] );
+	}
 
 
-    /**
-     * アーカイブのタイトルを取得する
-     *
-     * @return string|void
-     */
-    public static function get_archive_title()
-    {
-        if (is_category()) {
-            $title = sprintf(__('Category: %s'), single_cat_title('', false));
-        } elseif (is_tag()) {
-            $title = sprintf(__('Tag: %s'), single_tag_title('', false));
-        } elseif (is_author()) {
-            $title = sprintf(__('Author: %s'), '<span class="vcard">' . get_the_author() . '</span>');
-        } elseif (is_year()) {
-            $title = sprintf(__('Year: %s'), get_the_date(_x('Y', 'yearly archives date format')));
-        } elseif (is_month()) {
-            $title = sprintf(__('Month: %s'), get_the_date(_x('F Y', 'monthly archives date format')));
-        } elseif (is_day()) {
-            $title = sprintf(__('Day: %s'), get_the_date(_x('F j, Y', 'daily archives date format')));
-        } elseif (is_tax('post_format')) {
-            if (is_tax('post_format', 'post-format-aside')) {
-                $title = _x('Asides', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-gallery')) {
-                $title = _x('Galleries', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-image')) {
-                $title = _x('Images', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-video')) {
-                $title = _x('Videos', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-quote')) {
-                $title = _x('Quotes', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-link')) {
-                $title = _x('Links', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-status')) {
-                $title = _x('Statuses', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-audio')) {
-                $title = _x('Audio', 'post format archive title');
-            } elseif (is_tax('post_format', 'post-format-chat')) {
-                $title = _x('Chats', 'post format archive title');
-            }
-        } elseif (is_post_type_archive()) {
-            $title = sprintf(__('Archives: %s'), post_type_archive_title('', false));
-        } elseif (is_tax()) {
-            $tax = get_taxonomy(get_queried_object()->taxonomy);
-            /* translators: 1: Taxonomy singular name, 2: Current taxonomy term */
-            $title = sprintf(__('%1$s: %2$s'), $tax->labels->singular_name, single_term_title('', false));
-        } else {
-            $title = __('Archives');
-        }
+	/**
+	 * アーカイブのタイトルを取得する
+	 *
+	 * @return string|void
+	 */
+	public static function get_archive_title() {
+		if ( is_category() ) {
+			$title = sprintf( __( 'Category: %s' ), single_cat_title( '', false ) );
+		} elseif ( is_tag() ) {
+			$title = sprintf( __( 'Tag: %s' ), single_tag_title( '', false ) );
+		} elseif ( is_author() ) {
+			$title = sprintf( __( 'Author: %s' ), '<span class="vcard">' . get_the_author() . '</span>' );
+		} elseif ( is_year() ) {
+			$title = sprintf( __( 'Year: %s' ), get_the_date( _x( 'Y', 'yearly archives date format' ) ) );
+		} elseif ( is_month() ) {
+			$title = sprintf( __( 'Month: %s' ), get_the_date( _x( 'F Y', 'monthly archives date format' ) ) );
+		} elseif ( is_day() ) {
+			$title = sprintf( __( 'Day: %s' ), get_the_date( _x( 'F j, Y', 'daily archives date format' ) ) );
+		} elseif ( is_tax( 'post_format' ) ) {
+			if ( is_tax( 'post_format', 'post-format-aside' ) ) {
+				$title = _x( 'Asides', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
+				$title = _x( 'Galleries', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
+				$title = _x( 'Images', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
+				$title = _x( 'Videos', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
+				$title = _x( 'Quotes', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
+				$title = _x( 'Links', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
+				$title = _x( 'Statuses', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
+				$title = _x( 'Audio', 'post format archive title' );
+			} elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
+				$title = _x( 'Chats', 'post format archive title' );
+			}
+		} elseif ( is_post_type_archive() ) {
+			$title = sprintf( __( 'Archives: %s' ), post_type_archive_title( '', false ) );
+		} elseif ( is_tax() ) {
+			$tax = get_taxonomy( get_queried_object()->taxonomy );
+			/* translators: 1: Taxonomy singular name, 2: Current taxonomy term */
+			$title = sprintf( __( '%1$s: %2$s' ), $tax->labels->singular_name, single_term_title( '', false ) );
+		} else {
+			$title = __( 'Archives' );
+		}
 
-        return $title;
+		return $title;
 
-    }
+	}
 
-    /**
-     * 親ページを判断する
-     *
-     * @param $slug
-     *
-     * @return bool
-     */
-    public static function is_parent_page($slug)
-    {
-        $return = false;
-        if (is_string($slug)) {
-            $return = self::_is_parent_page($slug);
-        }
-        if (is_array($slug)) {
-            foreach ($slug as $s) {
-                $return = self::_is_parent_page($s);
-                if ($return === true) {
-                    break;
-                }
-            }
-        }
+	/**
+	 * 親ページを判断する
+	 *
+	 * @param $slug
+	 *
+	 * @return bool
+	 */
+	public static function is_parent_page( $slug ) {
+		$return = false;
+		if ( is_string( $slug ) ) {
+			$return = self::_is_parent_page( $slug );
+		}
+		if ( is_array( $slug ) ) {
+			foreach ( $slug as $s ) {
+				$return = self::_is_parent_page( $s );
+				if ( $return === true ) {
+					break;
+				}
+			}
+		}
 
-        return $return;
-    }
+		return $return;
+	}
 
 
-    private static function _is_parent_page($slug)
-    {
-        global $post;
-        if ($post->post_name === $slug) {
-            return true;
-        }
+	private static function _is_parent_page( $slug ) {
+		global $post;
+		if ( $post->post_name === $slug ) {
+			return true;
+		}
 
-        if ( ! $post->post_parent) {
-            return false;
-        }
+		if ( ! $post->post_parent ) {
+			return false;
+		}
 
-        $parent_post = get_post($post->post_parent);
-        if ($parent_post->post_name === $slug) {
-            return true;
-        }
-    }
+		$parent_post = get_post( $post->post_parent );
+		if ( $parent_post->post_name === $slug ) {
+			return true;
+		}
+	}
 
-    /**
-     * テンプレートのパスを取得する
-     * @return mixed
-     */
-    public static function get_template_path()
-    {
-        return GROWP_Theme_Wrapper::$main_template;
-    }
+	/**
+	 * テンプレートのパスを取得する
+	 * @return mixed
+	 */
+	public static function get_template_path() {
+		return GROWP_Theme_Wrapper::$main_template;
+	}
 
-    public static function get_template_base()
-    {
-        return GROWP_Theme_Wrapper::$base;
-    }
-
-
-    /**
-     * 再帰関数
-     *
-     * @param $term
-     * @param $taxonomy
-     *
-     * @return mixed
-     */
-    public static function post_check_term($term, $taxonomy)
-    {
-        if ($term->parent) {
-            $_term  = get_term($term->parent, $taxonomy);
-            $return = self::post_check_term($_term, $taxonomy);
-        } else {
-            $return = $term;
-        }
-
-        return $return;
-    }
-
-    /**
-     * 投稿に対して、親カテゴリを指定し、その親タームに属するタームが設定されているかどうか判断する
-     *
-     * @param $post_id
-     * @param $term
-     * @param string $taxonomy
-     *
-     * @return bool
-     */
-    public static function post_in_parent_term($post_id, $term, $taxonomy = "category")
-    {
-
-        $terms = get_the_terms($post_id, $taxonomy);
-
-        if (is_wp_error($terms)) {
-            echo $terms->get_error_message();
-            exit;
-        }
-
-        $check_term = get_term($term);
-
-        foreach ($terms as $_term) {
-            if ($_term->term_id === $check_term->term_id) {
-                return true;
-            }
-            $parent_term = self::post_check_term($_term, $taxonomy);
-            if ($parent_term->slug === $_term->slug) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * アタッチメントのURLを取得する
-     *
-     * @param $attachment_id アタッチメントID
-     * @param string $size
-     *
-     * @return string 存在する場合はファイルのURL。しない場合はデフォルト画像
-     */
-    public static function get_attachment_url($attachment_id, $size = "full")
-    {
-        $image_url = wp_get_attachment_image_url($attachment_id, $size, false);
-
-        if ($image_url) {
-            return $image_url;
-        }
-
-        return GUrl::asset("/assets/images/img-default-thumbnail.jpg");
-    }
-
-    /**
-     * スマートフォンかどうか判断する
-     * @return bool
-     */
-    public static function is_smartphone()
-    {
-        $mb = new \Mobile_Detect();
-
-        return ($mb->isMobile() && ! $mb->isTablet());
-    }
-
-    /**
-     * 投稿に設定されている特定のタクソノミーのタームのリストを出力する
-     *
-     * @param int $post_id 投稿ID
-     * @param string $taxonomy タクソノミー
-     *
-     * @return string
-     */
-    public static function get_the_terms_label_list($post_id = 0, $taxonomy = "category")
-    {
-
-        if ( ! $post_id) {
-            $post_id = get_the_ID();
-        }
-        $terms = get_the_terms($post_id, $taxonomy);
-        $list  = "<ul>";
-        foreach ($terms as $t) {
-            $list .= '<li><a href="' . get_term_link($t, $taxonomy) . '" class="c-label">' . $t->name . '</a></li>';
-        }
-        $list .= "<ul>";
-
-        return $list;
-    }
+	/**
+	 * @return mixed
+	 */
+	public static function get_template_base() {
+		return GROWP_Theme_Wrapper::$base;
+	}
 
 
-    /**
-     * タクソノミーアーカイブページにて、
-     * 現在表示しているタームを親カテゴリを含めて判断する
-     *
-     * @param $parent 含まれているかどうか判断したい親ターム
-     * @param string $taxonomy タクソノミー
-     *
-     * @return bool true: 親タームに属する false: 属さない
-     */
-    public static function archive_in_parent_term($parent, $taxonomy = "category")
-    {
-        global $wp_query;
-        if (empty($wp_query->queried_object->term_id)) {
-            return false;
-        }
+	/**
+	 * 再帰関数
+	 *
+	 * @param $term
+	 * @param $taxonomy
+	 *
+	 * @return mixed
+	 */
+	public static function post_check_term( $term, $taxonomy ) {
+		if ( $term->parent ) {
+			$_term  = get_term( $term->parent, $taxonomy );
+			$return = self::post_check_term( $_term, $taxonomy );
+		} else {
+			$return = $term;
+		}
 
-        /**
-         * IDではない場合にスラッグからterm_idを取得する
-         */
-        if ( ! is_numeric($parent)) {
-            $_term  = get_term_by("slug", $parent, $taxonomy);
-            $parent = $_term->term_id;
-        }
+		return $return;
+	}
 
-        if ($wp_query->queried_object->term_id === $parent) {
-            return true;
-        }
-        $current_term_parent = $wp_query->queried_object->parent;
+	/**
+	 * 投稿に対して、親カテゴリを指定し、その親タームに属するタームが設定されているかどうか判断する
+	 *
+	 * @param $post_id
+	 * @param $term
+	 * @param string $taxonomy
+	 *
+	 * @return bool
+	 */
+	public static function post_in_parent_term( $post_id, $term, $taxonomy = "category" ) {
 
-        if ($current_term_parent) {
-            $is_parent = self::archive_check_term_parent($parent, $current_term_parent, $taxonomy);
-        }
+		$terms = get_the_terms( $post_id, $taxonomy );
 
-        return $is_parent;
-    }
+		if ( is_wp_error( $terms ) ) {
+			echo $terms->get_error_message();
+			exit;
+		}
 
-    /**
-     * 再帰
-     *
-     * @param $targetparent
-     * @param $term
-     * @param $taxonomy
-     *
-     * @return bool
-     */
-    public static function archive_check_term_parent($targetparent, $term, $taxonomy)
-    {
-        $_term = get_term($term, $taxonomy);
+		$check_term = get_term( $term );
 
-        if ($targetparent === $_term->term_id) {
-            return true;
-        }
-        $return = false;
-        if ($_term->parent) {
-            $return = self::archive_check_term_parent($targetparent, $_term->parent, $taxonomy);
-        }
+		foreach ( $terms as $_term ) {
+			if ( $_term->term_id === $check_term->term_id ) {
+				return true;
+			}
+			$parent_term = self::post_check_term( $_term, $taxonomy );
+			if ( $parent_term->slug === $_term->slug ) {
+				return true;
+			}
+		}
 
-        return $return;
-    }
+		return false;
+	}
+
+	/**
+	 * アタッチメントのURLを取得する
+	 *
+	 * @param $attachment_id アタッチメントID
+	 * @param string $size
+	 *
+	 * @return string 存在する場合はファイルのURL。しない場合はデフォルト画像
+	 */
+	public static function get_attachment_url( $attachment_id, $size = "full" ) {
+		$image_url = wp_get_attachment_image_url( $attachment_id, $size, false );
+
+		if ( $image_url ) {
+			return $image_url;
+		}
+
+		return GUrl::asset( "/assets/images/img-default-thumbnail.jpg" );
+	}
+
+	/**
+	 * スマートフォンかどうか判断する
+	 * @return bool
+	 */
+	public static function is_smartphone() {
+		$mb = new \Mobile_Detect();
+
+		return ( $mb->isMobile() && ! $mb->isTablet() );
+	}
+
+	/**
+	 * 投稿に設定されている特定のタクソノミーのタームのリストを出力する
+	 *
+	 * @param int $post_id 投稿ID
+	 * @param string $taxonomy タクソノミー
+	 *
+	 * @return string
+	 */
+	public static function get_the_terms_label_list( $post_id = 0, $taxonomy = "category" ) {
+
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
+		$terms = get_the_terms( $post_id, $taxonomy );
+		$list  = "<ul>";
+		foreach ( $terms as $t ) {
+			$list .= '<li><a href="' . get_term_link( $t, $taxonomy ) . '" class="c-label">' . $t->name . '</a></li>';
+		}
+		$list .= "<ul>";
+
+		return $list;
+	}
 
 
+	/**
+	 * タクソノミーアーカイブページにて、
+	 * 現在表示しているタームを親カテゴリを含めて判断する
+	 *
+	 * @param $parent 含まれているかどうか判断したい親ターム
+	 * @param string $taxonomy タクソノミー
+	 *
+	 * @return bool true: 親タームに属する false: 属さない
+	 */
+	public static function archive_in_parent_term( $parent, $taxonomy = "category" ) {
+		global $wp_query;
+		if ( empty( $wp_query->queried_object->term_id ) ) {
+			return false;
+		}
 
+		/**
+		 * IDではない場合にスラッグからterm_idを取得する
+		 */
+		if ( ! is_numeric( $parent ) ) {
+			$_term  = get_term_by( "slug", $parent, $taxonomy );
+			$parent = $_term->term_id;
+		}
 
+		if ( $wp_query->queried_object->term_id === $parent ) {
+			return true;
+		}
+		$current_term_parent = $wp_query->queried_object->parent;
 
+		if ( $current_term_parent ) {
+			$is_parent = self::archive_check_term_parent( $parent, $current_term_parent, $taxonomy );
+		}
+
+		return $is_parent;
+	}
+
+	/**
+	 * 再帰
+	 *
+	 * @param $targetparent
+	 * @param $term
+	 * @param $taxonomy
+	 *
+	 * @return bool
+	 */
+	public static function archive_check_term_parent( $targetparent, $term, $taxonomy ) {
+		$_term = get_term( $term, $taxonomy );
+
+		if ( $targetparent === $_term->term_id ) {
+			return true;
+		}
+		$return = false;
+		if ( $_term->parent ) {
+			$return = self::archive_check_term_parent( $targetparent, $_term->parent, $taxonomy );
+		}
+
+		return $return;
+	}
+
+	/**
+	 * タームのラベルを出力する
+	 *
+	 * @param string $taxonomy
+	 */
+	public static function term_label_list( $taxonomy = "category" ) {
+		$post_id = get_the_ID();
+		$terms   = wp_get_post_terms( $post_id, $taxonomy, array( 'fields' => "all" ) );
+		foreach ( $terms as $term_key => $term ) {
+			?>
+			<div class="p-post__category"><span class="c-label is-primary"><?php echo $term->name ?></span>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * タームのリンク付きラベル一覧を出力する
+	 *
+	 * @param string $taxonomy タクソノミースラッグ
+	 */
+	public static function category_label_links( $taxonomy = "category" ) {
+		$post_id = get_the_ID();
+		$terms   = wp_get_post_terms( $post_id, $taxonomy, array( 'fields' => "all" ) );
+		foreach ( $terms as $term_key => $term ) {
+			?>
+			<div class="p-post__category">
+				<a href="<?php echo get_term_link( $term ) ?>" class="c-label is-primary"><?php echo $term->name ?></a>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * 文字列を丸める(mb_strimwidthのエイリアス)
+	 *
+	 * @param string $text 加工する文字列
+	 * @param integer $length 丸める文字列
+	 * @param string $after 付与する文字列
+	 *
+	 * @return 文字列
+	 *
+	 */
+	public static function trimwidth( $text, $length = 50, $after = "..." ) {
+		return mb_strimwidth( $text, 0, $length, $after );
+	}
 
 }

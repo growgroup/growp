@@ -8,22 +8,20 @@
 /**
  * Sample test case.
  */
-class TestMenuPosts extends WP_UnitTestCase
-{
+class TestMenuPosts extends WP_UnitTestCase {
 
-	function setup(){
+	function setup() {
 
 	}
 
-	function test_frontandhomemock()
-	{
+	function test_frontandhomemock() {
 
-		$menuposts = new GROWP_MenuPosts("global-nav", "グローバルナビゲーション");
+		$menuposts = new GROWP_MenuPosts( "global-nav", "グローバルナビゲーション" );
 		echo "<pre>";
-		var_dump($menuposts->get_menus());
+		var_dump( $menuposts->get_menus() );
 		echo "</pre>";
 
-		return ($this->assertEquals(get_option("test_menu"),"tet"));
+		return ( $this->assertEquals( get_option( "test_menu" ), "tet" ) );
 	}
 
 
