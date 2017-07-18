@@ -390,4 +390,5 @@ class GTag {
 		return mb_strimwidth( $text, 0, $length, $after );
 	}
 
+
 }
