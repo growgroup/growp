@@ -182,25 +182,6 @@ class GTag {
 
 
 	/**
-	 * 再帰関数
-	 *
-	 * @param $term
-	 * @param $taxonomy
-	 *
-	 * @return mixed
-	 */
-	public static function post_check_term( $term, $taxonomy ) {
-		if ( $term->parent ) {
-			$_term  = get_term( $term->parent, $taxonomy );
-			$return = self::post_check_term( $_term, $taxonomy );
-		} else {
-			$return = $term;
-		}
-
-		return $return;
-	}
-
-	/**
 	 * 投稿に対して、親カテゴリを指定し、その親タームに属するタームが設定されているかどうか判断する
 	 *
 	 * @param $post_id
@@ -217,14 +198,16 @@ class GTag {
 			echo $terms->get_error_message();
 			exit;
 		}
-
+		if ( is_string( $term ) ) {
+			$term = get_term_by( "slug", $term, $taxonomy );
+		}
 		$check_term = get_term( $term );
 
 		foreach ( $terms as $_term ) {
 			if ( $_term->term_id === $check_term->term_id ) {
 				return true;
 			}
-			$parent_term = self::post_check_term( $_term, $taxonomy );
+			$parent_term = self::_post_check_term( $_term, $taxonomy );
 			if ( $parent_term->slug === $_term->slug ) {
 				return true;
 			}
@@ -233,6 +216,25 @@ class GTag {
 		return false;
 	}
 
+	/**
+	 * 再帰関数
+	 *
+	 * @param $term
+	 * @param $taxonomy
+	 *
+	 * @return mixed
+	 */
+	public static function _post_check_term( $term, $taxonomy ) {
+		if ( $term->parent ) {
+			$_term  = get_term( $term->parent, $taxonomy );
+			$return = self::_post_check_term( $_term, $taxonomy );
+		} else {
+			$return = $term;
+		}
+
+		return $return;
+	}
+	
 	/**
 	 * アタッチメントのURLを取得する
 	 *
