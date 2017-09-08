@@ -392,5 +392,45 @@ class GTag {
 		return mb_strimwidth( $text, 0, $length, $after );
 	}
 
+	/**
+	 * ACFフィールドの出力
+	 *
+	 * @param $key string | array 配列で指定した場合、どちらかが存在する場合に出力する
+	 * @param $callback
+	 *
+	 * @return bool|void
+	 *
+	 * @throws ErrorException AdvancedCustomFields プラグインがインストールされていない場合には例外を投げる
+	 */
+	public static function acf( $key, $callback ) {
+		if ( ! function_exists( 'get_field' ) ) {
+			throw new ErrorException( "500", "Advanced Custom Fields プラグインがインストールされていません" );
+			exit;
+		}
+		$value = get_field( $key );
+		/**
+		 * キーが配列指定の場合
+		 */
+		if ( is_array( $key ) ) {
+			$value    = [];
+			$exitflag = false;
 
+			foreach ( $key as $kk => $k ) {
+				$value[ $k ] = get_field( $k );
+				if ( $value[ $k ] ) {
+					$exitflag = true;
+				}
+			}
+			if ( ! $exitflag ) {
+				return false;
+			}
+
+		}
+
+		if ( $value && is_callable( $callback ) ) {
+			return $callback( $value );
+		}
+
+		return false;
+	}
 }
