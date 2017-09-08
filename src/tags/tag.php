@@ -391,23 +391,34 @@ class GTag {
 	public static function trimwidth( $text, $length = 50, $after = "..." ) {
 		return mb_strimwidth( $text, 0, $length, $after );
 	}
-
 	/**
 	 * ACFフィールドの出力
 	 *
 	 * @param $key string | array 配列で指定した場合、どちらかが存在する場合に出力する
 	 * @param $callback
+	 * @param $post_id
 	 *
 	 * @return bool|void
 	 *
 	 * @throws ErrorException AdvancedCustomFields プラグインがインストールされていない場合には例外を投げる
 	 */
-	public static function acf( $key, $callback ) {
+	public static function acf( $key, $callback = null, $post_id = 0 ) {
 		if ( ! function_exists( 'get_field' ) ) {
 			throw new ErrorException( "500", "Advanced Custom Fields プラグインがインストールされていません" );
 			exit;
 		}
-		$value = get_field( $key );
+		if ( is_numeric( $callback ) ) {
+			$post_id = $callback;
+		}
+		if ( is_callable( $post_id ) ) {
+			$callback = $post_id;
+		}
+
+		if ( $post_id === 0 ) {
+			$post_id = get_the_ID();
+		}
+		$value = get_field( $key, $post_id );
+
 		/**
 		 * キーが配列指定の場合
 		 */
@@ -416,7 +427,7 @@ class GTag {
 			$exitflag = false;
 
 			foreach ( $key as $kk => $k ) {
-				$value[ $k ] = get_field( $k );
+				$value[ $k ] = get_field( $k, $post_id );
 				if ( $value[ $k ] ) {
 					$exitflag = true;
 				}
@@ -431,6 +442,6 @@ class GTag {
 			return $callback( $value );
 		}
 
-		return false;
+		return $value;
 	}
 }
