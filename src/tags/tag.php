@@ -281,7 +281,7 @@ class GTag {
 		foreach ( $terms as $t ) {
 			$list .= '<li><a href="' . get_term_link( $t, $taxonomy ) . '" class="c-label">' . $t->name . '</a></li>';
 		}
-		$list .= "<ul>";
+		$list .= "</ul>";
 
 		return $list;
 	}
