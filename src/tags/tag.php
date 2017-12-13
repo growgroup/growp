@@ -391,6 +391,7 @@ class GTag {
 	public static function trimwidth( $text, $length = 50, $after = "..." ) {
 		return mb_strimwidth( $text, 0, $length, $after );
 	}
+
 	/**
 	 * ACFフィールドの出力
 	 *
@@ -413,19 +414,31 @@ class GTag {
 		if ( is_callable( $post_id ) ) {
 			$callback = $post_id;
 		}
-
 		if ( $post_id === 0 ) {
 			$post_id = get_the_ID();
 		}
+		// グループに対応
 		$value = get_field( $key, $post_id );
-
+		if ( ! $value && strpos( $key, ".", 1 ) > - 1 ) {
+			$keys  = explode( ".", $key );
+			$value = "";
+			foreach ( $keys as $kk => $k ) {
+				if ( $value && isset( $value[ $k ] ) ) {
+					$value = $value[ $k ];
+				} else {
+					$value = "";
+				}
+				if ( ! $value ) {
+					$value = get_field( $keys[ $kk ], $post_id );
+				}
+			}
+		}
 		/**
 		 * キーが配列指定の場合
 		 */
 		if ( is_array( $key ) ) {
 			$value    = [];
 			$exitflag = false;
-
 			foreach ( $key as $kk => $k ) {
 				$value[ $k ] = get_field( $k, $post_id );
 				if ( $value[ $k ] ) {
@@ -435,13 +448,10 @@ class GTag {
 			if ( ! $exitflag ) {
 				return false;
 			}
-
 		}
-
 		if ( $value && is_callable( $callback ) ) {
 			return $callback( $value );
 		}
-
 		return $value;
 	}
 }
