@@ -3,11 +3,13 @@
  * メニューで作成した一覧を取得する
  */
 
-// // 登録のサンプル
+// 1. 登録のサンプル
 // add_action( "registered_taxonomy", function () {
-//	new MenuPosts( 'sales_posts', 'セールス' );
-//	new MenuPosts( 'featured_posts', '特集' );
+//	new GROWP_MenuPosts( 'sales_posts', 'セールス' );
+//	new GROWP_MenuPosts( 'featured_posts', '特集' );
 // } );
+// 2. 利用時のサンプル
+// 
 
 class GROWP_MenuPosts
 {
@@ -113,7 +115,7 @@ class GROWP_MenuPosts
             global $post;
             $post = get_post($menu->object_id);
             setup_postdata($post);
-            get_template_part("templates/content");
+            GTemplate::get_project( "post-item");
         }
     }
 
