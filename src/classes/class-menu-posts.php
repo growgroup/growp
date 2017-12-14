@@ -84,7 +84,7 @@ class GROWP_MenuPosts
     public function get_menus()
     {
         $this->set_menus();
-        $temp_menus = array();
+        $parse_menus = array();
 
         if ( ! is_array($this->menus)) {
             return false;
