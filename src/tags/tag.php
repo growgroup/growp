@@ -234,7 +234,7 @@ class GTag {
 
 		return $return;
 	}
-	
+
 	/**
 	 * アタッチメントのURLを取得する
 	 *
@@ -452,6 +452,7 @@ class GTag {
 		if ( $value && is_callable( $callback ) ) {
 			return $callback( $value );
 		}
+
 		return $value;
 	}
 }

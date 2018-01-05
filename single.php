@@ -9,7 +9,6 @@
  * =====================================================
  */
 
-
 while ( have_posts() ) :
 	the_post();
 	?>
@@ -22,9 +21,7 @@ while ( have_posts() ) :
 			</div>
 			<div class="l-post-content">
 				<?php
-
 				the_content();
-
 				wp_link_pages( array(
 					'before' => '<div class="page-links">' . __( 'Pages:', 'growp' ),
 					'after'  => '</div>',
@@ -42,6 +39,6 @@ while ( have_posts() ) :
 		comments_template();
 	}
 	?>
-	<?php
+<?php
 
 endwhile; // end of the loop.

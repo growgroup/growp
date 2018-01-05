@@ -17,7 +17,7 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 				'name'             => 'Yoast SEO',
 				'slug'             => 'wordpress-seo',
 				'required'         => true,
-				'force_activation' => true,
+				'force_activation' => false,
 			),
 
 			array(
@@ -86,6 +86,20 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 				'slug'             => 'login-rebuilder',
 				'required'         => false,
 				'force_activation' => false,
+			),
+
+			array(
+				'name'             => 'Google Analytics Dashboard for WP (GADWP)',
+				'slug'             => 'google-analytics-dashboard-for-wp',
+				'required'         => false,
+				'force_activation' => false,
+			),
+
+			array(
+				'name'     => 'Advanced Custom Fields Pro',
+				'slug'     => 'google-analytics-dashboard-for-wp',
+				'required' => false,
+				'source'   => 'https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip',
 			),
 
 

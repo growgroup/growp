@@ -9,23 +9,26 @@
  * @since 1.0.0
  * =====================================================
  */
-GTemplate::get_template("foundation/head");
-GTemplate::get_layout("header");
-GTemplate::get_layout("global-nav");
-GTemplate::get_component("page-header");
+
+$content = GTemplate::get_content();
+
+GTemplate::get_template( "foundation/head" );
+GTemplate::get_layout( "header" );
+GTemplate::get_layout( "global-nav" );
+GTemplate::get_component( "page-header" );
 ?>
-    <div class="l-main">
-        <?php
-        load_template(GTag::get_template_path());
-        ?>
-    </div>
+	<div class="l-main">
+		<?php
+		echo $content;
+		?>
+	</div>
 <?php
 
 // サイドバー
-GTemplate::get_layout("sidebar");
+GTemplate::get_layout( "sidebar" );
 
 // フッター取得前のアクションフック
-do_action('get_footer');
+do_action( 'get_footer' );
 
 // フッターを取得
-GTemplate::get_layout("footer");
+GTemplate::get_layout( "footer" );

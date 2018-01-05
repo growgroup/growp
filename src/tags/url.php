@@ -47,7 +47,7 @@ class GUrl {
 	 * @return string
 	 */
 	public static function the_asset( $path = "" ) {
-		echo esc_url( get_stylesheet_directory_uri() . $path );
+		echo static::asset( $path );
 	}
 
 }

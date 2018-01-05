@@ -37,6 +37,7 @@ function growp_setup() {
 	// タイトルタグをサポート
 	add_theme_support( 'title-tag' );
 
+
 	// HTML5構造化マークアップで出力
 	add_theme_support(
 		'html5',
@@ -52,6 +53,9 @@ function growp_setup() {
 	// editor-style を登録
 	add_editor_style( GROWP_STYLESHEET_URL );
 
+	add_filter( 'growp_asset_url', function ( $url ) {
+		return $url . '?ver=' . GROWP_VERSIONING;
+	} );
 }
 
 add_action( 'after_setup_theme', 'growp_setup' );

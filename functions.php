@@ -6,11 +6,15 @@
  * @since 1.0.0
  * =====================================================
  */
+
 /**
- * デバッグモードのON/OFF
+ * バージョン情報の出力
+ * キャッシュ対策
  */
+define( 'GROWP_VERSIONING', '1.0.0' );
+
 // テンプレートのパス
-define( 'TEMPLATE_PATH', dirname( __FILE__ ) );
+define( 'GROWP_TEMPLATE_PATH', dirname( __FILE__ ) );
 
 // CSSファイル
 define( "GROWP_STYLESHEET_URL", get_stylesheet_directory_uri() . "/assets/css/style.css" );

@@ -38,10 +38,10 @@ function growp_scripts() {
 			"src"    => "",
 			'deps'   => array(),
 			'media'  => "all",
-			'ver'    => "1.0.0",
+			'ver'    => GROWP_VERSIONING,
 		) );
 		extract( $style );
-		wp_enqueue_style( "growp_" . $handle, $src, $deps, $ver, $media );
+		wp_enqueue_style( "growp_" . $style['handle'], $style['src'], $style['deps'], $style['ver'], $style['media'] );
 	}
 
 	/**
@@ -72,12 +72,11 @@ function growp_scripts() {
 			'deps'      => array(),
 			'media'     => "all",
 			'in_footer' => true,
-			'ver'       => "1.0.0",
+			'ver'       => GROWP_VERSIONING,
 		) );
-		extract( $js );
-		wp_enqueue_script( "growp_" . $handle, $src, $deps, $ver, $in_footer );
-	}
 
+		wp_enqueue_script( "growp_" . $js['handle'], $js['src'], $js['deps'], $js['ver'], $js['in_footer'] );
+	}
 
 	/**
 	 * コメント欄が有効なページでは、
@@ -90,6 +89,8 @@ function growp_scripts() {
 
 /**
  * link タグに付与されるid属性を削除
+ *
+ * @params $input string
  * @since 1.2.0
  */
 function growp_clean_style_tag( $input ) {
