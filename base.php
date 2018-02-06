@@ -15,15 +15,16 @@ $content = GTemplate::get_content();
 GTemplate::get_template( "foundation/head" );
 GTemplate::get_layout( "header" );
 GTemplate::get_layout( "global-nav" );
+GTemplate::get_component( "mainvisual" );
 GTemplate::get_component( "page-header" );
-?>
-	<div class="l-main">
-		<?php
-		echo $content;
-		?>
-	</div>
-<?php
-
+$wrapper = apply_filters( 'growp/wrapper', 'onecolumn' );
+if ( $wrapper === "onecolumn" ){
+	echo $content;
+	unset( $content );
+} else {
+	echo $content;
+	unset( $content );
+}
 // サイドバー
 GTemplate::get_layout( "sidebar" );
 
