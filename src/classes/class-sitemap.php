@@ -329,7 +329,7 @@ class GROWP_Sitemap
         $this->before();
         $this->title(get_bloginfo("name"));
         echo "<ul>";
-        $top_level_pages = get_pages(array('parent' => 0,));
+        $top_level_pages = get_pages(array('parent' => 0, "sort_column" => "menu_order"));
         foreach ($top_level_pages as $page) {
             $p_id = $page->ID;
             recursive($p_id, $page, $this);
