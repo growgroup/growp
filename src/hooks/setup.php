@@ -155,3 +155,46 @@ function growp_override_mce_options( $init_array ) {
 }
 
 add_filter( 'tiny_mce_before_init', 'growp_override_mce_options' );
+
+
+/**
+ * TinyMCEのspanタグ等の自動削除を停止
+ *
+ * @param $init_array
+ */
+function growp_override_mce_options( $init_array ) {
+	global $allowedposttags;
+
+	$init_array['valid_elements']          = '*[*]';
+	$init_array['extended_valid_elements'] = '*[*]';
+	$init_array['valid_children']          = '+a[' . implode( '|', array_keys( $allowedposttags ) ) . ']';
+	$init_array['indent']                  = true;
+	$init_array['wpautop']                 = false;
+	$init_array['force_p_newlines']        = false;
+
+	return $init_array;
+}
+
+add_filter( 'tiny_mce_before_init', 'growp_override_mce_options' );
+
+/**
+ * ページヘッダーのフィルター
+ *
+ * @param $init_array
+ */
+function growp_page_headers( $pageheaders ) {
+	// ACF での更新をサポートする際
+	// if ( is_page() ) {
+	// 	$_pageheaders            = array(
+	// 		'title'    => get_field( "title", get_the_ID() ),
+	// 		'subtitle' => get_field( "subtitle", get_the_ID() ),
+	// 		'image'    => get_field( "image", get_the_ID() ),
+	// 	);
+	// 	$pageheaders["title"]    = ( isset( $_pageheaders["title"] ) && $_pageheaders["title"] ) ? $_pageheaders["title"] : $pageheaders["title"];
+	// 	$pageheaders["subtitle"] = ( isset( $_pageheaders["subtitle"] ) && $_pageheaders["subtitle"] ) ? $_pageheaders["subtitle"] : $pageheaders["subtitle"];
+	// 	$pageheaders["image"]    = ( isset( $_pageheaders["image"] ) && $_pageheaders["image"] ) ? wp_get_attachment_image_url( $_pageheaders["image"], 'full' ) : $pageheaders["image"];
+	// }
+	return $pageheaders;
+}
+
+add_filter( "growp/page_header", 'growp_page_headers' );
