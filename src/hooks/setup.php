@@ -177,3 +177,14 @@ function growp_page_headers( $pageheaders ) {
 }
 
 add_filter( "growp/page_header", 'growp_page_headers' );
+
+function growp_icpo_admin_style() {
+?>
+<style>#the-list .ui-sortable-placeholder {display:none;}</style>
+<?php
+}
+add_action( 'admin_head', 'growp_icpo_admin_style' );
+ 
+
+
+
