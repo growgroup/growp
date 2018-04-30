@@ -12,6 +12,8 @@
 
 $content = GTemplate::get_content();
 
+wp_reset_query();
+
 GTemplate::get_template( "foundation/head" );
 GTemplate::get_layout( "header" );
 GTemplate::get_layout( "global-nav" );
