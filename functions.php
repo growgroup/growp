@@ -59,3 +59,17 @@ require_once dirname( __FILE__ ) . "/src/hooks/scripts.php";
 require_once dirname( __FILE__ ) . "/src/hooks/setup.php";
 require_once dirname( __FILE__ ) . "/src/hooks/sidebar.php";
 
+
+// テンプレートを固定ページとして作成
+
+// $files = glob(__DIR__ . "/page-*.php");
+// foreach ($files as $file) {
+//     $fileheaders =  get_file_data($file, ["Page Slug","Template Name", "Page Template Name"]);
+//     $post_id = wp_insert_post([
+//         'post_type' => "page",
+//         'post_title' => $fileheaders[1],
+//         'post_name' => $fileheaders[0],
+//         'post_content' => "",
+//     ]);
+//     update_post_meta($post_id, "_wp_page_template", $fileheaders[2]);
+// }
