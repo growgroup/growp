@@ -155,22 +155,27 @@ class GTag
     }
 
 
-    private static function _is_parent_page($slug)
-    {
-        global $post;
-        if ($post->post_name === $slug) {
-            return true;
-        }
+    private static function _is_parent_page($slug, $post_id = 0)
+	{
+		if (!$post_id) {
+			global $post;
+		} else {
+			$post = get_post($post_id);
+		}
 
-        if (!$post->post_parent) {
-            return false;
-        }
+		if ($post->post_name === $slug) {
+			return true;
+		}
 
-        $parent_post = get_post($post->post_parent);
-        if ($parent_post->post_name === $slug) {
-            return true;
-        }
-    }
+		if (!$post->post_parent) {
+			return false;
+		}
+		$parent_post = get_post($post->post_parent);
+		if ($parent_post->post_name === $slug) {
+			return true;
+		}
+		return self::_is_parent_page($slug, $parent_post->ID);
+	}
 
     /**
      * テンプレートのパスを取得する
