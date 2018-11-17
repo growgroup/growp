@@ -491,7 +491,7 @@ class GTag
         if (!class_exists("WPSEO_Primary_Term")) {
             return false;
         }
-        $p = new WPSEO_Primary_Term(get_the_ID(), $taxonomy);
+        $p = new WPSEO_Primary_Term($taxonomy, get_the_ID());
         if (!$p->get_primary_term()) {
             $terms = get_the_terms(get_the_ID(), $taxonomy);
             if (is_wp_error($terms)) {
