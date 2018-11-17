@@ -22,11 +22,17 @@ function growp_scripts() {
 			'deps'   => array(),
 			'media'  => "all",
 		),
-
+		// app.css
+		array(
+			'handle' => "overwrite",
+			'src'    => get_theme_file_uri("/assets/css/app.css"),
+			'deps'   => array(),
+			'media'  => "all",
+		),
 		// 上書き用のスタイルシートを登録
 		array(
 			'handle' => "overwrite",
-			'src'    => get_template_directory_uri() . "/overwrite.css",
+			'src'    => get_theme_file_uri("/overwrite.css"),
 			'deps'   => array(),
 			'media'  => "all",
 		),
@@ -52,7 +58,7 @@ function growp_scripts() {
 		// 子テーマの app.js を登録
 		array(
 			'handle'    => "app", // ハンドル名
-			'src'       => GUrl::asset() . "/assets/js/app.js", // ファイルのURL
+			'src'       => get_theme_file_uri("/assets/js/app.js"), // ファイルのURL
 			'deps'      => array( "jquery" ), // 依存するスクリプトのハンドル名
 			'in_footer' => true, // wp_footer に出力
 		),
