@@ -501,4 +501,18 @@ class GTag
         }
         return $p->get_primary_term();
     }
+
+    /**
+     * 親のタームを取得
+     * @param $term
+     * @param $taxonomy
+     * @return WP_Term
+     */
+    public static function get_parent_term($term, $taxonomy = "category")
+    {
+        if ($term->parent === 0) {
+            return $term;
+        }
+        return self::get_parent_term(get_term($term->parent, $taxonomy), $taxonomy);
+    }
 }
