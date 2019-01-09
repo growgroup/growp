@@ -30,6 +30,28 @@ class GROWP_Privacy_Policy_Mock extends GROWP_Create_Mock {
                     <p>お客さまがご本人の個人情報の照会・修正・削除などをご希望される場合には、ご本人であることを確認の上、対応させていただきます。</p>
                     <h4><strong>法令、規範の遵守と見直し</strong></h4>
                     <p>当社は、保有する個人情報に関して適用される日本の法令、その他規範を遵守するとともに、本ポリシーの内容を適宜見直し、その改善に努めます。</p>
+                    <h4><strong>Googleアナリティクスの使用について</strong></h4>
+                    <p>
+						当サイトでは、より良いサービスの提供、またユーザビリティの向上のため、Googleアナリティクスを使用し、<br>
+						当サイトの利用状況などのデータ収集及び解析を行っております。<br>
+						その際、「Cookie」を通じて、Googleがお客様のIPアドレスなどの情報を収集する場合がありますが、<br>
+						「Cookie」で収集される情報は個人を特定できるものではありません。<br>
+						収集されたデータはGoogleのプライバシーポリシーにおいて管理されます。<br>
+						なお、当サイトのご利用をもって、上述の方法・目的においてGoogle及び当サイトが行うデータ処理に関し、 お客様にご承諾いただいたものとみなします。
+                    </p>
+                    <p>
+						当サイトでは、より良いサービスの提供、またユーザビリティの向上のため、Googleアナリティクスを使用し、<br>
+						当サイトの利用状況などのデータ収集及び解析を行っております。<br>
+						その際、「Cookie」を通じて、Googleがお客様のIPアドレスなどの情報を収集する場合がありますが、<br>
+						「Cookie」で収集される情報は個人を特定できるものではありません。<br>
+						収集されたデータはGoogleのプライバシーポリシーにおいて管理されます。<br>
+						なお、当サイトのご利用をもって、上述の方法・目的においてGoogle及び当サイトが行うデータ処理に関し、 お客様にご承諾いただいたものとみなします。
+                    </p>
+                    <p>
+						<strong>Googleのプライバシーポリシー</strong><br>
+						<a href="http://www.google.com/intl/ja/policies/privacy/" target="_blank">http://www.google.com/intl/ja/policies/privacy/</a><br>
+						<a href="https://www.google.com/intl/ja/policies/privacy/partners/" target="_blank">https://www.google.com/intl/ja/policies/privacy/partners/</a>
+                    </p>
                     <h4><strong>お問い合せ</strong></h4>
                     <p>当社の個人情報の取扱に関するお問い合せは下記までご連絡ください。</p>
         </div>';
