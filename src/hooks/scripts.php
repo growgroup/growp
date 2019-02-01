@@ -24,7 +24,7 @@ function growp_scripts() {
 		),
 		// app.css
 		array(
-			'handle' => "overwrite",
+			'handle' => "app",
 			'src'    => get_theme_file_uri("/assets/css/app.css"),
 			'deps'   => array(),
 			'media'  => "all",
@@ -55,7 +55,7 @@ function growp_scripts() {
 	 */
 	$javascripts = array(
 
-		// 子テーマの app.js を登録
+		// 子テーマのメインとなる app.js を登録
 		array(
 			'handle'    => "app", // ハンドル名
 			'src'       => get_theme_file_uri("/assets/js/app.js"), // ファイルのURL
@@ -63,10 +63,18 @@ function growp_scripts() {
 			'in_footer' => true, // wp_footer に出力
 		),
 
-		// 子テーマのメインとなる scripts.js を登録
+		// 子テーマのサブとなる scripts.js を登録
+//		array(
+//			'handle'    => "scripts",
+//			'src'       => GROWP_JAVASCRIPT_URL,
+//			'deps'      => array( "jquery" ),
+//			'in_footer' => true,
+//		),
+
+		//
 		array(
-			'handle'    => "scripts",
-			'src'       => GROWP_JAVASCRIPT_URL,
+			'handle'    => "theme-growp",
+			'src'       => get_theme_file_uri("/theme-growp.js"),
 			'deps'      => array( "jquery" ),
 			'in_footer' => true,
 		),
