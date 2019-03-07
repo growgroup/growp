@@ -63,18 +63,10 @@ function growp_scripts() {
 			'in_footer' => true, // wp_footer に出力
 		),
 
-		// 子テーマのサブとなる scripts.js を登録
-//		array(
-//			'handle'    => "scripts",
-//			'src'       => GROWP_JAVASCRIPT_URL,
-//			'deps'      => array( "jquery" ),
-//			'in_footer' => true,
-//		),
-
-		//
+		// 追加用JavaScript
 		array(
-			'handle'    => "theme-growp",
-			'src'       => get_theme_file_uri("/theme-growp.js"),
+			'handle'    => "overwrite",
+			'src'       => get_theme_file_uri("/overwrite.js"),
 			'deps'      => array( "jquery" ),
 			'in_footer' => true,
 		),

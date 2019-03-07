@@ -57,3 +57,22 @@ function growp_excerpt_length( $length ) {
 }
 
 add_filter( 'excerpt_length', 'growp_excerpt_length', 999 );
+
+
+/**
+ * コンポーネントをショートコードで呼び出し
+ */
+function growp_shortcode_get_component( $atts ) {
+	$atts = shortcode_atts( array(
+		'name' => '',
+	), $atts, 'growp_component' );
+	if( empty($atts["name"]) ) {
+		return "";
+	}
+	ob_start();
+	GTemplate::get_component( $atts["name"] );
+	$content = ob_get_contents();
+	ob_clean();
+	return $content;
+}
+add_shortcode( 'growp_component', 'growp_shortcode_get_component' );

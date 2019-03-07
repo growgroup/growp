@@ -1,0 +1,115 @@
+.
+,.editorconfig*
+,.gitignore*
+,.travis.yml
+,404.php*
+,archive.php*
+,attachment.php*
+,author.php
+,base-author.php
+,base.php*
+,bin/
+,   ,install-theme-unit-test-ja.sh
+,   ,install-wp-tests.sh*
+,composer.json
+,composer.lock
+,front-page.php*
+,functions.php*
+,home.php*
+,index.php*
+,languages/
+,   ,growp.mo*
+,   ,growp.pot*
+,   ,ja.mo*
+,   ,ja.po*
+,login.css
+,overwrite.css
+,overwrite.js*
+,page-example.php
+,page-noautop.php*
+,page-sitemap.php
+,page.php*
+,phpunit.xml.dist
+,search.php*
+,single.php*
+,src/
+,   ,classes/
+,   ,   ,class-menu-posts.php
+,   ,   ,class-post-type.php*
+,   ,   ,class-sitemap.php
+,   ,   ,class-tgm-plugin-activation.php*
+,   ,   ,class-theme-wrapper.php*
+,   ,   ,class-walker-comment.php*
+,   ,   ,class-walker-nav.php*
+,   ,hooks/
+,   ,   ,comment.php*
+,   ,   ,default-plugins.php*
+,   ,   ,extras.php*
+,   ,   ,scripts.php*
+,   ,   ,setup.php*
+,   ,   ,sidebar.php*
+,   ,mock/
+,   ,   ,class-create-mock.php
+,   ,   ,frontandhome-mock.php
+,   ,   ,mock.php
+,   ,   ,mw-wp-form-mock.php
+,   ,   ,privacy-policy-mock.php
+,   ,   ,sitemap-mock.php
+,   ,   ,tinymce-advanced-mock.php
+,   ,   ,wp-admin-ui-customize-mock.php
+,   ,tags/
+,  , ,nav.php
+,  , ,tag.php
+,  , ,template.php
+,  , ,url.php
+,style.css*
+,tests/
+,   ,bootstrap.php
+,   ,test-menuposts.php
+,   ,test-mock.php
+,   ,test-sitemap.php
+,   ,test-tag.php
+,tree.csv
+,vendor/
+,   ,autoload.php
+,   ,composer/
+,   ,   ,ClassLoader.php
+,   ,   ,LICENSE
+,   ,   ,autoload_classmap.php
+,   ,   ,autoload_namespaces.php
+,   ,   ,autoload_psr4.php
+,   ,   ,autoload_real.php
+,   ,   ,autoload_static.php
+,   ,   ,installed.json
+,   ,mobiledetect/
+,  , ,mobiledetectlib/
+,  ,, ,LICENSE.txt
+,  ,, ,Mobile_Detect.json
+,  ,, ,Mobile_Detect.php
+,  ,, ,README.md
+,  ,, ,composer.json
+,  ,, ,export/
+,  ,, ,   ,exportToJSON.php
+,  ,, ,namespaced/
+,  ,, ,   ,Detection/
+,  ,, ,  , ,MobileDetect.php
+,  ,, ,ruleset.xml
+,views/
+,,foundation/
+,,   ,head.php*
+,,layout/
+,,   ,footer.php*
+,,   ,global-nav.php*
+,,   ,header.php*
+,,   ,sidebar.php*
+,,object/
+,,,components/
+,,,   ,breadcrumb.php*
+,,,   ,comments.php*
+,,,   ,gallery.php
+,,,   ,mainvisual.php
+,,,   ,offer.php
+,,,   ,page-header.php
+,,,project/
+,,,,post-item.php*
+,,,,searchform.php*
