@@ -97,3 +97,24 @@ views/| | | |サイト内でよく利用するコンポーネント
  | | |post-item.php|投稿アイテムの出力
  | | |searchform.php|検索フォームの出力
  
+# よく利用するテンプレートタグ
+
+## GUrl
+	
+### ```<?php GUrl::the_url(); ?>```
+
+home_url() のエイリアス
+
+### ```<?php GUrl::the_asset(); ?>```
+
+get_theme_file_uri() のエイリアス
+
+## GTemplate
+
+### ``` <?php GTemplate::get_component("component_name"); ?>
+
+views/object/components/ 内のファイルを呼び出す
+
+### ``` <?php GTemplate::get_layout("component_name"); ?>
+
+views/layouts/ 内のファイルを呼び出す
