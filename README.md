@@ -111,10 +111,10 @@ get_theme_file_uri() のエイリアス
 
 ## GTemplate
 
-### ``` <?php GTemplate::get_component("component_name"); ?>
+### ```<?php GTemplate::get_component("component_name"); ?>```
 
 views/object/components/ 内のファイルを呼び出す
 
-### ``` <?php GTemplate::get_layout("component_name"); ?>
+### ```<?php GTemplate::get_layout("component_name"); ?>```
 
 views/layouts/ 内のファイルを呼び出す
