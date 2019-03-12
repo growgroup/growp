@@ -515,4 +515,25 @@ class GTag
         }
         return self::get_parent_term(get_term($term->parent, $taxonomy), $taxonomy);
     }
+
+    /**
+     * ページの階層を取得
+     * @param int $post_id
+     *
+     * @return int
+     */
+    public static function get_page_level( $post_id = 0 ) {
+        if ( ! $post_id ) {
+            global $post;
+            $post_id = $post->ID;
+        }
+        // 投稿タイプが階層対応していない場合は0を返す
+        $post_type = get_post_type( $post_id );
+        $pt_obj    = get_post_type_object( $post_type );
+        if ( ! $pt_obj->hierarchical ) {
+            return 0;
+        }
+        $levels = get_post_ancestors( $post_id );
+        return count( $levels );
+    }
 }
