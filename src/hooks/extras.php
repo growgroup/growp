@@ -23,14 +23,13 @@ function growp_body_classes( $classes ) {
 	return $classes;
 }
 
-add_filter( 'body_class', 'growp_body_classes' );
 
 
 /**
  * 抜粋文をカスタマイズ
  *
- * @since 1.2.1
  * @return void
+ * @since 1.2.1
  */
 
 add_action( 'excerpt_more', 'growp_change_more' );
@@ -52,11 +51,10 @@ function growp_change_more( $more ) {
  *
  * @return int
  */
-function growp_excerpt_length( $length ) {
-	return 80;
-}
 
-add_filter( 'excerpt_length', 'growp_excerpt_length', 999 );
+add_filter( 'excerpt_length', function ( $length ) {
+	return 80;
+}, 999 );
 
 
 /**
@@ -66,13 +64,15 @@ function growp_shortcode_get_component( $atts ) {
 	$atts = shortcode_atts( array(
 		'name' => '',
 	), $atts, 'growp_component' );
-	if( empty($atts["name"]) ) {
+	if ( empty( $atts["name"] ) ) {
 		return "";
 	}
 	ob_start();
 	GTemplate::get_component( $atts["name"] );
 	$content = ob_get_contents();
 	ob_clean();
+
 	return $content;
 }
+
 add_shortcode( 'growp_component', 'growp_shortcode_get_component' );

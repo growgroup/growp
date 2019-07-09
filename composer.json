@@ -1,5 +1,25 @@
 {
-    "require": {
-        "mobiledetect/mobiledetectlib": "^2.8"
+  "name": "growgroup/growp",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
     }
+  ],
+  "require": {
+    "mobiledetect/mobiledetectlib": "^2.8",
+    "wpackagist-plugin/wordpress-seo": "^11.5",
+    "symfony/finder": "3.4.29",
+    "symfony/dom-crawler": "3.4.29",
+    "symfony/css-selector": "3.4.29",
+    "stoutlogic/acf-builder": "^1.8",
+    "aristath/kirki": "^3.0",
+    "twig/twig": "^2.0",
+    "symfony/cache": "3.4.29"
+  },
+  "autoload": {
+    "psr-4": {
+      "Growp\\": "src/Growp/"
+    }
+  }
 }

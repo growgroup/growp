@@ -54,7 +54,7 @@ function growp_setup() {
 	add_editor_style( GROWP_STYLESHEET_URL );
 
 	add_filter( 'growp_asset_url', function ( $url ) {
-		return $url . '?ver=' . GROWP_VERSIONING;
+		return $url . '?ver=' . GROWP_VERSION;
 	} );
 }
 
@@ -179,12 +179,14 @@ function growp_page_headers( $pageheaders ) {
 add_filter( "growp/page_header", 'growp_page_headers' );
 
 function growp_icpo_admin_style() {
-?>
-<style>#the-list .ui-sortable-placeholder {display:none;}</style>
-<?php
+	?>
+	<style>#the-list .ui-sortable-placeholder {
+			display: none;
+		}</style>
+	<?php
 }
+
 add_action( 'admin_head', 'growp_icpo_admin_style' );
- 
 
 
 
