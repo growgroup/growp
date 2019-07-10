@@ -48,6 +48,8 @@ use function wp_get_attachment_image_url;
 use function wp_get_post_terms;
 use WP_Term;
 use WPSEO_Primary_Term;
+use Kirki;
+use Kirki_Helper;
 
 class Tags {
 
@@ -569,4 +571,42 @@ class Tags {
 
 		return count( $levels );
 	}
+
+	public static function get_option( $key, $default = "" ) {
+		return apply_filters( "growp/customizer/" . $key, self::get_theme_mod( $key, $default ) );
+	}
+
+	public static function option( $key, $callback = false, $default = "" ) {
+		if ( is_callable( $callback ) ) {
+			$val = self::get_option( $key, $default );
+			if ( ! $val ) {
+				return false;
+			}
+			$callback( $val, $default );
+
+			return true;
+		} else {
+			return self::get_option( $key, $default );
+		}
+	}
+
+	public static function the_option( $key, $default = "" ) {
+		echo static::get_option( $key, $default );
+	}
+
+	public static function get_theme_mod( $field_id, $default_value = '' ) {
+		if ( $field_id ) {
+			if ( ! $default_value ) {
+				if ( class_exists( 'Kirki' ) && isset( Kirki::$fields[ $field_id ] ) && isset( Kirki::$fields[ $field_id ]['default'] ) ) {
+					$default_value = Kirki::$fields[ $field_id ]['default'];
+				}
+			}
+			$value = get_theme_mod( $field_id, $default_value );
+
+			return $value;
+		}
+
+		return false;
+	}
+
 }

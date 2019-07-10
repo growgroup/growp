@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdd3b2e1acdbbffe1e5db2bfc9cee25b",
+    "content-hash": "d4c2f9bf03861c4e2724b8d2612daff9",
     "packages": [
         {
             "name": "aristath/kirki",
-            "version": "v3.0.44",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aristath/kirki.git",
-                "reference": "0ad720aad498ab984acdd6ef29dde426bd00058c"
+                "reference": "84a47ddbef2d9d06976f27db7c4be6412578b4b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aristath/kirki/zipball/0ad720aad498ab984acdd6ef29dde426bd00058c",
-                "reference": "0ad720aad498ab984acdd6ef29dde426bd00058c",
+                "url": "https://api.github.com/repos/aristath/kirki/zipball/84a47ddbef2d9d06976f27db7c4be6412578b4b8",
+                "reference": "84a47ddbef2d9d06976f27db7c4be6412578b4b8",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
                 "customizer",
                 "wordpress"
             ],
-            "time": "2019-06-24T21:32:08+00:00"
+            "time": "2019-07-05T09:19:49+00:00"
         },
         {
             "name": "composer/installers",
@@ -1004,30 +1004,14 @@
                 "templating"
             ],
             "time": "2019-06-18T15:37:11+00:00"
-        },
-        {
-            "name": "wpackagist-plugin/wordpress-seo",
-            "version": "11.5",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/11.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.11.5.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wordpress-seo/"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "aristath/kirki": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

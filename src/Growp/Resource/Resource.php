@@ -144,7 +144,7 @@ class Resource {
 		foreach ( static::$cache_prop_keys as $prop_key ) {
 			$props[ $prop_key ] = $cache->get( $prop_key );
 			if ( ! $props[ $prop_key ] ) {
-				$cache->set( $prop_key, $this->{$prop_key}, 60*60*60 );
+				$cache->set( $prop_key, $this->{$prop_key}, 60 * 60 * 60 );
 			}
 		};
 	}

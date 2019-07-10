@@ -2,16 +2,14 @@
 
 namespace Growp\Hooks;
 
-use function add_filter;
-use function add_theme_support;
-use function array_keys;
-use const GROWP_STYLESHEET_URL;
+use function add_shortcode;
+use Growp\Resource\Resource;
+use Growp\Template\BaseComponent;
 use const GROWP_VERSION;
-use function implode;
-use function is_author;
-use function preg_match_all;
-use function remove_action;
-use function wp_redirect;
+use function ob_clean;
+use function ob_get_contents;
+use function ob_start;
+use function shortcode_atts;
 
 class Frontend extends BaseHookSingleton {
 
@@ -19,9 +17,49 @@ class Frontend extends BaseHookSingleton {
 		add_action( "after_setup_theme", [ $this, 'setup' ] );
 		add_action( "init", [ $this, 'cleanup' ] );
 		add_action( "template_redirect", [ $this, 'protect_author' ] );
-		add_filter( 'tiny_mce_before_init', [ $this, 'mce_options' ] );
 		add_filter( 'style_loader_tag', [ $this, 'clean_style_tag' ] );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'growp_scripts' ], 10 );
+		add_shortcode( 'growp_component', [ $this, 'growp_shortcode_get_component' ] );
+		$this->change_template_path();
+	}
+
+	/**
+	 * テーマのセットアップ
+	 * 基本的な設定などを追加
+	 */
+	public function setup() {
+		$theme_supports = [
+			'editor-styles',
+			'align-wide',
+			'automatic-feed-links',
+			'post-thumbnails',
+			'menus',
+			'customize-selective-refresh-widgets',
+			'title-tag'
+		];
+
+		foreach ( $theme_supports as $support ) {
+			add_theme_support( $support );
+		}
+		// HTML5構造化マークアップで出力
+		add_theme_support(
+			'html5',
+			array(
+				'comment-list',
+				'search-form',
+				'comment-form',
+				'gallery',
+				'caption',
+			)
+		);
+		add_editor_style( "resource/gg-styleguide/dist/assets/css/style.css" );
+	}
+
+	/**
+	 * テンプレートへのパスを変更する
+	 */
+	public function change_template_path() {
 		$templates = [
 			'index',
 			'404',
@@ -42,63 +80,31 @@ class Frontend extends BaseHookSingleton {
 			'embed'
 		];
 		foreach ( $templates as $template ) {
-			add_filter( "{$template}_template_hierarchy", [ $this, 'filter_template' ] );
+			add_filter( "{$template}_template_hierarchy", function ( $templates ) {
+				foreach ( $templates as $key => $template ) {
+					$templates[ $key ] = 'views/templates/' . $template;
+				}
+
+				return $templates;
+			} );
 		}
-	}
-
-	public function filter_template( $templates ) {
-		foreach ( $templates as $key => $template ) {
-			$templates[ $key ] = 'views/templates/' . $template;
-		}
-
-		return $templates;
-	}
-
-	public function body_class( $classes ) {
-		global $post;
-		// スラッグが設定されている場合出力
-		if ( isset( $post->post_name ) && ( strlen( $post->post_name ) == mb_strlen( $post->post_name, 'utf8' ) ) ) {
-			$classes[] = $post->post_name;
-		}
-
-		return $classes;
 	}
 
 	/**
-	 * テーマのセットアップ
-	 * 基本的な設定などを追加
+	 * body タグへの class 属性を付与
+	 *
+	 * @param $classes
+	 *
+	 * @return array
 	 */
-	public function setup() {
-		$theme_supports = [
-			'automatic-feed-links',
-			'post-thumbnails',
-			'menus',
-			'customize-selective-refresh-widgets',
-			'title-tag'
-		];
-
-		foreach ( $theme_supports as $support ) {
-			add_theme_support( $support );
+	public function body_class( $classes ) {
+		global $post;
+		// スラッグが設定されており、場合出力
+		if ( isset( $post->post_name ) && ( strlen( $post->post_name ) == mb_strlen( $post->post_name, 'utf8' ) ) ) {
+			$classes[] = "page-class-" . $post->post_name;
 		}
 
-
-		// HTML5構造化マークアップで出力
-		add_theme_support(
-			'html5',
-			array(
-				'comment-list',
-				'search-form',
-				'comment-form',
-				'gallery',
-				'caption',
-			)
-		);
-		add_theme_support('editor-styles');
-		add_theme_support( 'align-wide' );
-		add_editor_style( "resource/gg-styleguide/dist/assets/css/style.css" );
-		add_filter( 'growp_asset_url', function ( $url ) {
-			return $url . '?ver=' . GROWP_VERSION;
-		} );
+		return $classes;
 	}
 
 	/**
@@ -131,24 +137,6 @@ class Frontend extends BaseHookSingleton {
 		}
 	}
 
-	/**
-	 * Tinymceのオプションを加工
-	 *
-	 * @param $init_array
-	 *
-	 * @return mixed
-	 */
-	public function mce_options( $init_array ) {
-		global $allowedposttags;
-		$init_array['valid_elements']          = '*[*]';
-		$init_array['extended_valid_elements'] = '*[*]';
-		$init_array['valid_children']          = '+a[' . implode( '|', array_keys( $allowedposttags ) ) . ']';
-		$init_array['indent']                  = true;
-		$init_array['wpautop']                 = false;
-		$init_array['force_p_newlines']        = false;
-
-		return $init_array;
-	}
 
 	/**
 	 * link タグに付与されるid属性を削除
@@ -164,4 +152,89 @@ class Frontend extends BaseHookSingleton {
 
 		return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
 	}
+
+
+	/**
+	 * CSS、jsの読み込み
+	 */
+	public function growp_scripts() {
+
+		$resource = Resource::get_instance();
+
+
+		$styles = [];
+		foreach ( $resource->css_files as $key => $file ) {
+			$styles[] = [
+				'handle' => basename( $file ) . $key,
+				'src'    => get_theme_file_uri( $file ),
+				'deps'   => [],
+				'media'  => 'all',
+			];
+		}
+
+		foreach ( $styles as $style_key => $style ) {
+			$style = wp_parse_args( $style, array(
+				'handle' => $style_key,
+				"src"    => "",
+				'deps'   => array(),
+				'media'  => "all",
+				'ver'    => GROWP_VERSION,
+			) );
+			extract( $style );
+			wp_enqueue_style( "growp_" . $style['handle'], $style['src'], $style['deps'], $style['ver'], $style['media'] );
+		}
+
+		$javascript = [];
+		/**
+		 * 読み込むJsファイルを定義
+		 */
+		foreach ( $resource->js_files as $key => $file ) {
+			$javascript[] = [
+				'handle'    => basename( $file ) . $key,
+				'src'       => get_theme_file_uri( $file ),
+				'deps'      => array( "jquery" ), // 依存するスクリプトのハンドル名
+				'in_footer' => true, // wp_footer に出力
+			];
+		}
+
+		foreach ( $javascript as $js_key => $js ) {
+			$js = wp_parse_args( $js, array(
+				'handle'    => $js_key,
+				'deps'      => array(),
+				'media'     => "all",
+				'in_footer' => true,
+				'ver'       => GROWP_VERSION,
+			) );
+
+			wp_enqueue_script( "growp_" . $js['handle'], $js['src'], $js['deps'], $js['ver'], $js['in_footer'] );
+		}
+
+		/**
+		 * コメント欄が有効なページでは、
+		 * 返信用のjsを登録
+		 */
+		if ( is_single() && comments_open() && get_option( 'thread_comments' ) ) {
+			wp_enqueue_script( 'comment-reply' );
+		}
+	}
+
+	/**
+	 * コンポーネントをショートコードで呼び出し
+	 */
+	public function growp_shortcode_get_component( $atts ) {
+		$atts = shortcode_atts( array(
+			'name' => '',
+		), $atts, 'growp_component' );
+		if ( empty( $atts["name"] ) ) {
+			return "";
+		}
+		ob_start();
+		BaseComponent::get( $atts["name"] );
+		$content = ob_get_contents();
+		ob_clean();
+
+		return $content;
+	}
+
+
 }

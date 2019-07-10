@@ -1,17 +1,17 @@
 [
     {
         "name": "aristath/kirki",
-        "version": "v3.0.44",
-        "version_normalized": "3.0.44.0",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/aristath/kirki.git",
-            "reference": "0ad720aad498ab984acdd6ef29dde426bd00058c"
+            "reference": "84a47ddbef2d9d06976f27db7c4be6412578b4b8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/aristath/kirki/zipball/0ad720aad498ab984acdd6ef29dde426bd00058c",
-            "reference": "0ad720aad498ab984acdd6ef29dde426bd00058c",
+            "url": "https://api.github.com/repos/aristath/kirki/zipball/84a47ddbef2d9d06976f27db7c4be6412578b4b8",
+            "reference": "84a47ddbef2d9d06976f27db7c4be6412578b4b8",
             "shasum": ""
         },
         "require": {
@@ -26,9 +26,9 @@
             "phpunit/phpunit": "*",
             "wp-coding-standards/wpcs": "*"
         },
-        "time": "2019-06-24T21:32:08+00:00",
+        "time": "2019-07-05T09:19:49+00:00",
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",
         "include-path": [
             ".",
@@ -1031,25 +1031,5 @@
         "keywords": [
             "templating"
         ]
-    },
-    {
-        "name": "wpackagist-plugin/wordpress-seo",
-        "version": "11.5",
-        "version_normalized": "11.5.0.0",
-        "source": {
-            "type": "svn",
-            "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-            "reference": "tags/11.5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://downloads.wordpress.org/plugin/wordpress-seo.11.5.zip"
-        },
-        "require": {
-            "composer/installers": "~1.0"
-        },
-        "type": "wordpress-plugin",
-        "installation-source": "dist",
-        "homepage": "https://wordpress.org/plugins/wordpress-seo/"
     }
 ]

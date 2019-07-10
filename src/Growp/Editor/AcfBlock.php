@@ -1,23 +1,46 @@
 <?php
 
-namespace Growp\Acf;
+namespace Growp\Editor;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use Twig_Environment;
 
 class AcfBlock {
 
-	public function __construct() {
+	public $post_type_slug = "growp_acf_block";
+	public $post_type_label = "ブロック管理";
+
+	public static $instance = null;
+
+	private function __construct() {
 		add_action( 'init', [ $this, 'register_post_type' ], 10, 1 );
 		$self = $this;
 		add_action( 'acf/init', function () use ( $self ) {
-
 			$self->add_acf_block_settings();
 			$self->register_blocks();
 		} );
+		add_filter( 'block_categories', [ $this, "add_block_category" ], 10, 2 );
+	}
 
+	function add_block_category( $categories, $post ) {
+		return array_merge(
+			$categories,
+			[
+				[
+					'slug'  => 'growp-blocks',
+					'title' => 'オリジナルブロック',
+				],
+			]
+		);
+	}
+
+	public static function get_instance() {
+		if ( ! static::$instance ) {
+			static::$instance = new static();
+		}
+
+		return static::$instance;
 	}
 
 	/**
@@ -26,18 +49,25 @@ class AcfBlock {
 	 */
 	public function register_blocks() {
 		$blocks = get_posts( [
-			'post_type'      => 'growp_acf_block',
+			'post_type'      => $this->post_type_slug,
 			'no_found_rows'  => true,
-			'posts_per_page' => -1
+			'posts_per_page' => - 1
 		] );
 		$self   = $this;
 		foreach ( $blocks as $block ) {
+			$block_meta = get_fields( $block->ID );
+			$category   = get_field( "block_category", $block->ID );
+			$title      = get_field( "block_title", $block->ID );
+			if ( ! $title ) {
+				continue;
+			}
+
 			$block_config = [
 				'name'            => get_field( "block_name", $block->ID ),
 				'title'           => get_field( "block_title", $block->ID ),
 				'description'     => get_field( "block_description", $block->ID ),
-				'category'        => get_field( "block_category", $block->ID ),
-				'icon'            => get_field( "block_icon", $block->ID ),
+				'category'        => ( $category ) ? $category : "growp-blocks",
+				'icon'            => ( $block_meta["block_icon"] ) ? $block_meta["block_icon"] : '<svg width="94px" height="91px" viewBox="0 0 94 91" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="logo"><rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="94" height="91" rx="8"></rect><path d="M34,23 C32.2492851,23.016762 31.0124687,24.2619372 31,26 L31,68.999989 L62,68.999989 C63.7272872,69.0042742 64.9873241,67.7530043 65,66 L65,23 L34,23 Z M58,63 L37,63 C36.2230911,62.9985419 36.0041962,62.7850405 36,62 L36,29 C36,28.2181034 36.2201192,28 37,28 L58,28 C58.7414684,28 58.9615875,28.2181034 59,29 L59,41 L50,41 C49.3717545,40.9474695 49.1516353,41.1655729 49,42 L49,52 C49.1558315,52.3570375 49.3747264,52.5705389 50,52 L54,52 C54.521062,52.5705389 54.7399569,52.3570375 54,52 L54,47 L59,47 L59,62 C59.0004175,62.6474341 58.9433802,62.7774784 59,63 C58.7420065,62.9625493 58.6068483,63.0091408 58,63 Z" fill="#5F6817" fill-rule="nonzero"></path></g></g></svg>',
 				'mode'            => get_field( "block_mode", $block->ID ),
 				'align'           => get_field( "block_align", $block->ID ),
 				'post_types'      => get_field( "block_post_types", $block->ID ),
@@ -78,8 +108,9 @@ class AcfBlock {
 			$block_acf_settings = get_field( "block_acf_settings", $block->ID );
 			$block_name         = get_field( "block_name", $block->ID );
 			$block_template     = get_field( "block_render_callback", $block->ID );
+
+			$acf_block = new FieldsBuilder( "block_meta_" . $block_name, [ 'title' => 'ブロック設定' ] );
 			if ( is_array( $block_acf_settings ) ) {
-				$acf_block = new FieldsBuilder( "block_meta_" . $block_name, [ 'title' => 'ブロック設定' ] );
 				foreach ( $block_acf_settings as $acf_setting ) {
 					if ( $acf_setting["block_type"] === "repeater" ) {
 						$repeater = $acf_block->addRepeater( $acf_setting["block_key"], [
@@ -99,24 +130,24 @@ class AcfBlock {
 							'label' => $acf_setting["block_label"]
 						] );
 					}
-
 				}
-				$acf_block->addField( "block_custom_template_condition", "radio", [
-					'label'         => "テンプレート上書き設定",
-					'default_value' => "0",
-					'choices'       => [
-						'1' => '上書きする',
-						'0' => 'デフォルト',
-					],
-				] );
-				$acf_block->addField( "block_custom_template", "textarea", [
-					'label'         => "カスタムテンプレート",
-					'default_value' => $block_template
-				] )->conditional( "block_custom_template_condition", "==", "1" );
-
-				$acf_block->setLocation( "block", "==", "acf/" . $block_name );
-				acf_add_local_field_group( $acf_block->build() );
 			}
+			$acf_block->addField( "block_custom_template_condition", "radio", [
+				'label'         => "テンプレート上書き設定",
+				'default_value' => "0",
+				'choices'       => [
+					'1' => '上書きする',
+					'0' => 'デフォルト',
+				],
+			] );
+			$acf_block->addField( "block_custom_template", "wysiwyg", [
+				'label'         => "カスタムテンプレート",
+				'default_value' => $block_template
+			] )->conditional( "block_custom_template_condition", "==", "1" );
+
+			$acf_block->setLocation( "block", "==", "acf/" . $block_name );
+			acf_add_local_field_group( $acf_block->build() );
+
 		}
 	}
 
@@ -124,7 +155,8 @@ class AcfBlock {
 	 * ACFブロックの設定の追加
 	 * @throws \StoutLogic\AcfBuilder\FieldNameCollisionException
 	 */
-	public function add_acf_block_settings() {
+	public
+	function add_acf_block_settings() {
 		$_acf_fields = [];
 		foreach ( acf_get_field_types() as $type_name => $type ) {
 			$_acf_fields[ $type_name ] = $type->label;
@@ -222,14 +254,15 @@ class AcfBlock {
 		acf_add_local_field_group( $acf_block->build() );
 	}
 
-	public function register_post_type() {
+	public
+	function register_post_type() {
 		$labels = array(
-			'name'                  => _x( 'ACFブロック', 'Post Type General Name', 'growp' ),
-			'singular_name'         => _x( 'ACFブロック', 'Post Type Singular Name', 'growp' ),
-			'menu_name'             => __( 'ACFブロック', 'growp' ),
-			'name_admin_bar'        => __( 'ACFブロック', 'growp' ),
-			'archives'              => __( 'ACFブロック一覧', 'growp' ),
-			'attributes'            => __( 'ACFブロック一覧', 'growp' ),
+			'name'                  => $this->post_type_label,
+			'singular_name'         => $this->post_type_label,
+			'menu_name'             => $this->post_type_label,
+			'name_admin_bar'        => $this->post_type_label,
+			'archives'              => "ブロック一覧",
+			'attributes'            => "ブロック一覧",
 			'parent_item_colon'     => __( '親のブロック', 'growp' ),
 			'all_items'             => __( 'すべてのブロック', 'growp' ),
 			'add_new_item'          => __( '新しいブロックを追加', 'growp' ),
@@ -253,7 +286,7 @@ class AcfBlock {
 			'filter_items_list'     => __( 'Filter items list', 'growp' ),
 		);
 		$args   = array(
-			'label'               => __( 'ACFブロック', 'growp' ),
+			'label'               => $this->post_type_label,
 			'description'         => __( 'ACFブロックを登録', 'growp' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'revisions' ),
