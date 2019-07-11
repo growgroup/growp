@@ -306,8 +306,5 @@ class AcfBlock {
 			'show_in_rest'        => false,
 		);
 		register_post_type( 'growp_acf_block', $args );
-
-
 	}
-
 }
