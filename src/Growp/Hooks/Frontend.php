@@ -11,10 +11,12 @@ use function ob_get_contents;
 use function ob_start;
 use function shortcode_atts;
 
-class Frontend extends BaseHookSingleton {
+class Frontend {
 
-	protected function __construct() {
-		add_action( "after_setup_theme", [ $this, 'setup' ] );
+	protected static $instance = null;
+
+	private function __construct() {
+		add_action( "init", [ $this, 'setup' ] );
 		add_action( "init", [ $this, 'cleanup' ] );
 		add_action( "template_redirect", [ $this, 'protect_author' ] );
 		add_filter( 'style_loader_tag', [ $this, 'clean_style_tag' ] );
@@ -22,6 +24,14 @@ class Frontend extends BaseHookSingleton {
 		add_action( 'wp_enqueue_scripts', [ $this, 'growp_scripts' ], 10 );
 		add_shortcode( 'growp_component', [ $this, 'growp_shortcode_get_component' ] );
 		$this->change_template_path();
+	}
+
+	public static function get_instance() {
+		if ( ! static::$instance ) {
+			static::$instance = new static();
+		}
+
+		return static::$instance;
 	}
 
 	/**
@@ -38,6 +48,7 @@ class Frontend extends BaseHookSingleton {
 			'customize-selective-refresh-widgets',
 			'title-tag'
 		];
+
 
 		foreach ( $theme_supports as $support ) {
 			add_theme_support( $support );
@@ -137,7 +148,6 @@ class Frontend extends BaseHookSingleton {
 		}
 	}
 
-
 	/**
 	 * link タグに付与されるid属性を削除
 	 *
@@ -152,7 +162,6 @@ class Frontend extends BaseHookSingleton {
 
 		return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
 	}
-
 
 	/**
 	 * CSS、jsの読み込み
@@ -171,6 +180,12 @@ class Frontend extends BaseHookSingleton {
 				'media'  => 'all',
 			];
 		}
+		$styles[] = [
+			'handle' => "overwrite",
+			'src'    => get_theme_file_uri( "assets/css/overwrite.css" ),
+			'deps'   => [],
+			'media'  => 'all',
+		];
 
 		foreach ( $styles as $style_key => $style ) {
 			$style = wp_parse_args( $style, array(

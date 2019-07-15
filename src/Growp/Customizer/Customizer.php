@@ -2,15 +2,20 @@
 
 namespace Growp\Customizer;
 
-use function esc_attr__;
+use Growp\Resource\Resource;
 use GUrl;
-use GTag;
 use Kirki;
-use Kirki_Helper;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use function wp_send_json_error;
+use function wp_send_json_success;
+use function wp_verify_nonce;
 
 class Customizer {
 
 	public static $instance = null;
+
+	public $menu = null;
 
 	public static function get_instance() {
 		if ( ! static::$instance ) {
@@ -20,9 +25,37 @@ class Customizer {
 		return static::$instance;
 	}
 
-	private function __construct() {
-		add_action( "init", function () {
+	public function register() {
+		$request = Request::createFromGlobals();
+		if ( ! wp_verify_nonce( $request->get( "nonce" ), __FILE__ ) ) {
+			wp_send_json_error( [ "message" => "不正なアクセス" ] );
+			exit;
+		}
+		$resource = Resource::get_instance();
+		$resource->register_components();
+		wp_send_json_success( [ "message" => "コンポーネントを登録しました" ] );
+		exit;
+	}
 
+	private function __construct() {
+
+		add_action( 'customize_controls_enqueue_scripts', function () {
+			wp_enqueue_script(
+				'growp_themecustomizer',
+				get_theme_file_uri( 'assets/js/theme-customizer.js' ),
+				array( 'jquery', 'customize-preview' ),
+				"",
+				true
+			);
+			wp_localize_script( "growp_themecustomizer", "GROWP_THEMECUSTOMIZER", [
+				"nonce"  => wp_create_nonce( __FILE__ ),
+				"action" => "growp_register_components"
+			] );
+		} );
+
+		add_action( "wp_ajax_growp_register_components", [ $this, "register" ] );
+
+		add_action( "init", function () {
 			$customizer_id = "growp";
 
 			/**
@@ -62,7 +95,7 @@ class Customizer {
 				'label'       => esc_attr__( 'ヘッダー : ロゴイメージ', 'growp' ),
 				'description' => esc_attr__( 'ヘッダーにロゴとして設定する画像をアップロードしてください。(推奨: 266px × 32px)', 'growp' ),
 				'section'     => 'growp_base_logo',
-				'default'     => get_theme_file_uri( "/dist/assets/images/logo.png" ),
+				'default'     => GUrl::asset( "/dist/assets/images/logo.png" ),
 			) );
 
 			Kirki::add_field( $customizer_id, array(
@@ -191,6 +224,114 @@ class Customizer {
 				'section'     => 'growp_base_gtm',
 				'default'     => "",
 			) );
+			Kirki::add_panel( 'growp_component', array(
+				'priority'    => 11,
+				'title'       => esc_attr__( '[GG] コンポーネント設定', 'growp' ),
+				'description' => esc_attr__( 'コンポーネント設定に関わる設定', 'growp' ),
+			) );
+			Kirki::add_section( 'growp_component_info', array(
+				'title'       => esc_attr__( 'コンポーネント情報', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'panel'       => 'growp_component',
+				'priority'    => 160,
+			) );
+			$resource = Resource::get_instance();
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'custom',
+				'settings'    => 'growp_component_info_panel',
+				'label'       => __( 'コンポーネント情報', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_info',
+				'default'     => join( "<br>", [
+					'レイアウト: ' . count( $resource->html_metadata["components"]["layout"] ),
+					'コンポーネント: ' . count( $resource->html_metadata["components"]["component"] ),
+					'プロジェクト: ' . count( $resource->html_metadata["components"]["project"] ),
+				] )
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'custom',
+				'settings'    => 'growp_component_info_register',
+				'label'       => __( 'コンポーネントの自動登録', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_info',
+				'default'     => join( "<br>", [
+					'<button id="growp_register_components" class="button-secondary">コンポーネントを登録する  <div class="spinner"></div></button>',
+				] )
+			) );
+
+			Kirki::add_section( 'growp_component_margin', array(
+				'title'       => esc_attr__( 'マージン設定', 'growp' ),
+				'description' => esc_attr__( 'コンポーネント間のマージンに関する設定を行ってください。', 'growp' ),
+				'panel'       => 'growp_component',
+				'priority'    => 160,
+			) );
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'number',
+				'settings'    => 'growp_component_margin_xs',
+				'label'       => __( '間隔 : 最小', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_margin',
+				'default'     => '8',
+				'choices'     => [
+					'min'  => 0,
+					'max'  => 1600,
+					'step' => 1,
+				],
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'number',
+				'settings'    => 'growp_component_margin_sm',
+				'label'       => __( '間隔 : 小', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_margin',
+				'default'     => '16',
+				'choices'     => [
+					'min'  => 0,
+					'max'  => 1600,
+					'step' => 1,
+				],
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'number',
+				'settings'    => 'growp_component_margin_md',
+				'label'       => __( '間隔 : 中', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_margin',
+				'default'     => '32',
+				'choices'     => [
+					'min'  => 0,
+					'max'  => 1600,
+					'step' => 1,
+				],
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'number',
+				'settings'    => 'growp_component_margin_lg',
+				'label'       => __( '間隔 : 大', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_margin',
+				'default'     => '72',
+				'choices'     => [
+					'min'  => 0,
+					'max'  => 1600,
+					'step' => 1,
+				],
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'number',
+				'settings'    => 'growp_component_margin_xlg',
+				'label'       => __( '間隔 : 最大', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
+				'section'     => 'growp_component_margin',
+				'default'     => '100',
+				'choices'     => [
+					'min'  => 0,
+					'max'  => 1600,
+					'step' => 1,
+				],
+			) );
 
 			/**
 			 * ==========================================
@@ -269,118 +410,154 @@ class Customizer {
 			 * ==========================================
 			 */
 
-
-			/**
-			 * ==========================================
-			 * 04_トップページ設定
-			 * ==========================================
-			 */
-			Kirki::add_panel( 'growp_frontpage', array(
-				'priority'    => 11,
-				'title'       => esc_attr__( '[GG] トップページ設定', 'growp' ),
-				'description' => esc_attr__( 'トップページに関する設定が可能です。', 'growp' ),
-			) );
-
-			/**
-			 * 04_02_メインビジュアル通常パターン
-			 */
-			Kirki::add_section( 'growp_frontpage_mainvisual_normal', array(
-				'title'       => esc_attr__( 'メインビジュアル[通常]', 'growp' ),
-				'description' => esc_attr__( 'メインビジュアル[通常]に関する設定を行ってください。', 'growp' ),
-				'panel'       => 'growp_frontpage',
-				'priority'    => 160,
-			) );
-
-			Kirki::add_field( $customizer_id, array(
-				'type'        => 'image',
-				'settings'    => 'growp_frontpage_mainvisual_normal_image',
-				'label'       => __( 'メインビジュアル[通常] : 背景画像', 'growp' ),
-				'description' => esc_attr__( 'メインビジュアルの背景イメージをアップロードしてください。', 'growp' ),
-				'section'     => 'growp_frontpage_mainvisual_normal',
-				'default'     => GUrl::asset( '/assets/images/main-visual.jpg' ),
-			) );
-
-			/**
-			 * 04_03_メインビジュアルスライダーパターン
-			 */
-			Kirki::add_section( 'growp_frontpage_mainvisual_slider', array(
-				'title'       => esc_attr__( 'メインビジュアル[スライダー]', 'growp' ),
-				'description' => esc_attr__( 'メインビジュアル[スライダー]に関する設定を行ってください。', 'growp' ),
-				'panel'       => 'growp_frontpage',
-				'priority'    => 160,
-			) );
-
-			Kirki::add_field( $customizer_id, array(
-				'type'         => 'repeater',
-				'settings'     => 'growp_frontpage_mainvisual_slider',
-				'label'        => esc_attr__( 'メインビジュアル[スライダー]', 'growp' ),
-				'section'      => 'growp_frontpage_mainvisual_slider',
-				'priority'     => 10,
-				'row_label'    => array(
-					'type'  => 'text',
-					'value' => esc_attr__( 'スライド ', 'growp' ),
-					'field' => 'image',
-				),
-				'button_label' => esc_attr__( 'スライドを追加', 'growp' ),
-				'default'      => array(),
-				'fields'       => array(
-					'image'    => array(
-						'type'        => 'image',
-						'label'       => esc_attr__( '背景画像', 'growp' ),
-						'description' => esc_attr__( '画像をアップロードしてください', 'growp' ),
-						'default'     => '',
-					),
-					'link_url' => array(
-						'type'        => 'text',
-						'label'       => esc_attr__( 'URL', 'growp' ),
-						'description' => esc_attr__( 'URLを入力してください', 'growp' ),
-						'default'     => '',
-					),
-				)
-			) );
-
 			/**
 			 * 投稿タイプ設定
 			 */
-			Kirki::add_panel( 'growp_posttypes', array(
-				'priority'    => 20,
-				'title'       => esc_attr__( '[GG] 投稿タイプ', 'growp' ),
-				'description' => esc_attr__( 'Webサイトのお客様の声、導入事例などの投稿タイプに関する設定', 'growp' ),
+			Kirki::add_panel( 'growp_admincustomize', array(
+				'priority'    => 18,
+				'title'       => esc_attr__( '[GG] 管理画面カスタマイズ', 'growp' ),
+				'description' => esc_attr__( '', 'growp' ),
 			) );
 
-			Kirki::add_section( 'growp_posttypes_switch', array(
-				'title'       => esc_attr__( '利用設定', 'growp' ),
-				'description' => esc_attr__( '利用する投稿タイプの設定を行ってください。', 'growp' ),
-				'panel'       => 'growp_posttypes',
+			Kirki::add_section( 'growp_admincustomize_login_panel', array(
+				'title'       => esc_attr__( 'ログイン画面', 'growp' ),
+				'description' => esc_attr__( 'ログイン画面の設定を行ってください。', 'growp' ),
+				'panel'       => 'growp_admincustomize',
 				'priority'    => 160,
 			) );
 
 			Kirki::add_field( $customizer_id, array(
-				'type'        => 'multicheck',
-				'settings'    => 'growp_posttypes_swtich',
-				'label'       => __( '表示設定', 'growp' ),
-				'description' => esc_attr__( '利用する投稿タイプを選択してください。', 'growp' ),
-				'section'     => 'growp_posttypes_switch',
-				'default'     => [
-					'blog',
-					'media',
-					'cases',
-				],
+				'type'        => 'code',
+				'settings'    => 'growp_admincustomize_login_panel_css',
+				'label'       => __( 'ログイン画面CSS', 'growp' ),
+				'description' => esc_attr__( 'ログイン画面のCSSを設定してください', 'growp' ),
+				'section'     => 'growp_admincustomize_login_panel',
 				'priority'    => 12,
-				'choices'     => growp_get_post_types( true ),
+				'default'     => '/**
+ * ログイン画面_ロゴのスタイル
+ */
+#login h1 a {
+	background-size: 224px;
+	height: 64px;
+	width: 234px;
+}
+',
+				'choices'     => [
+					'language' => 'css',
+				],
 			) );
-			$post_types  = growp_get_post_types( true );
-			$_post_types = [];
 
-			$pageheader_default = GTag::get_option( "growp_layout_pageheader_background" );
-			foreach ( $post_types as $post_type_key => $post_type ) {
-				$_post_types[] = [
-					'post_type'        => $post_type_key,
-					'label'            => $post_type,
-					'subtitle'         => mb_strtoupper( $post_type_key ),
-					'background-image' => $pageheader_default["background-image"],
-				];
-			}
+			Kirki::add_section( 'growp_admincustomize_css_js', array(
+				'title'       => esc_attr__( '管理画面CSS・JavaScript', 'growp' ),
+				'description' => esc_attr__( '管理画面のみで反映するCSS・JavaScriptの設定を行ってください。', 'growp' ),
+				'panel'       => 'growp_admincustomize',
+				'priority'    => 160,
+			) );
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'code',
+				'settings'    => 'growp_admincustomize_css_js_css',
+				'label'       => __( '管理画面CSS', 'growp' ),
+				'description' => esc_attr__( '管理画面のみで反映するCSSを設定してください', 'growp' ),
+				'section'     => 'growp_admincustomize_css_js',
+				'priority'    => 12,
+				'default'     => '
+/** MW WP Form 用 */
+#the-list .ui-sortable-placeholder {
+	display: none;
+}
+/** 
+ ユーザーの権限ごとに body タグに class を付与
+ */
+.role-editor .hoge {
+}',
+				'choices'     => [
+					'language' => 'css',
+				],
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'code',
+				'settings'    => 'growp_admincustomize_css_js_js',
+				'label'       => __( '管理画面JavaScript', 'growp' ),
+				'description' => esc_attr__( '管理画面のみで反映するJavaScriptを設定してください', 'growp' ),
+				'section'     => 'growp_admincustomize_css_js',
+				'priority'    => 12,
+				'default'     => ';(function($){
+	$(function(){
+	});
+})(jQuery)
+				',
+				'choices'     => [
+					'language' => 'javascript',
+				],
+			) );
+
+			Kirki::add_section( 'growp_admincustomize_copyright', array(
+				'title'       => esc_attr__( '管理画面 フッターテキスト', 'growp' ),
+				'description' => esc_attr__( '管理画面のフッターテキスト設定を行ってください。', 'growp' ),
+				'panel'       => 'growp_admincustomize',
+				'priority'    => 160,
+			) );
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'text',
+				'settings'    => 'growp_admincustomize_copyright_right',
+				'label'       => __( 'フッターテキスト', 'growp' ),
+				'description' => esc_attr__( '右側のフッターテキストを入力してください。', 'growp' ),
+				'section'     => 'growp_admincustomize_copyright',
+				'priority'    => 12,
+				'default'     => 'ご不明な点はGrowGroup株式会社（052-753-6413）までご連絡下さい。',
+			) );
+
+			Kirki::add_section( 'growp_admincustomize_admin_menu', array(
+				'title'       => esc_attr__( 'クライアント用管理画面UI設定', 'growp' ),
+				'description' => esc_attr__( 'クライアント用の管理画面UI設定を行ってください。', 'growp' ),
+				'panel'       => 'growp_admincustomize',
+				'priority'    => 160,
+			) );
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'checkbox',
+				'settings'    => 'growp_admincustomize_admin_menu_menu',
+				'label'       => __( '管理メニュー設定', 'growp' ),
+				'description' => esc_attr__( '編集者に対して、簡素化した管理メニューを有効にするかどうか設定してください。', 'growp' ),
+				'section'     => 'growp_admincustomize_admin_menu',
+				'priority'    => 12,
+				'default'     => true,
+			) );
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'checkbox',
+				'settings'    => 'growp_admincustomize_admin_menu_adminbar',
+				'label'       => __( '管理バー設定', 'growp' ),
+				'description' => esc_attr__( '編集者に対して、簡素化した管理バーを有効にするかどうか設定してください。', 'growp' ),
+				'section'     => 'growp_admincustomize_admin_menu',
+				'priority'    => 12,
+				'default'     => true,
+			) );
+
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'checkbox',
+				'settings'    => 'growp_admincustomize_admin_menu_dashboard',
+				'label'       => __( 'ダッシュボード設定', 'growp' ),
+				'description' => esc_attr__( '編集者に対して、簡素化したダッシュボードを有効にするかどうか設定してください。', 'growp' ),
+				'section'     => 'growp_admincustomize_admin_menu',
+				'priority'    => 12,
+				'default'     => true,
+			) );
+			Kirki::add_field( $customizer_id, array(
+				'type'        => 'editor',
+				'settings'    => 'growp_admincustomize_admin_menu_dashboard_org',
+				'label'       => __( 'オリジナルダッシュボードウィジェット', 'growp' ),
+				'description' => esc_attr__( 'オリジナルダッシュボードウィジェットを設定する場合は入力してください。', 'growp' ),
+				'section'     => 'growp_admincustomize_admin_menu',
+				'priority'    => 12,
+				'default'     => "",
+				'choices'     => [
+					'element' => "textarea",
+					'row'     => "10",
+				]
+			) );
 
 		} );
 	}

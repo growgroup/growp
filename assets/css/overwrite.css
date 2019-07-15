@@ -79,17 +79,17 @@
 .aligncenter,
 div.aligncenter {
 	display: block;
-	margin: 5px auto 5px auto;
+	margin: 0px auto 0px auto;
 }
 
 .alignright {
 	float: right;
-	margin: 5px 0 20px 20px;
+	/*margin: 5px 0 20px 20px;*/
 }
 
 .alignleft {
 	float: left;
-	margin: 5px 20px 20px 0;
+	/*margin: 5px 20px 20px 0;*/
 }
 
 a img.alignright {
@@ -178,17 +178,26 @@ a img.aligncenter {
 	z-index: 100000; /* Above WP toolbar. */
 }
 
-/* Main column width */
-.wp-block {
-	max-width: 720px;
+body .alignfull {
+	margin-left: calc((1140px - 100vw) / 2);
+	margin-right: calc((1140px - 100vw) / 2);
+	width: 100vw;
+	max-width: 100vw;
 }
 
-/* Width of "wide" blocks */
-.wp-block[data-align="wide"] {
-	max-width: 1080px;
+body .alignwide {
+	width: 100%;
+	max-width: 1400px;
+	margin-left: calc((1140px - 1400px) / 2);
+	margin-right: calc((1140px - 1400px) / 2);
 }
 
-/* Width of "full-wide" blocks */
-.wp-block[data-align="full"] {
-	max-width: none;
+@media (max-width: 1140px) {
+	body .alignwide,
+	body .alignfull {
+		margin-left: calc((100vw - 100vw) / 2);
+		width: 100vw;
+		max-width: 100vw;
+		margin-right: calc((100vw - 100vw) / 2);
+	}
 }

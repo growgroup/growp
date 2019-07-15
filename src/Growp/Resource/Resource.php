@@ -2,21 +2,10 @@
 
 namespace Growp\Resource;
 
-use function array_filter;
-use function basename;
 use const DIRECTORY_SEPARATOR;
-use DOMNodeList;
-use ErrorException;
-
-use function get_class;
-use function get_class_methods;
-use ParagonIE\Sodium\File;
 use Symfony\Component\Cache\Simple\FilesystemCache;
-use Symfony\Component\CssSelector\CssSelectorConverter;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Finder\Finder;
-use YoastSEO_Vendor\Psr\Log\InvalidArgumentException;
-
 
 class Resource {
 
@@ -106,19 +95,28 @@ class Resource {
 
 	public static function get_instance() {
 
-		if ( ! static::$instance ) {
-			static::$instance = new self();
+		if ( ! self::$instance ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
+	/**
+	 * HTMLパスを取得
+	 * @return mixed
+	 */
 	public static function get_relative_html_path() {
 		$resource = static::get_instance();
 
 		return $resource->relative_html_path;
 	}
 
+	/**
+	 * キャッシュから読みこむ
+	 * @return array
+	 * @throws \Psr\SimpleCache\InvalidArgumentException
+	 */
 	public function load_from_cache() {
 		$cache = new FilesystemCache();
 		$props = [];
@@ -136,11 +134,13 @@ class Resource {
 		return static::$cache_hits;
 	}
 
+	/**
+	 * キャッシュをセットする
+	 * @throws \Psr\SimpleCache\InvalidArgumentException
+	 */
 	public function set_cache() {
 		$cache = new FilesystemCache();
 		$props = [];
-
-
 		foreach ( static::$cache_prop_keys as $prop_key ) {
 			$props[ $prop_key ] = $cache->get( $prop_key );
 			if ( ! $props[ $prop_key ] ) {
@@ -357,7 +357,7 @@ class Resource {
 			}
 
 			return true;
-		} );;
+		} );
 		$_list = [];
 		foreach ( $layouts as $layout ) {
 			$_layout    = new Crawler( $layout );
@@ -381,5 +381,32 @@ class Resource {
 		return $_list;
 	}
 
+	/**
+	 * コンポーネントを登録する
+	 */
+	public function register_components() {
+		$resource   = Resource::get_instance();
+		$components = $resource->html_metadata["components"];
+		foreach ( $components as $component_key => $component ) {
+			foreach ( $component as $cname => $c ) {
+				$block_post_id = wp_insert_post( [
+					'post_title'   => trim( $cname ),
+					'post_type'    => "growp_acf_block",
+					'post_status'  => "publish",
+					'post_content' => $c,
+				] );
+				update_field( "block_name", str_replace( " ", "_", trim( $cname ) ), $block_post_id );
+				update_field( "block_title", $cname, $block_post_id );
+				update_field( "block_render_callback", $c, $block_post_id );
+				update_field( "block_category", "growp-blocks-" . $component_key, $block_post_id );
+				update_field( "block_icon", '', $block_post_id );
+				update_field( "block_mode", "preview", $block_post_id );
+				update_field( "block_post_types", get_post_types( [ "public" => true ] ), $block_post_id );
+				update_field( "block_custom_template", $c, $block_post_id );
+				update_field( "block_acf_settings", [], $block_post_id );
+				update_field( "block_custom_template_condition", "0", $block_post_id );
+			}
+		}
+	}
 
 }

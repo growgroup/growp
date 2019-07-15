@@ -1,4 +1,5 @@
 <?php
+
 namespace Growp\Editor;
 
 class BlockEditor {
@@ -8,7 +9,7 @@ class BlockEditor {
 	private function __construct() {
 
 		add_filter( "init", [ $this, "setup" ] );
-//		$this->add_assets();
+		$this->add_assets();
 //		$this->print_scripts();
 //		$this->use_post_type();
 	}
@@ -31,7 +32,6 @@ class BlockEditor {
 		add_theme_support( 'editor-styles' );
 		add_theme_support( 'align-wide' );
 		add_editor_style( "resource/gg-styleguide/dist/assets/css/style.css" );
-//		add_editor_style( "overwrite.css" );
 	}
 
 	/**
@@ -40,10 +40,10 @@ class BlockEditor {
 	 * @return void
 	 */
 	public function add_assets() {
-//		add_action( 'enqueue_block_editor_assets', function () {
-//			wp_enqueue_style( 'growp_site_css', get_theme_file_uri("hoge.css"), [ 'wp-block-library' ] );
-//			wp_enqueue_script( 'growp_site_javascript', get_theme_file_uri("hoge.js"), [ 'wp-block-library' ] );
-//		} );
+		add_action( 'enqueue_block_editor_assets', function () {
+			wp_enqueue_style( 'growp_site_css', get_theme_file_uri( "/assets/css/block-editor.css" ), [ 'wp-block-library' ] );
+			wp_enqueue_script( 'growp_site_javascript', get_theme_file_uri( "assets/js/block-editor.js" ), [ 'wp-block-library' ] );
+		} );
 	}
 
 	/**

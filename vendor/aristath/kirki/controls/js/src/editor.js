@@ -12,8 +12,8 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.kirkiDynamicContr
 			tinymce: {
 				wpautop: true
 			},
-			quicktags: true,
-			mediaButtons: true
+			quicktags: true,true
+			mediaButtons:
 		} );
 
 		editor = tinyMCE.get( id );

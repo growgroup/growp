@@ -7,11 +7,11 @@ class BaseHookSingleton {
 	protected static $instance = null;
 
 	public static function get_instance() {
-		if ( ! static::$instance ) {
-			static::$instance = new static();
+		if ( ! self::$instance ) {
+			self::$instance = new self();
 		}
 
-		return static::$instance;
+		return self::$instance;
 	}
 
 }

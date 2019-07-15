@@ -1,0 +1,21 @@
+.editor-styles-wrapper .editor-post-title__block textarea {
+	min-height: 0px !important;
+	font-family: 'Noto Sans JP', sans-serif;
+	font-size: 2.1em !important;
+}
+
+/* Main column width */
+.wp-block {
+	max-width: 1140px;
+}
+
+/* Width of "wide" blocks */
+.wp-block[data-align="wide"] {
+	max-width: 1400px;
+}
+
+/* Width of "full-wide" blocks */
+.wp-block[data-align="full"] {
+	max-width: none;
+}
+
