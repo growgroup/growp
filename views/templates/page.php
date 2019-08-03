@@ -1,6 +1,6 @@
 <?php
 /**
- * 固定ページテンプレート
+ * Template Name: デフォルトテンプレート
  * =====================================================
  * @package  growp
  * @license  GPLv2 or later
@@ -11,7 +11,7 @@
 while ( have_posts() ) :
 	the_post();
 	?>
-	<div class="l-section">
+	<div class="l-section is-bottom">
 		<div class="l-container">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'page' ); ?>>
 				<div class="l-post-content">

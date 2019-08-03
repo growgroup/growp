@@ -178,12 +178,13 @@ a img.aligncenter {
 	z-index: 100000; /* Above WP toolbar. */
 }
 
-body .alignfull {
+body .l-container .alignfull {
 	margin-left: calc((1140px - 100vw) / 2);
 	margin-right: calc((1140px - 100vw) / 2);
 	width: 100vw;
 	max-width: 100vw;
 }
+
 
 body .alignwide {
 	width: 100%;
@@ -193,8 +194,8 @@ body .alignwide {
 }
 
 @media (max-width: 1140px) {
-	body .alignwide,
-	body .alignfull {
+	body .l-container .alignwide,
+	body .l-container .alignfull {
 		margin-left: calc((100vw - 100vw) / 2);
 		width: 100vw;
 		max-width: 100vw;

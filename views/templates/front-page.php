@@ -9,6 +9,6 @@
  * Formatting: false
  */
 //$vars = Foundation::get_vars();
-
+remove_filter( "the_content", "wpautop");
+the_content();
 ?>
-

@@ -2,18 +2,12 @@
 
 namespace Growp\Editor;
 
-use function add_action;
-use function array_map;
-use DOMDocument;
+use function admin_url;
 use Exception;
-use function explode;
-use function get_current_screen;
-use function preg_match;
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use function str_replace;
-use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use WP_Post;
 
 class AcfBlock {
 
@@ -253,6 +247,8 @@ class AcfBlock {
 				]
 			] );
 
+			$acf_block->addMessage( "このブロックを編集", '<a href="' . admin_url( "post.php?post=" . $block->ID . "&action=edit" ) . '" target="_blank" class="button-primary">このブロックを編集</a>' );
+
 			$acf_block->setLocation( "block", "==", "acf/" . $block_name );
 			acf_add_local_field_group( $acf_block->build() );
 		}
@@ -262,7 +258,7 @@ class AcfBlock {
 	 * ブロックテンプレートをコンパイル
 	 *
 	 * @param $b acf_block instance
-	 * @param $block growp_block
+	 * @param $block WP_Post
 	 */
 	public function compile_render_callback( $b, $block ) {
 		$fields                          = get_fields();
@@ -277,18 +273,28 @@ class AcfBlock {
 			try {
 				// 上書きの場合
 				if ( $block_custom_template_condition === "1" ) {
-					$twig = new Environment( new ArrayLoader( [
-						'index.html' => $this->insert_classname_and_align( $b, $block_custom_template )
-					] ) );
-					$twig->addExtension( new BlockTwigExtension() );
-					echo $twig->render( "index.html", $fields );
+					try {
+						$twig = new Environment( new ArrayLoader( [
+							'index.html' => $this->insert_classname_and_align( $b, $block_custom_template )
+						] ) );
+						$twig->addExtension( new BlockTwigExtension() );
+						echo $twig->render( "index.html", $fields );
+					} catch ( Exception $e ) {
+						echo $e->getMessage();
+
+					}
 				} else {
-					// そのままの場合
-					$twig = new Environment( new ArrayLoader( [
-						'index.html' => $this->insert_classname_and_align( $b, $template )
-					] ) );
-					$twig->addExtension( new BlockTwigExtension() );
-					echo $twig->render( "index.html", $fields );
+					try {
+						// そのままの場合
+						$twig = new Environment( new ArrayLoader( [
+							'index.html' => $this->insert_classname_and_align( $b, $template )
+						] ) );
+						$twig->addExtension( new BlockTwigExtension() );
+						echo $twig->render( "index.html", $fields );
+					} catch ( Exception $e ) {
+						echo $e->getMessage();
+					}
+
 				}
 			} catch ( Exception $e ) {
 				echo $e->getMessage();
@@ -473,10 +479,10 @@ class AcfBlock {
 		);
 		$args   = array(
 			'label'               => $this->post_type_label,
-			'description'         => __( 'ACFブロックを登録', 'growp' ),
+			'description'         => __( 'ブロックを登録', 'growp' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'revisions' ),
-			'hierarchical'        => true,
+			'hierarchical'        => false,
 			'public'              => false,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
@@ -488,7 +494,7 @@ class AcfBlock {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
 			'rewrite'             => false,
-			'capability_type'     => 'page',
+			'capability_type'     => 'post',
 			'show_in_rest'        => false,
 		);
 		register_post_type( 'growp_acf_block', $args );

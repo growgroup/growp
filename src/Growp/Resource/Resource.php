@@ -3,6 +3,9 @@
 namespace Growp\Resource;
 
 use const DIRECTORY_SEPARATOR;
+use function get_template_directory_uri;
+use function preg_match;
+use function str_replace;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Finder\Finder;
@@ -73,6 +76,17 @@ class Resource {
 		'sitetree',
 		'html_metadata',
 		'relative_html_path',
+	];
+
+
+	public $replace_matrix = [
+		'src="/assets/'                    => 'src="{{relative_html_path}}/assets/',
+		'style="background-image:url(\'/'  => 'style="background-image:url(\'{{relative_html_path}}/',
+		'style="background-image:url(/'    => 'style="background-image:url({{relative_html_path}}/',
+		'style="background-image: url(/'   => 'style="background-image: url({{relative_html_path}}/',
+		'style="background-image: url(\'/' => 'style="background-image: url(\'{{relative_html_path}}/',
+		'style="background-image: url("/'  => 'style="background-image: url("{{relative_html_path}}/',
+		' href="/'                         => ' href="/'
 	];
 
 	private function __construct() {
@@ -358,7 +372,7 @@ class Resource {
 
 			return true;
 		} );
-		$_list = [];
+		$_list   = [];
 		foreach ( $layouts as $layout ) {
 			$_layout    = new Crawler( $layout );
 			$class_name = $_layout->attr( "class" );
@@ -381,6 +395,25 @@ class Resource {
 		return $_list;
 	}
 
+	public function register_pages(){
+		array (
+			'id' => 'block_',
+			'name' => 'acf/',
+			'data' =>
+				array (
+					'block_custom_template_condition' => '0',
+					'_block_custom_template_condition' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_custom_template_condition',
+					'block_margin_size' => 'xs',
+					'_block_margin_size' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_size',
+					'block_margin_position' => 'top',
+					'_block_margin_position' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_position',
+					'block_margin' => '',
+					'_block_margin' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin',
+				),
+			'mode' => 'preview',
+		);
+	}
+
 	/**
 	 * コンポーネントを登録する
 	 */
@@ -389,24 +422,34 @@ class Resource {
 		$components = $resource->html_metadata["components"];
 		foreach ( $components as $component_key => $component ) {
 			foreach ( $component as $cname => $c ) {
+				$c             = $this->replace_url( $c );
 				$block_post_id = wp_insert_post( [
 					'post_title'   => trim( $cname ),
 					'post_type'    => "growp_acf_block",
 					'post_status'  => "publish",
 					'post_content' => $c,
 				] );
-				update_field( "block_name", str_replace( " ", "_", trim( $cname ) ), $block_post_id );
+				update_field( "block_name", str_replace( " ", "--", trim( $cname ) ), $block_post_id );
 				update_field( "block_title", $cname, $block_post_id );
 				update_field( "block_render_callback", $c, $block_post_id );
 				update_field( "block_category", "growp-blocks-" . $component_key, $block_post_id );
 				update_field( "block_icon", '', $block_post_id );
-				update_field( "block_mode", "preview", $block_post_id );
+				update_field( "block_mode", "auto", $block_post_id );
 				update_field( "block_post_types", get_post_types( [ "public" => true ] ), $block_post_id );
 				update_field( "block_custom_template", $c, $block_post_id );
 				update_field( "block_acf_settings", [], $block_post_id );
 				update_field( "block_custom_template_condition", "0", $block_post_id );
 			}
 		}
+	}
+
+	public function replace_url( $content ) {
+		foreach ( $this->replace_matrix as $before => $after ) {
+			$after   = str_replace( "{{relative_html_path}}", get_template_directory_uri() . "/" . $this->relative_html_path, $after );
+			$content = str_replace( $before, $after, $content );
+		}
+
+		return $content;
 	}
 
 }

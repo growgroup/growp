@@ -419,6 +419,8 @@ class BlockTwigExtension extends AbstractExtension {
 		'mysql2date',
 		'get_field',
 		'the_field',
+		'get_the_permalink',
+		'the_permalink',
 	];
 
 	public function getFilters() {

@@ -8,10 +8,10 @@
  * @see http://codex.wordpress.org/Template_Hierarchy
  * =====================================================
  */
-while ( have_posts() ) :
-	the_post();
-	remove_filter( 'the_content', 'wpautop' );
-	?>
+
+the_post();
+remove_filter( 'the_content', 'wpautop' );
+?>
 	<div class="l-section">
 		<div class="l-container">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'page' ); ?>>
@@ -28,5 +28,3 @@ while ( have_posts() ) :
 		</div>
 	</div>
 <?php
-
-endwhile; // end of the loop.

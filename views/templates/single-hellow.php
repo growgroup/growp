@@ -1,6 +1,7 @@
 <?php
 /**
- * Template Name: サイトマップ
+ * Template Name: テスト
+ * Template Post Type: post
  */
 while ( have_posts() ) {
 	the_post();
