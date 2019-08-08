@@ -2,6 +2,7 @@
 
 namespace Growp\Customizer;
 
+use function get_theme_file_uri;
 use Growp\Resource\Resource;
 use GUrl;
 use Kirki;
@@ -31,6 +32,7 @@ class Customizer {
 
 		add_action( "init", [ $this, 'init' ] );
 		add_action( "wp_ajax_growp_register_components", [ $this, "register" ] );
+		add_action( "wp_ajax_growp_get_html_info", [ $this, "get_html_info" ] );
 		add_action( 'customize_controls_enqueue_scripts', [ $this, 'enqueue_script' ] );
 	}
 
@@ -52,10 +54,17 @@ class Customizer {
 		);
 		wp_enqueue_style(
 			"growp_jbox",
-			"https://cdn.jsdelivr.net/npm/jbox@1.0.5/dist/jBox.min.css",
-			[ 'jquery', 'customize-preview' ],
+			"https://cdn.jsdelivr.net/npm/jbox@1.0.5/dist/jBox.all.css",
+			[],
 			"",
-			true
+			"all"
+		);
+		wp_enqueue_style(
+			"growp_themecustomizer",
+			get_theme_file_uri( 'assets/css/theme-customizer.css' ),
+			[],
+			"",
+			"all"
 		);
 		wp_localize_script( "growp_theme_customizer", "GROWP_THEMECUSTOMIZER", [
 			"nonce"  => wp_create_nonce( __FILE__ ),
@@ -258,6 +267,7 @@ class Customizer {
 				'レイアウト: ' . count( $resource->html_metadata["components"]["layout"] ),
 				'コンポーネント: ' . count( $resource->html_metadata["components"]["component"] ),
 				'プロジェクト: ' . count( $resource->html_metadata["components"]["project"] ),
+				'<button id="growp_view_sitemap" class="button-secondary">HTML情報を見る</button>'
 			] )
 		) );
 		Kirki::add_field( $customizer_id, array(
@@ -595,6 +605,16 @@ class Customizer {
 		$resource = Resource::get_instance();
 		$resource->register_components();
 		wp_send_json_success( [ "message" => "コンポーネントを登録しました" ] );
+		exit;
+	}
+	public function get_html_info() {
+		$request = Request::createFromGlobals();
+//		if ( ! wp_verify_nonce( $request->get( "nonce" ), __FILE__ ) ) {
+//			wp_send_json_error( [ "message" => "不正なアクセス" ] );
+//			exit;
+//		}
+		$resource = Resource::get_instance();
+		wp_send_json_success($resource);
 		exit;
 	}
 }

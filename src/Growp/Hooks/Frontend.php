@@ -2,6 +2,7 @@
 
 namespace Growp\Hooks;
 
+use function add_filter;
 use function add_shortcode;
 use Growp\Resource\Resource;
 use Growp\Template\BaseComponent;
@@ -10,6 +11,8 @@ use function ob_clean;
 use function ob_get_contents;
 use function ob_start;
 use function shortcode_atts;
+use function strpos;
+use function wp_enqueue_script;
 
 class Frontend {
 
@@ -129,13 +132,18 @@ class Frontend {
 		remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
 		remove_action( 'wp_head', 'wp_generator' );
 		remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
-		global $wp_widget_factory;
-		remove_action( 'wp_head',
-			array(
-				$wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
-				'recent_comments_style',
-			)
-		);
+
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+		add_filter( 'wp_head', function () {
+			if ( has_filter( 'wp_head', 'wp_widget_recent_comments_style' ) ) {
+				remove_filter( 'wp_head', 'wp_widget_recent_comments_style' );
+			}
+			global $wp_widget_factory;
+			if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
+				remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
+			}
+		} );
 	}
 
 	/**
@@ -170,8 +178,8 @@ class Frontend {
 
 		$resource = Resource::get_instance();
 
-
 		$styles = [];
+
 		foreach ( $resource->css_files as $key => $file ) {
 			$styles[] = [
 				'handle' => basename( $file ) . $key,
@@ -187,6 +195,8 @@ class Frontend {
 			'media'  => 'all',
 		];
 
+		wp_enqueue_script( "jquery" );
+
 		foreach ( $styles as $style_key => $style ) {
 			$style = wp_parse_args( $style, array(
 				'handle' => $style_key,
@@ -200,10 +210,14 @@ class Frontend {
 		}
 
 		$javascript = [];
+
 		/**
 		 * 読み込むJsファイルを定義
 		 */
 		foreach ( $resource->js_files as $key => $file ) {
+			if ( strpos( $file, "jquery.min" ) !== false ) {
+				continue;
+			}
 			$javascript[] = [
 				'handle'    => basename( $file ) . $key,
 				'src'       => get_theme_file_uri( $file ),

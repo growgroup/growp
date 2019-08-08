@@ -3,6 +3,7 @@
 namespace Growp\Resource;
 
 use const DIRECTORY_SEPARATOR;
+use Exception;
 use function get_template_directory_uri;
 use function preg_match;
 use function str_replace;
@@ -91,19 +92,19 @@ class Resource {
 
 	private function __construct() {
 		$this->sitetree = new SiteTree();
-		$cache_hits     = $this->load_from_cache();
-		$cache_flag     = true;
-
-		foreach ( $cache_hits as $ch ) {
-			if ( ! $ch ) {
-				$cache_flag = false;
-				break;
-			}
-		}
-		if ( ! $cache_flag ) {
-			$this->set_dir();
-			$this->parse();
-		}
+//		$cache_hits     = $this->load_from_cache();
+//		$cache_flag     = true;
+//
+//		foreach ( $cache_hits as $ch ) {
+//			if ( ! $ch ) {
+//				$cache_flag = false;
+//				break;
+//			}
+//		}
+//		if ( ! $cache_flag ) {
+		$this->set_dir();
+		$this->parse();
+//		}
 
 	}
 
@@ -132,7 +133,7 @@ class Resource {
 	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
 	public function load_from_cache() {
-		$cache = new FilesystemCache();
+		$cache = new FilesystemCache( $this->cache_key );
 		$props = [];
 
 		foreach ( static::$cache_prop_keys as $prop_key ) {
@@ -153,7 +154,7 @@ class Resource {
 	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
 	public function set_cache() {
-		$cache = new FilesystemCache();
+		$cache = new FilesystemCache( $this->cache_key );
 		$props = [];
 		foreach ( static::$cache_prop_keys as $prop_key ) {
 			$props[ $prop_key ] = $cache->get( $prop_key );
@@ -282,13 +283,10 @@ class Resource {
 	public function parse_paths_of_files( $array ) {
 		rsort( $array );
 		$result = array();
-
 		foreach ( $array as $item ) {
 			$parts   = explode( '/', $item );
 			$current = &$result;
-
 			for ( $i = 1, $max = count( $parts ); $i < $max; $i ++ ) {
-
 				if ( ! isset( $current[ $parts[ $i - 1 ] ] ) ) {
 					$current[ $parts[ $i - 1 ] ] = array();
 				}
@@ -327,16 +325,22 @@ class Resource {
 		if ( isset( $matches[1][0] ) && $matches[1][0] ) {
 			$page->type = $matches[1][0];
 		}
-		$crawler           = new Crawler( $contents );
-		$page->title       = $crawler->filter( "title" )->first()->html();
-		$page->description = $crawler->filter( 'meta[name=\'description\']' )->first()->attr( "content" );
+		$crawler                 = new Crawler( $contents );
+		$page->title             = $crawler->filter( "title" )->first()->html();
+		$page->description       = $crawler->filter( 'meta[name=\'description\']' )->first()->attr( "content" );
+		$main_content            = $crawler->filter( "*[class*='l-main']" );
+		$page->main_content_html = "";
+		try {
+			$page->main_content_html = $this->replace_url( $main_content->first()->html() );
+		} catch ( Exception $e ) {
+
+		}
 
 		$page->components['layout']    = $this->parse_component( $crawler, "layout", "*[class^='l-']" );
 		$page->components['component'] = $this->parse_component( $crawler, "component", "*[class*='c-']" );
 		$page->components['project']   = $this->parse_component( $crawler, "project", "*[class*='p-']" );
-
-		$titles                  = preg_split( "/(｜|\|)/", $page->title );
-		$page->page_header_title = isset( $titles[0] ) ? $titles[0] : $page->title;
+		$titles                        = preg_split( "/(｜|\|)/", $page->title );
+		$page->page_header_title       = isset( $titles[0] ) ? $titles[0] : $page->title;
 		if ( $crawler->filter( '*[data-growp-page-header-title]' )->count() ) {
 			$page->page_header_title = $crawler->filter( '*[data-growp-page-header-title]' )->first()->text();
 		}
@@ -351,6 +355,7 @@ class Resource {
 		if ( $crawler->filter( '*[data-growp-page-header-subtitle]' )->count() ) {
 			$page->page_header_subtitle = $crawler->filter( '*[data-growp-page-header-subtitle]' )->first()->text();
 		}
+
 		$this->sitetree->append( $page );
 	}
 
@@ -395,20 +400,20 @@ class Resource {
 		return $_list;
 	}
 
-	public function register_pages(){
-		array (
-			'id' => 'block_',
+	public function register_pages() {
+		array(
+			'id'   => 'block_',
 			'name' => 'acf/',
 			'data' =>
-				array (
-					'block_custom_template_condition' => '0',
+				array(
+					'block_custom_template_condition'  => '0',
 					'_block_custom_template_condition' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_custom_template_condition',
-					'block_margin_size' => 'xs',
-					'_block_margin_size' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_size',
-					'block_margin_position' => 'top',
-					'_block_margin_position' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_position',
-					'block_margin' => '',
-					'_block_margin' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin',
+					'block_margin_size'                => 'xs',
+					'_block_margin_size'               => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_size',
+					'block_margin_position'            => 'top',
+					'_block_margin_position'           => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_position',
+					'block_margin'                     => '',
+					'_block_margin'                    => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin',
 				),
 			'mode' => 'preview',
 		);

@@ -15,6 +15,7 @@ class Page {
 	public $relative_path = "";
 	public $depth = [];
 	public $components = [];
+	public $main_content_html = [];
 
 	public function __call( $method, $args ) {
 		foreach ( array( '/^get_/' => 'get_', '/^set_/' => 'set_' ) as $regex => $replace ) {

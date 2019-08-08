@@ -18,8 +18,9 @@
 		endwhile;
 		echo GNav::get_paging_nav();
 	else :
-		get_template_part( 'content', 'none' );
+		?>
+		<p>記事がありません。</p>
+		<?php
 	endif;
-
 	?>
 </div>

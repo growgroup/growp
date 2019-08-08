@@ -141,6 +141,13 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
             ),
         ),
+        'R' => 
+        array (
+            'Routes' => 
+            array (
+                0 => __DIR__ . '/..' . '/upstatement/routes',
+            ),
+        ),
         'D' => 
         array (
             'Detection' => 
@@ -151,6 +158,7 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
     );
 
     public static $classMap = array (
+        'AltoRouter' => __DIR__ . '/..' . '/altorouter/altorouter/AltoRouter.php',
         'ArithmeticError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ArithmeticError.php',
         'AssertionError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
         'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
