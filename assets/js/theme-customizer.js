@@ -1,7 +1,6 @@
 ;(function ($) {
 	var register_lock = false;
 	$(document).on("click", "#growp_view_sitemap", function (e) {
-		console.log(e);
 		e.preventDefault();
 		$.ajax({
 			type: "post",
@@ -11,9 +10,8 @@
 				nonce: GROWP_THEMECUSTOMIZER.nonce
 			}
 		}).done(function (res) {
-			console.log(res.data);
 			var content = res.data;
-			var _sitetree = res.data.sitetree;
+			var _sitetree = res.data.sitetree; 
 			var sitetree = []
 			for (var key in _sitetree) {
 				sitetree.push(_sitetree[key])

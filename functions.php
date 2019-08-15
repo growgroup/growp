@@ -191,3 +191,7 @@ add_action( "init", function () {
 } );
 
 
+
+function growp_html_url(){
+	return GUrl::asset();
+}

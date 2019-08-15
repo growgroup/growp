@@ -2,26 +2,35 @@
 
 namespace Growp\Editor;
 
-use function acf_add_local_field_group;
-use function acf_register_block_type;
-use function add_action;
-use function get_class;
-use function get_class_methods;
-use function get_post_types;
-use function json_encode;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class Acf {
 
 	protected static $instance = null;
 
+	/**
+	 * Acf constructor.
+	 * 初期化
+	 */
 	private function __construct() {
 		$self = $this;
 		add_action( 'acf/init', function () use ( $self ) {
 			$self->add_page_header_settings();
+			$self->add_main_visual_settings();
 		} );
+		add_action( 'acf/include_field_types', array( $this, 'include_field_types' ) );
 	}
 
+
+	public function include_field_types() {
+		new AcfPostTypeSelector();
+		new AcfTaxonomySelector();
+	}
+
+	/**
+	 * シングルトン
+	 * @return null
+	 */
 	public static function get_instance() {
 		if ( ! static::$instance ) {
 			static::$instance = new static();
@@ -40,27 +49,49 @@ class Acf {
 		         is_bool( array_search( 'advanced-custom-fields-pro/acf.php', get_option( 'active_plugins' ) ) ) );
 	}
 
+	/**
+	 * ページヘッダーの設定を追加
+	 * @throws \StoutLogic\AcfBuilder\FieldNameCollisionException
+	 */
 	public function add_page_header_settings() {
-		$page_header = new FieldsBuilder( "page_header", [ 'title' => 'ページヘッダー設定' ] );
+		$page_on_front = get_option( 'page_on_front' );
+		$page_header   = new FieldsBuilder( "page_header", [ 'title' => 'ページヘッダー設定', 'position' => 'acf_after_title', ] );
 		$page_header->addText( "page_header_title", [ 'label' => 'ページタイトル' ] );
 		$page_header->addText( "page_header_subtitle", [ 'label' => 'サブタイトル' ] );
 		$page_header->addImage( "page_header_image", [ 'label' => '背景画像' ] );
-		$page_header->setLocation( 'post_type', '==', 'page' );
-		acf_add_local_field_group( $page_header->build() );
+		$page_header->setLocation( 'post_type', '==', 'page' )->and( 'page', "!=", $page_on_front );
+		self::import_acf( $page_header->build() );
 	}
 
 	/**
-	 * ACFの設定情報をインポートする
-	 *
-	 * @param $json
-	 *
-	 * @return \ACF_Admin_Notice|bool
+	 * メインビジュアルの設定を追加
+	 * @throws \StoutLogic\AcfBuilder\FieldNameCollisionException
 	 */
+	public function add_main_visual_settings() {
+		$page_on_front = get_option( 'page_on_front' );
+		$main_visual   = new FieldsBuilder( "main_visual", [ 'title' => 'メインビジュアル設定', 'position' => 'acf_after_title', ] );
+		$main_visual->addRepeater(
+			"mv_images",
+			[
+				'label'        => '画像設定',
+				'button_label' => "画像を追加",
+				'layout'       => "block",
+			]
+		)
+		            ->addImage( "image", [ 'label' => '背景画像', 'return_format' => 'id' ] )
+		            ->addImage( "text_image", [ 'label' => 'テキスト画像', 'return_format' => 'id' ] )
+		            ->addGroup( "button",
+			            [
+				            'label'         => 'ボタン設定',
+				            'default_value' => '詳細はこちら'
+			            ]
+		            )->addText( "label", [ "label" => "テキスト" ] )
+		            ->addText( "url", [ "label" => "URL" ] );
+		$main_visual->setLocation( 'post', '==', $page_on_front );
+		self::import_acf( $main_visual->build() );
+	}
+
 	public static function import_acf( $json ) {
-		$json = json_decode( $json, true );
-		if ( empty( $json ) ) {
-			return acf_add_admin_notice( __( "インポートファイルが空です", 'acf' ), 'warning' );
-		}
 		if ( isset( $json['key'] ) ) {
 			$json = array( $json );
 		}
@@ -75,8 +106,9 @@ class Acf {
 			foreach ( $json as $field_group ) {
 				// Search database for existing field group.
 				$post = acf_get_field_group_post( $field_group['key'] );
+
 				if ( $post ) {
-					$field_group['ID'] = $post->ID;
+					return true;
 				}
 				// Import field group.
 				$field_group = acf_import_field_group( $field_group );
@@ -101,12 +133,14 @@ class Acf {
 		}
 		acf_enable_local();
 		acf_reset_local();
+
 		foreach ( $json as $field_group ) {
 			acf_add_local_field_group( $field_group );
 		}
 		foreach ( $keys as $key ) {
 			$field_group = acf_get_local_field_group( $key );
-			$id          = acf_maybe_get( $ids, $key );
+
+			$id = acf_maybe_get( $ids, $key );
 			if ( $id ) {
 				$field_group['ID'] = $id;
 			}
@@ -123,7 +157,7 @@ class Acf {
 		if ( ! empty( $imported ) ) {
 			$links   = array();
 			$count   = count( $imported );
-			$message = sprintf( _n( 'Imported 1 field group', 'Imported %s field groups', $count, 'acf' ), $count ) . '.';
+			$message = sprintf( _n( 'フィールドグループを追加しました', '%sつのフィールドグループを追加しました', $count, 'acf' ), $count ) . '.';
 			foreach ( $imported as $import ) {
 				$links[] = '<a href="' . admin_url( "post.php?post={$import['ID']}&action=edit" ) . '" target="_blank">' . $import['title'] . '</a>';
 			}

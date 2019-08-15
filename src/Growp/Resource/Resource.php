@@ -4,9 +4,7 @@ namespace Growp\Resource;
 
 use const DIRECTORY_SEPARATOR;
 use Exception;
-use function get_template_directory_uri;
-use function preg_match;
-use function str_replace;
+use Gajus\Dindent\Indenter;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Finder\Finder;
@@ -24,6 +22,11 @@ class Resource {
 	// 静的ファイルが格納されているディレクトリ
 	private $asset_dir = "";
 
+	/**
+	 * HTMLが格納されているディレクトリまでのテーマディレクトリからのパス
+	 * 例: resource/gg-styleguide/dist
+	 * @var string
+	 */
 	public $relative_html_path = "";
 
 	public $sitetree = "";
@@ -41,32 +44,68 @@ class Resource {
 		],
 	];
 
+	/**
+	 * サイトへ登録する際に除外するコンポーネント
+	 * @var array
+	 */
 	private $exclude_component_name = [
-		'layout' => [
+		'layout'    => [
 			'l-container',
 			'l-section',
 			'l-post-content',
 			'l-main',
+			'l-header',
+			'l-footer',
 			'l-wrapper',
+			'l-header-minimal',
+			'l-footer',
+			'l-aside',
+			'l-global-nav',
+			'l-header-variable',
+			'l-footer-normal',
+			'l-footer-simple',
+		],
+		'component' => [
+			'c-slidebar-button js-slidebar-button',
+			'c-slidebar-menu js-slidebar-menu is-top-to-bottom',
+			'c-slidebar-container js-slidebar-container is-top-to-bottom',
+			'fa fa-map-maker',
+			'c-forms',
+			'c-search-result',
+			'c-map-search',
+			'c-combined-search',
+			'c-composite-search',
+		],
+		'project'   => [
+			'fa fa-map-marker',
+//			'c-map-search',
+//			'c-slidebar-menu js-slidebar-menu is-top-to-bottom',
+//			'c-slidebar-container js-slidebar-container is-top-to-bottom',
 		]
 	];
 
 	public $css_files = [];
 	public $js_files = [];
 
-
+	/**
+	 * 解析を除外するディレクトリ
+	 * @var array
+	 */
 	private $excludes = [
 		'node_modules',
 		'styleguide',
-//		'app',
 		'build',
+		'style.css',
 	];
+
+	public $cache_key = "growp_resource_key";
 
 	private static $instance = null;
 
 	public static $cache = null;
-	public static $cache_key = "growp_resource";
+
 	public static $cache_hits = [];
+
 	public static $cache_prop_keys = [
 		'base_dir_name',
 		'html_dir',
@@ -79,7 +118,10 @@ class Resource {
 		'relative_html_path',
 	];
 
-
+	/**
+	 * URL置換を行う対応表
+	 * @var array
+	 */
 	public $replace_matrix = [
 		'src="/assets/'                    => 'src="{{relative_html_path}}/assets/',
 		'style="background-image:url(\'/'  => 'style="background-image:url(\'{{relative_html_path}}/',
@@ -92,19 +134,19 @@ class Resource {
 
 	private function __construct() {
 		$this->sitetree = new SiteTree();
-//		$cache_hits     = $this->load_from_cache();
-//		$cache_flag     = true;
-//
-//		foreach ( $cache_hits as $ch ) {
-//			if ( ! $ch ) {
-//				$cache_flag = false;
-//				break;
-//			}
-//		}
-//		if ( ! $cache_flag ) {
-		$this->set_dir();
-		$this->parse();
-//		}
+		$cache_hits     = $this->load_from_cache();
+		$cache_flag     = true;
+
+		foreach ( $cache_hits as $ch ) {
+			if ( ! $ch ) {
+				$cache_flag = false;
+				break;
+			}
+		}
+		if ( ! $cache_flag ) {
+			$this->set_dir();
+			$this->parse();
+		}
 
 	}
 
@@ -180,9 +222,16 @@ class Resource {
 		}
 
 		$this->relative_html_path = $this->base_dir_name . DIRECTORY_SEPARATOR . basename( $target_dir ) . DIRECTORY_SEPARATOR . "dist";
-		$this->html_dir           = apply_filters( 'growp/resource/path', $target_dir );
-		$this->dist_dir           = $this->get_path( "dist" );
-		$this->asset_dir          = $this->get_path( "dist/assets" );
+
+
+		$this->html_dir = apply_filters( 'growp/resource/path', $target_dir );
+		$this->dist_dir = $this->get_path( "dist" );
+		if ( ! file_exists( $this->dist_dir ) ) {
+			$dir = get_template_directory();
+			wp_die( "HTMLディレクトリを<br><a href='" . $dir . "'>" . get_template_directory() . "/resource/</a><br>ディレクトリ内に格納してください。" );
+			exit;
+		}
+		$this->asset_dir = $this->get_path( "dist/assets" );
 	}
 
 	/**
@@ -238,10 +287,9 @@ class Resource {
 		$paths                                          = [];
 		foreach ( $this->sitetree as $page ) {
 			$this->html_metadata["components"]["layout"]    = array_merge( $this->html_metadata["components"]["layout"], $page->components["layout"] );
-			$this->html_metadata["components"]["project"]   = array_merge( $this->html_metadata["components"]["project"], $page->components["project"] );
 			$this->html_metadata["components"]["component"] = array_merge( $this->html_metadata["components"]["component"], $page->components["component"] );
+			$this->html_metadata["components"]["project"]   = array_merge( $this->html_metadata["components"]["project"], $page->components["project"] );
 			$paths[]                                        = str_replace( $this->dist_dir, "", $page->absolute_path );
-
 			// トップページからサイトのタイトルを取得
 			if ( $page->relative_path === "/index.html" ) {
 				$this->set_metadata( "site_name", $page->title );
@@ -338,7 +386,7 @@ class Resource {
 
 		$page->components['layout']    = $this->parse_component( $crawler, "layout", "*[class^='l-']" );
 		$page->components['component'] = $this->parse_component( $crawler, "component", "*[class*='c-']" );
-		$page->components['project']   = $this->parse_component( $crawler, "project", "*[class*='p-']" );
+		$page->components['project']   = $this->parse_component( $crawler, "project", "*[class^='p-']" );
 		$titles                        = preg_split( "/(｜|\|)/", $page->title );
 		$page->page_header_title       = isset( $titles[0] ) ? $titles[0] : $page->title;
 		if ( $crawler->filter( '*[data-growp-page-header-title]' )->count() ) {
@@ -400,54 +448,84 @@ class Resource {
 		return $_list;
 	}
 
-	public function register_pages() {
-		array(
-			'id'   => 'block_',
-			'name' => 'acf/',
-			'data' =>
-				array(
-					'block_custom_template_condition'  => '0',
-					'_block_custom_template_condition' => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_custom_template_condition',
-					'block_margin_size'                => 'xs',
-					'_block_margin_size'               => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_size',
-					'block_margin_position'            => 'top',
-					'_block_margin_position'           => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin_position',
-					'block_margin'                     => '',
-					'_block_margin'                    => 'field_block_meta_c-heading--is-sm--is-border-under--is-bottom_block_margin',
-				),
-			'mode' => 'preview',
-		);
-	}
 
 	/**
 	 * コンポーネントを登録する
 	 */
 	public function register_components() {
-		$resource   = Resource::get_instance();
-		$components = $resource->html_metadata["components"];
-		foreach ( $components as $component_key => $component ) {
+		$resource        = Resource::get_instance();
+		$components      = $resource->html_metadata["components"];
+		$_component_list = [];
+		foreach ( $components as $layout_key => $component ) {
 			foreach ( $component as $cname => $c ) {
-				$c             = $this->replace_url( $c );
+				$c    = $this->replace_url( $c );
+				$skip = false;
+				if ( isset( $this->exclude_component_name[ $layout_key ] ) && $this->exclude_component_name[ $layout_key ] ) {
+					foreach ( $this->exclude_component_name[ $layout_key ] as $exclude_class_name ) {
+						if ( strpos( $cname, $exclude_class_name ) !== false ) {
+							$skip = true;
+						}
+					}
+				}
+				if ( $skip ) {
+					continue;
+				}
+				$item                                = [];
+				$item["category"]                    = $layout_key;
+				$item["name"]                        = $cname;
+				$item["content"]                     = $c;
+				$real_cname                          = explode( " ", $cname );
+				$_component_list[ $real_cname[0] ][] = $item;
+			}
+		}
+
+		foreach ( $_component_list as $real_component_name => $component ) {
+			foreach ( $component as $cname => $c ) {
+
 				$block_post_id = wp_insert_post( [
-					'post_title'   => trim( $cname ),
+					'post_title'   => trim( $c["name"] ),
 					'post_type'    => "growp_acf_block",
 					'post_status'  => "publish",
-					'post_content' => $c,
+					'post_content' => " ",
 				] );
-				update_field( "block_name", str_replace( " ", "--", trim( $cname ) ), $block_post_id );
-				update_field( "block_title", $cname, $block_post_id );
-				update_field( "block_render_callback", $c, $block_post_id );
-				update_field( "block_category", "growp-blocks-" . $component_key, $block_post_id );
+
+				// コンポーネントのマークアップを一度フォーマット
+				$indenter      = new Indenter();
+				$block_content = $indenter->indent( $c["content"] );
+
+				update_field( "block_name", str_replace( " ", "--", trim( $c["name"] ) ), $block_post_id );
+				update_field( "block_title", $c["name"], $block_post_id );
+				update_field( "block_description", "", $block_post_id );
+				update_field( "block_align", "", $block_post_id );
+				update_field( "block_supports", [
+					'align'    => [
+						'left',
+						'right',
+						'wide',
+						'full',
+					],
+					'mode'     => "1",
+					'multiple' => "1",
+				], $block_post_id );
+				update_field( "block_render_callback", $block_content, $block_post_id );
+				update_field( "block_category", "growp-blocks-" . $c["category"], $block_post_id );
 				update_field( "block_icon", '', $block_post_id );
-				update_field( "block_mode", "auto", $block_post_id );
+				update_field( "block_mode", "preview", $block_post_id );
 				update_field( "block_post_types", get_post_types( [ "public" => true ] ), $block_post_id );
-				update_field( "block_custom_template", $c, $block_post_id );
+				update_field( "block_custom_template", $block_content, $block_post_id );
 				update_field( "block_acf_settings", [], $block_post_id );
 				update_field( "block_custom_template_condition", "0", $block_post_id );
 			}
 		}
 	}
 
+	/**
+	 * URLを置換する
+	 *
+	 * @param $content
+	 *
+	 * @return mixed
+	 */
 	public function replace_url( $content ) {
 		foreach ( $this->replace_matrix as $before => $after ) {
 			$after   = str_replace( "{{relative_html_path}}", get_template_directory_uri() . "/" . $this->relative_html_path, $after );
@@ -455,6 +533,29 @@ class Resource {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * dist/assets/css/style.css ファイルをメインのファイルとして呼び出す
+	 * @return bool|mixed
+	 */
+	public static function get_default_main_css_file_path() {
+		$resource = Resource::get_instance();
+		foreach ( $resource->css_files as $_css_file ) {
+			if ( strpos( $_css_file, "assets/css/style.css" ) !== false ) {
+				return $_css_file;
+			}
+		}
+		return false;
+	}
+	public static function get_rewrite_main_css_file_path() {
+		$resource = Resource::get_instance();
+		foreach ( $resource->css_files as $_css_file ) {
+			if ( strpos( $_css_file, "assets/css/style_rewrite.css" ) !== false ) {
+				return $_css_file;
+			}
+		}
+		return static::get_default_main_css_file_path();
 	}
 
 }

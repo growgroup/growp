@@ -8,100 +8,100 @@
 
 if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 	add_action( 'tgmpa_register', 'growp_theme_register_required_plugins' );
-
 	function growp_theme_register_required_plugins() {
 
-		$plugins = array(
+		$plugins = [
 
-			array(
+			[
+				'name'     => 'Advanced Custom Fields Pro',
+				'slug'     => 'advanced-custom-fields-pro',
+				'required' => true,
+				'source'   => 'https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip',
+				'force_activation' => true,
+			],
+			[
 				'name'             => 'Yoast SEO',
 				'slug'             => 'wordpress-seo',
 				'required'         => true,
-				'force_activation' => false,
-			),
-
-			array(
+				'force_activation' => true,
+			],
+			[
 				'name'             => 'MW WP Form',
 				'slug'             => 'mw-wp-form',
 				'required'         => true,
 				'force_activation' => false,
-			),
-			array(
+			],
+			[
 				'name'             => 'WP Migrate db',
 				'slug'             => 'wp-migrate-db',
 				'required'         => true,
 				'force_activation' => false,
-			),
-			array(
+			],
+			[
 				'name'             => 'Duplicate Post',
 				'slug'             => 'duplicate-post',
 				'required'         => true,
-				'force_activation' => false,
-			),
-
-			array(
+				'force_activation' => true,
+			],
+			[
 				'name'             => 'Custom Post Type Permalinks',
 				'slug'             => 'custom-post-type-permalinks',
 				'required'         => true,
-				'force_activation' => false,
-			),
-
-			array(
+				'force_activation' => true,
+			],
+			[
 				'name'             => 'Custom Post Type UI',
 				'slug'             => 'custom-post-type-ui',
 				'required'         => true,
 				'force_activation' => false,
-			),
-
-			array(
+			],
+			[
 				'name'             => 'Intuitive Custom Post Order',
 				'slug'             => 'intuitive-custom-post-order',
 				'required'         => true,
-				'force_activation' => false,
-			),
+				'force_activation' => true,
+			],
 
-			array(
+			[
 				'name'             => 'TinyMCE Advanced',
 				'slug'             => 'tinymce-advanced',
 				'required'         => true,
 				'force_activation' => false,
-			),
+			],
 
-			array(
-				'name'             => 'WP Admin UI Customize',
-				'slug'             => 'wp-admin-ui-customize',
-				'required'         => false,
-				'force_activation' => false,
-			),
-
-			array(
+			[
 				'name'             => 'SiteGuard WP Plugin',
 				'slug'             => 'siteguard',
 				'required'         => false,
 				'force_activation' => false,
-			),
+			],
 
-			array(
+			[
 				'name'             => 'Login rebuilder',
 				'slug'             => 'login-rebuilder',
 				'required'         => false,
 				'force_activation' => false,
-			),
+			],
 
-			array(
+			[
 				'name'             => 'Google Analytics Dashboard for WP (GADWP)',
 				'slug'             => 'google-analytics-dashboard-for-wp',
 				'required'         => false,
 				'force_activation' => false,
-			),
-
-			array(
-				'name'     => 'Advanced Custom Fields Pro',
-				'slug'     => 'google-analytics-dashboard-for-wp',
-				'required' => false,
-				'source'   => 'https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip',
-			),
-		);
+			],
+			[
+				'name'             => 'User Switching',
+				'slug'             => 'user-switching',
+				'required'         => false,
+				'force_activation' => false,
+			],
+			[
+				'name'             => 'Query Monitor',
+				'slug'             => 'query-monitor',
+				'required'         => false,
+				'force_activation' => false,
+			],
+		];
 
 		/*
 		 * Array of configuration settings. Amend each line as needed.
@@ -123,40 +123,30 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 		 */
 		$config = array(
 			'id'           => 'tgmpa',
-			// Unique ID for hashing notices for multiple instances of TGMPA.
 			'default_path' => '',
-			// Default absolute path to bundled plugins.
 			'menu'         => 'tgmpa-install-plugins',
-			// Menu slug.
 			'parent_slug'  => 'themes.php',
-			// Parent menu slug.
 			'capability'   => 'edit_theme_options',
-			// Capability needed to view plugin install page, should be a capability associated with the parent menu used.
 			'has_notices'  => true,
-			// Show admin notices or not.
 			'dismissable'  => true,
-			// If false, a user cannot dismiss the nag message.
-			'dismiss_msg'  => __( 'Dismiss this notice', 'growp' ),
-			// If 'dismissable' is false, this message will be output at top of nag.
+			'dismiss_msg'  => __( 'この通知を閉じる', 'growp' ),
 			'is_automatic' => true,
-			// Automatically activate plugins after installation or not.
 			'message'      => '',
-			// Message to output right before the plugins table.
 			'strings'      => array(
-				'page_title'                      => __( 'Install Required Plugins', 'growp' ),
-				'menu_title'                      => __( 'Install Plugins', 'growp' ),
-				'installing'                      => __( 'Installing Plugin: %s', 'growp' ),
-				// %s = plugin name.
+				'dismiss'                         => __( 'この通知を閉じる', 'growp' ),
+				'page_title'                      => __( '必要なプラグインをインストール', 'growp' ),
+				'menu_title'                      => __( 'プラグインインストール', 'growp' ),
+				'installing'                      => __( 'プラグインをインストールしています: %s', 'growp' ),
 				'oops'                            => __( 'Something went wrong with the plugin API.', 'growp' ),
 				'notice_can_install_required'     => _n_noop(
-					'This theme requires the following plugin: %1$s.',
-					'This theme requires the following plugins: %1$s.',
+					'このテーマは次のプラグインを必要とします: %1$s.',
+					'このテーマは次のプラグインを必要とします: %1$s.',
 					'growp'
 				),
 				// %1$s = plugin name(s).
 				'notice_can_install_recommended'  => _n_noop(
-					'This theme recommends the following plugin: %1$s.',
-					'This theme recommends the following plugins: %1$s.',
+					'このテーマは以下のプラグインを推奨しています: %1$s.',
+					'このテーマは以下のプラグインを推奨しています: %1$s.',
 					'growp'
 				),
 				// %1$s = plugin name(s).
@@ -185,13 +175,13 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 				),
 				// %1$s = plugin name(s).
 				'notice_can_activate_required'    => _n_noop(
-					'The following required plugin is currently inactive: %1$s.',
-					'The following required plugins are currently inactive: %1$s.',
+					'次の必要なプラグインは現在有効になっていません: %1$s.',
+					'次の必要なプラグインは現在有効になっていません: %1$s.',
 					'growp'
 				),
 				// %1$s = plugin name(s).
 				'notice_can_activate_recommended' => _n_noop(
-					'The following recommended plugin is currently inactive: %1$s.',
+					'次の推奨されているプラグインは現在有効になっていません: %1$s.',
 					'The following recommended plugins are currently inactive: %1$s.',
 					'growp'
 				),
@@ -203,24 +193,24 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 				),
 				// %1$s = plugin name(s).
 				'install_link'                    => _n_noop(
-					'Begin installing plugin',
-					'Begin installing plugins',
+					'プラグインのインストールを始める',
+					'プラグインのインストールを始める',
 					'growp'
 				),
 				'update_link'                     => _n_noop(
-					'Begin updating plugin',
-					'Begin updating plugins',
+					'プラグインの更新を始める',
+					'プラグインの更新を始める',
 					'growp'
 				),
 				'activate_link'                   => _n_noop(
-					'Begin activating plugin',
-					'Begin activating plugins',
+					'プラグインを有効化する',
+					'プラグインを有効化する',
 					'growp'
 				),
-				'return'                          => __( 'Return to Required Plugins Installer', 'growp' ),
-				'plugin_activated'                => __( 'Plugin activated successfully.', 'growp' ),
-				'activated_successfully'          => __( 'The following plugin was activated successfully:', 'growp' ),
-				'plugin_already_active'           => __( 'No action taken. Plugin %1$s was already active.', 'growp' ),
+				'return'                          => __( 'プラグインインストーラーに戻る', 'growp' ),
+				'plugin_activated'                => __( 'プラグインが正常に有効化されました。', 'growp' ),
+				'activated_successfully'          => __( '次のプラグインが正常に有効化されました:', 'growp' ),
+				'plugin_already_active'           => __( '対処なし。 プラグイン$1$sはすでに有効にされています。', 'growp' ),
 				// %1$s = plugin name(s).
 				'plugin_needs_higher_version'     => __( 'Plugin not activated. A higher version of %s is needed for this theme. Please update the plugin.',
 					'growp' ),

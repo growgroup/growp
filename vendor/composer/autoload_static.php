@@ -12,6 +12,7 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
         '32dcc8afd4335739640db7d200c1971d' => __DIR__ . '/..' . '/symfony/polyfill-apcu/bootstrap.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        'a5f882d89ab791a139cd2d37e50cdd80' => __DIR__ . '/..' . '/tgmpa/tgm-plugin-activation/class-tgm-plugin-activation.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -32,6 +33,7 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Cache\\' => 24,
             'StoutLogic\\AcfBuilder\\' => 22,
+            'ScssPhp\\ScssPhp\\' => 16,
         ),
         'P' => 
         array (
@@ -42,6 +44,7 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
         'G' => 
         array (
             'Growp\\' => 6,
+            'Gajus\\Dindent\\' => 14,
         ),
         'D' => 
         array (
@@ -103,6 +106,10 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
         array (
             0 => __DIR__ . '/..' . '/stoutlogic/acf-builder/src',
         ),
+        'ScssPhp\\ScssPhp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/scssphp/scssphp/src',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
@@ -118,6 +125,10 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
         'Growp\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Growp',
+        ),
+        'Gajus\\Dindent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/gajus/dindent/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

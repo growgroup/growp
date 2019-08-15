@@ -2,50 +2,8 @@
 
 namespace Growp\TemplateTag;
 
-use function class_exists;
-use function count;
 use ErrorException;
-use function esc_html;
-use function explode;
-use function function_exists;
-use function get_field;
-use function get_post;
-use function get_post_ancestors;
-use function get_post_meta;
-use function get_post_type;
-use function get_post_type_object;
-use function get_queried_object;
-use function get_taxonomy;
-use function get_term;
-use function get_term_by;
-use function get_term_link;
-use function get_the_author;
-use function get_the_date;
-use function get_the_ID;
-use function get_the_terms;
 use Growp\Template\Foundation;
-use function is_array;
-use function is_author;
-use function is_callable;
-use function is_category;
-use function is_day;
-use function is_month;
-use function is_numeric;
-use function is_post_type_archive;
-use function is_string;
-use function is_tag;
-use function is_tax;
-use function is_wp_error;
-use function is_year;
-use function mb_strimwidth;
-use function post_type_archive_title;
-use function single_cat_title;
-use function single_tag_title;
-use function single_term_title;
-use function sprintf;
-use function strpos;
-use function wp_get_attachment_image_url;
-use function wp_get_post_terms;
 use WP_Term;
 use WPSEO_Primary_Term;
 use Kirki;
@@ -71,7 +29,7 @@ class Tags {
 			return $imageurl;
 		}
 
-		return GUrl::asset( "/assets/images/img-default-thumbnail.jpg" );
+		return get_theme_file_uri( "/assets/images/img-default-thumbnail.jpg" );
 	}
 
 
@@ -408,8 +366,7 @@ class Tags {
 		$terms   = wp_get_post_terms( $post_id, $taxonomy, array( 'fields' => "all" ) );
 		foreach ( $terms as $term_key => $term ) {
 			?>
-			<div class="p-post__category"><span class="c-label is-primary"><?php echo $term->name ?></span>
-			</div>
+			<span class=""><?php echo $term->name ?></span>
 			<?php
 		}
 	}
@@ -586,7 +543,7 @@ class Tags {
 
 			return true;
 		} else {
-			return self::get_option( $key, $default );
+			echo self::get_option( $key, $default );
 		}
 	}
 

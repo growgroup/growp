@@ -8,44 +8,49 @@
  * @since 1.0.0
  */
 
+use Growp\Menu\Menu;
+use Growp\TemplateTag\Tags;
 use Growp\TemplateTag\Url;
 
-
 ?>
-<div class="l-header-minimal">
-	<div class="l-header-minimal__inner">
-		<div class="l-header-minimal__text">テキストテキストテキストテキストテキスト</div>
-		<a class="l-header-minimal__tel" href="tel: 00-0000-0000"><span><i class="fa fa-phone" aria-hidden="true"></i>00-0000-0000</span>
-			<small>受付時間 / 平日00：00～00：00</small>
-		</a>
+<header class="l-header">
+	<div class="l-container">
+		<div class="l-header__inner">
+			<div class="l-header__heading">
+				<a href="<?php echo home_url() ?>">
+					<img src="<?php Tags::the_option( "growp_base_logo_image_in_header" ) ?>" alt="<?php the_title() ?>" />
+				</a>
+			</div>
+			<div class="l-header__content">
+				<ul class="l-header__submenu">
+					<li>
+						<a href="#"><i class="fa fa-hospital-o" aria-hidden="true"></i>ナビ01</a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>ナビ02</a>
+					</li>
+				</ul>
+				<a class="l-header__tel" href="tel:<?php Tags::option( "growp_base_tel_number01" ) ?>">
+					<span><i class="fa fa-phone" aria-hidden="true"></i><?php Tags::option( "growp_base_tel_number01" ) ?></span>
+					<small><?php Tags::option( "growp_base_tel_time" ) ?></small>
+				</a>
+				<a class="l-header__button c-button is-sm" href="/contact/">
+					<i class="fa fa-envelope" aria-hidden="true"></i>お問い合わせ
+				</a>
+			</div>
+		</div>
 	</div>
-	<div class="l-header-minimal__content">
-		<h1 class="l-header-minimal__heading">
-			<a href="/">
-				<img src="<?php Url::the_asset() ?>/assets/images/logo.png" alt="株式会社サンプル" />
-			</a>
-		</h1>
-		<nav class="l-header-minimal__nav">
-			<ul>
-				<li>
-					<a href="/onecolumn/">1COLUMN</a>
-				</li>
-				<li>
-					<a href="/twocolumns/">2COLUMN</a>
-				</li>
-				<li>
-					<a href="/format/">FORMAT</a>
-				</li>
-				<li>
-					<a href="/archive-onecolumn/">ARCHIVE1</a>
-				</li>
-				<li>
-					<a href="/archive-twocolumns/">ARCHIVE2</a>
-				</li>
-			</ul>
-		</nav>
-		<a class="l-header-minimal__button c-button is-sm" href="/contact/">
-			<i class="fa fa-envelope" aria-hidden="true"></i>お問い合わせ
-		</a>
+</header>
+<nav class="l-global-nav">
+	<div class="l-container">
+		<div class="l-header__nav">
+			<?php
+			echo wp_nav_menu( [
+				'location'   => "header_nav",
+				'container'  => false,
+				'menu_class' => 'l-header-nav'
+			] );
+			?>
+		</div>
 	</div>
-</div>
+</nav>

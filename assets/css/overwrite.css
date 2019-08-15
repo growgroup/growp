@@ -185,6 +185,19 @@ body .l-container .alignfull {
 	max-width: 100vw;
 }
 
+.large-8.is-push-lg-2 .alignfull {
+	margin-left: calc((748px - 100vw) / 2);
+	margin-right: calc((748px - 100vw) / 2);
+	width: 100vw;
+	max-width: 100vw;
+}
+body .l-container.is-sm .alignfull {
+	margin-left: calc((896px - 100vw) / 2);
+	margin-right: calc((896px - 100vw) / 2);
+	width: 100vw;
+	max-width: 100vw;
+}
+
 
 body .alignwide {
 	width: 100%;

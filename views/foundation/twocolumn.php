@@ -10,27 +10,36 @@
  * =====================================================
  */
 
-$content = GTemplate::get_content();
+use Growp\Template\Component;
+use Growp\Template\Foundation;
+use Growp\Template\LayoutComponent;
 
+?>
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<?php
+LayoutComponent::get( "head" );
+?>
+<body <?php body_class(); ?>>
+<?php
+do_action( "wp_body_open" );
+Component::get( "slidebar" );
+LayoutComponent::get( "header" );
+//LayoutComponent::get( "global-nav" );
+Component::get( "main-visual" );
+Component::get( "page-header" );
+Component::get( "breadcrumb" );
+?>
+<main class="l-main">
+	<?php
+	echo Foundation::get_content();
+	?>
+</main>
+<?php
+Component::get( "offer" );
+LayoutComponent::get( "footer" );
+?>
+<?php wp_footer(); ?>
+</body>
+</html>
 
-GTemplate::get_template( "foundation/head" );
-GTemplate::get_layout( "header" );
-GTemplate::get_layout( "global-nav" );
-GTemplate::get_component( "mainvisual" );
-GTemplate::get_component( "page-header" );
-$wrapper = apply_filters( 'growp/wrapper', 'onecolumn' );
-if ( $wrapper === "onecolumn" ) {
-	echo $content;
-	unset( $content );
-} else {
-	echo $content;
-	unset( $content );
-}
-// サイドバー
-GTemplate::get_layout( "sidebar" );
-
-// フッター取得前のアクションフック
-do_action( 'get_footer' );
-
-// フッターを取得
-GTemplate::get_layout( "footer" );

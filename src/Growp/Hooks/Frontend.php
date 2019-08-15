@@ -2,22 +2,31 @@
 
 namespace Growp\Hooks;
 
-use function add_filter;
-use function add_shortcode;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function get_theme_file_path;
+use Growp\Menu\Menu;
 use Growp\Resource\Resource;
-use Growp\Template\BaseComponent;
+use Growp\Template\Component;
+use Growp\TemplateTag\Tags;
 use const GROWP_VERSION;
-use function ob_clean;
-use function ob_get_contents;
-use function ob_start;
-use function shortcode_atts;
+use function str_replace;
 use function strpos;
-use function wp_enqueue_script;
 
+/**
+ * Class Frontend
+ * テーマのフロントエンドに関連する出力や設定を行う class
+ * @package Growp\Hooks
+ */
 class Frontend {
 
 	protected static $instance = null;
 
+	/**
+	 * Frontend constructor.
+	 * 初期化
+	 */
 	private function __construct() {
 		add_action( "init", [ $this, 'setup' ] );
 		add_action( "init", [ $this, 'cleanup' ] );
@@ -27,8 +36,14 @@ class Frontend {
 		add_action( 'wp_enqueue_scripts', [ $this, 'growp_scripts' ], 10 );
 		add_shortcode( 'growp_component', [ $this, 'growp_shortcode_get_component' ] );
 		$this->change_template_path();
+		new Menu( "header_nav", "ヘッダーナビゲーション" );
+		new Menu( "footer_nav", "フッターナビゲーション" );
 	}
 
+	/**
+	 * シングルトンインスタンスを取得
+	 * @return null
+	 */
 	public static function get_instance() {
 		if ( ! static::$instance ) {
 			static::$instance = new static();
@@ -49,7 +64,8 @@ class Frontend {
 			'post-thumbnails',
 			'menus',
 			'customize-selective-refresh-widgets',
-			'title-tag'
+			'title-tag',
+			'yoast-seo-breadcrumbs',
 		];
 
 
@@ -67,7 +83,8 @@ class Frontend {
 				'caption',
 			)
 		);
-		add_editor_style( "resource/gg-styleguide/dist/assets/css/style.css" );
+
+		static::rewrite_color_stylesheet_file();
 	}
 
 	/**
@@ -95,13 +112,22 @@ class Frontend {
 		];
 		foreach ( $templates as $template ) {
 			add_filter( "{$template}_template_hierarchy", function ( $templates ) {
+
 				foreach ( $templates as $key => $template ) {
+
+
+					if ( strpos( $template, "views/templates" ) !== false ) {
+						$templates[ $key ] = $template;
+						continue;
+					}
 					$templates[ $key ] = 'views/templates/' . $template;
 				}
 
 				return $templates;
+
 			} );
 		}
+
 	}
 
 	/**
@@ -132,7 +158,6 @@ class Frontend {
 		remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
 		remove_action( 'wp_head', 'wp_generator' );
 		remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
-
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 		remove_action( 'wp_print_styles', 'print_emoji_styles' );
 		add_filter( 'wp_head', function () {
@@ -175,11 +200,8 @@ class Frontend {
 	 * CSS、jsの読み込み
 	 */
 	public function growp_scripts() {
-
 		$resource = Resource::get_instance();
-
-		$styles = [];
-
+		$styles   = [];
 		foreach ( $resource->css_files as $key => $file ) {
 			$styles[] = [
 				'handle' => basename( $file ) . $key,
@@ -234,7 +256,6 @@ class Frontend {
 				'in_footer' => true,
 				'ver'       => GROWP_VERSION,
 			) );
-
 			wp_enqueue_script( "growp_" . $js['handle'], $js['src'], $js['deps'], $js['ver'], $js['in_footer'] );
 		}
 
@@ -258,12 +279,44 @@ class Frontend {
 			return "";
 		}
 		ob_start();
-		BaseComponent::get( $atts["name"] );
+		Component::get( $atts["name"] );
 		$content = ob_get_contents();
 		ob_clean();
 
 		return $content;
 	}
 
+	/**
+	 * CSSファイルのカラーコードを書き換える
+	 */
+	public static function rewrite_color_stylesheet_file() {
+		$transient_key    = "css_cache_" . "cssselectors";
+		$transient_expire = 60 * 60 * 24;
+		$css              = false;
+		if ( ! $css ) {
+			$resource = Resource::get_instance();
+			$css_file = Resource::get_default_main_css_file_path();
+			$css_file = Tags::get_option( "growp_design_css_file", $css_file );
+//			dump($css_file);
+			$css_data        = file_get_contents( get_theme_file_path( $css_file ) );
+			$primary_color   = Tags::get_option( "growp_design_color_primary" );
+			$secondary_color = Tags::get_option( "growp_design_color_secondary" );
+			$accent_color    = Tags::get_option( "growp_design_color_accent" );
+			$other_colors    = Tags::get_option( "growp_design_color_other" );
+			$css_data        = str_replace( "#65A04D", $primary_color, $css_data );
+			$css_data        = str_replace( "#F9F7F0", $secondary_color, $css_data );
+			$css_data        = str_replace( "#E04B3A", $accent_color, $css_data );
+			foreach ( $other_colors as $color ) {
+				$css_data = str_replace( $color["before"], $color["after"], $css_data );
+			}
+			file_put_contents( get_theme_file_path( $resource->relative_html_path . "/assets/css/style_rewrite.css" ), $css_data );
+			foreach ( $resource->css_files as $file_key => $file ) {
+				if ( $file === $css_file ) {
+					unset( $resource->css_files[ $file_key ] );
+				}
+			}
+			//			$resource->css_files[] = $resource->relative_html_path . "/assets/css/style_rewrite.css";
+		}
+	}
 
 }

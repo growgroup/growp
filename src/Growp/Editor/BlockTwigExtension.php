@@ -9,6 +9,9 @@ use function wp_get_attachment_image_url;
 
 class BlockTwigExtension extends AbstractExtension {
 	public $allowed_functions = [
+		'in_array',
+		'growp_html_url',
+		'yoast_breadcrumb',
 		'get_template_part',
 		'bloginfo',
 		'get_bloginfo',
@@ -438,6 +441,7 @@ class BlockTwigExtension extends AbstractExtension {
 			new TwigFilter( 'the_author', array( $this, 'the_author' ), array( 'is_safe' => array( 'html' ) ) ),
 			new TwigFilter( 'the_date', array( $this, 'the_date' ), array( 'is_safe' => array( 'html' ) ) ),
 			new TwigFilter( 'the_title', array( $this, 'the_title' ), array( 'is_safe' => array( 'html' ) ) ),
+			new TwigFilter( 'strip_tags', array( $this, 'strip_tags' ), [] ),
 		];
 	}
 

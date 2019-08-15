@@ -2,6 +2,7 @@
 
 namespace Growp\Editor;
 
+use Growp\Resource\Resource;
 use GUrl;
 
 class BlockEditor {
@@ -33,7 +34,7 @@ class BlockEditor {
 	public function setup() {
 		add_theme_support( 'editor-styles' );
 		add_theme_support( 'align-wide' );
-		add_editor_style( "resource/gg-styleguide/dist/assets/css/style.css" );
+		add_editor_style( Resource::get_rewrite_main_css_file_path());
 	}
 
 	/**

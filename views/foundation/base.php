@@ -14,15 +14,30 @@ use Growp\Template\Component;
 use Growp\Template\Foundation;
 use Growp\Template\LayoutComponent;
 
+?>
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<?php
 LayoutComponent::get( "head" );
-LayoutComponent::get( "header" );
-LayoutComponent::get( "global-nav" );
-Component::get( "mainvisual" );
+?>
+<body <?php body_class(); ?>>
+<?php
+do_action( "wp_body_open" );
+Component::get( "slidebar" );
+LayoutComponent::get( "header-variable" );
 Component::get( "page-header" );
+Component::get( "breadcrumb" );
+?>
+<main class="l-main">
+	<?php
+	echo Foundation::get_content();
+	?>
+</main>
+<?php
+LayoutComponent::get( "offer" );
+LayoutComponent::get( "footer-normal" );
+?>
+<?php wp_footer(); ?>
+</body>
+</html>
 
-echo Foundation::get_content();
-
-Component::get( "offer" );
-
-// フッターを取得
-LayoutComponent::get( "footer" );

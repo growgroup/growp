@@ -123,7 +123,7 @@ class Nav {
 			if ( ! $prev_text ) {
 				$prev_text = $prev->post_title;
 			}
-			$html .= '<li class="c-post-navs__prev"><a href="' . $prev_url . '">' . $prev_text . '</a></li>';
+			$html .= '<li><a class="c-post-navs__prev  c-button is-sm is-arrow-left" href="' . $prev_url . '">' . $prev_text . '</a></li>';
 		}
 
 		if ( $next ) {
@@ -131,7 +131,7 @@ class Nav {
 			if ( ! $next_text ) {
 				$next_text = $next->post_title;
 			}
-			$html .= '<li class="c-post-navs__next"><a href="' . $next_url . '">' . $next_text . '</a></li>';
+			$html .= '<li><a class="c-post-navs__next  c-button is-sm" href="' . $next_url . '">' . $next_text . '</a></li>';
 		}
 
 		$html .= '</ul></nav>';

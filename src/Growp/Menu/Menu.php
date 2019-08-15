@@ -38,8 +38,8 @@ class Menu {
 
 
 	/**
-	 * 投稿一覧を取得
-	 * @return void
+	 * メニュー一覧を取得しセットする
+	 * @return bool | object
 	 */
 	public function set_menus() {
 		$locations = get_nav_menu_locations();
@@ -51,6 +51,7 @@ class Menu {
 
 		$this->menus = wp_get_nav_menu_items( $menu->term_id, array( 'update_post_term_cache' => false ) );
 
+		return $this;
 	}
 
 	/**
@@ -92,9 +93,12 @@ class Menu {
 
 	/**
 	 * レンダリング
+	 *
+	 * @param callable $callback ループ内で実行する
+	 *
 	 * @return boolean | void
 	 */
-	public function render() {
+	public function render( $callback ) {
 		$this->set_menus();
 		if ( empty( $this->menus ) ) {
 			return false;
@@ -103,7 +107,7 @@ class Menu {
 			global $post;
 			$post = get_post( $menu->object_id );
 			setup_postdata( $post );
-			GTemplate::get_project( "post-item" );
+			$callback();
 		}
 	}
 
@@ -120,6 +124,7 @@ class Menu {
 		$this->render();
 		$content = ob_get_contents();
 		ob_clean();
+
 		return $content;
 	}
 }

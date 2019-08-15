@@ -17,19 +17,37 @@ if ( is_front_page() ) {
 }
 $vars = Foundation::get_vars();
 global $post;
-$title       = apply_filters( 'growp/page_header/title', get_the_title() );
-$subtitle    = apply_filters( 'growp/page_header/subtitle', mb_strtoupper( $post->post_name ) );
-$image       = apply_filters( 'growp/page_header/image', GUrl::asset( '/assets/images/img-page-header-format.jpg' ) );
+
+$title = apply_filters( 'growp/page_header/title', get_the_title() );
+
+$subtitle = apply_filters( 'growp/page_header/subtitle', ucfirst( $post->post_name ) );
+$image    = apply_filters( 'growp/page_header/image', GUrl::asset( '/assets/images/img-page-header-format.jpg' ) );
+if ( isset( $vars["pageheader_title"] ) && $vars["pageheader_title"] ) {
+	$title = $vars["pageheader_title"];
+}
+if ( isset( $vars["pageheader_subtitle"] ) && $vars["pageheader_subtitle"] ) {
+	$subtitle = $vars["pageheader_subtitle"];
+}
+if ( isset( $vars["pageheader_image"] ) && $vars["pageheader_image"] ) {
+	$image = $vars["pageheader_image"];
+}
+if ( get_field( "page_header_title" ) ) {
+	$title = get_field( "page_header_title" );
+}
+if ( get_field( "page_header_subtitle" ) ) {
+	$subtitle = get_field( "page_header_subtitle" );
+}
 $pageheaders = apply_filters( 'growp/page_header', array(
 	'title'    => $title,
 	'subtitle' => $subtitle,
 	'image'    => $image,
 ) );
-return false;
+
+
 ?>
 <div class="l-page-header">
 	<div class="l-page-header__image">
-		<img src="<?php echo $image ?>" alt="<?php echo $title ?>" />
+		<img src="<?php echo $pageheaders["image"] ?>" alt="<?php echo $title ?>" />
 	</div>
 	<div class="l-page-header__inner">
 		<h1 class="l-page-header__title"><?php echo $title ?></h1>

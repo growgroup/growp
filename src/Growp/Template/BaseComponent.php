@@ -49,12 +49,17 @@ abstract class BaseComponent {
 	 * @return BaseComponent
 	 */
 	public function render() {
-		$file_path = get_theme_file_path( $this->dir . "/" . $this->component_name . ".php" );
-
+		// ファイル名にPHPがある場合は
+		if ( strpos( $this->component_name, ".php" ) !== false ) {
+			$file_path = get_theme_file_path( $this->component_name );
+		} else {
+			$file_path = get_theme_file_path( $this->dir . "/" . $this->component_name . ".php" );
+		}
 		if ( $file_path && file_exists( $file_path ) ) {
 			$vars            = $this->vars;
 			$this->file_path = $file_path;
 			include $file_path;
+
 			return $this;
 		}
 

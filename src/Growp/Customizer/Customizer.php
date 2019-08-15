@@ -2,16 +2,18 @@
 
 namespace Growp\Customizer;
 
-use function get_theme_file_uri;
+use function esc_attr__;
+use function file_put_contents;
+use function get_theme_file_path;
 use Growp\Resource\Resource;
+use Growp\TemplateTag\Tags;
+use const GROWP_VERSION;
 use GUrl;
 use Kirki;
+use ScssPhp\ScssPhp\Compiler;
+use function str_replace;
 use Symfony\Component\HttpFoundation\Request;
-use function wp_enqueue_script;
 use function wp_enqueue_style;
-use function wp_send_json_error;
-use function wp_send_json_success;
-use function wp_verify_nonce;
 
 class Customizer {
 
@@ -29,7 +31,6 @@ class Customizer {
 
 
 	private function __construct() {
-
 		add_action( "init", [ $this, 'init' ] );
 		add_action( "wp_ajax_growp_register_components", [ $this, "register" ] );
 		add_action( "wp_ajax_growp_get_html_info", [ $this, "get_html_info" ] );
@@ -77,6 +78,7 @@ class Customizer {
 	 */
 	public function init() {
 		$customizer_id = "growp";
+
 		/**
 		 * テーマカスタマイザーの設定
 		 */
@@ -366,6 +368,29 @@ class Customizer {
 			'description' => esc_attr__( 'Webサイトの配色、フォントに関わる設定', 'growp' ),
 		) );
 
+		Kirki::add_section( 'growp_design_css', array(
+			'title'       => esc_attr__( 'CSS設定', 'growp' ),
+			'description' => esc_attr__( 'メインのCSSファイルを選択してください', 'growp' ),
+			'panel'       => 'growp_design',
+			'priority'    => 160,
+		) );
+
+		$resource  = Resource::get_instance();
+		$css_files = [];
+		foreach ( $resource->css_files as $css_key => $_css_file ) {
+			$css_files[ $_css_file ] = $_css_file;
+		}
+		Kirki::add_field( $customizer_id, array(
+			'type'        => 'select',
+			'settings'    => 'growp_design_css_file',
+			'label'       => __( 'メインCSSファイル', 'growp' ),
+			'description' => esc_attr__( 'メインCSSファイルを選択してください。', 'growp' ),
+			'section'     => 'growp_design_css',
+			'default'     => Resource::get_default_main_css_file_path(),
+			'choices'     => $css_files,
+		) );
+
+
 		Kirki::add_section( 'growp_design_container', array(
 			'title'       => esc_attr__( 'コンテナ設定', 'growp' ),
 			'description' => esc_attr__( 'コンテナに関する設定を行ってください。', 'growp' ),
@@ -389,7 +414,7 @@ class Customizer {
 
 		Kirki::add_section( 'growp_design_color', array(
 			'title'       => esc_attr__( 'カラー設定', 'growp' ),
-			'description' => esc_attr__( '配色に関する設定を行ってください。', 'growp' ),
+			'description' => esc_attr__( '配色に関する設定を行ってください。<br>※ CSS設定で指定したCSSファイルを元に、style_rewrite.cssファイルを生成し読み込みます。', 'growp' ),
 			'panel'       => 'growp_design',
 			'priority'    => 160,
 		) );
@@ -414,6 +439,7 @@ class Customizer {
 				'alpha' => true,
 			),
 		) );
+
 		Kirki::add_field( $customizer_id, array(
 			'type'        => 'color',
 			'settings'    => 'growp_design_color_accent',
@@ -424,6 +450,37 @@ class Customizer {
 			'choices'     => array(
 				'alpha' => true,
 			),
+		) );
+		Kirki::add_field( $customizer_id, array(
+			'type'         => 'repeater',
+			'settings'     => 'growp_design_color_other',
+			'label'        => __( 'その他カラー', 'growp' ),
+			'description'  => esc_attr__( 'その他カラーを選択してください。', 'growp' ),
+			'section'      => 'growp_design_color',
+			'button_label' => "カラーを追加",
+			'default'      => [],
+			'row_label'    => [
+				'type'  => 'text',
+				'value' => '配色セット',
+			],
+			'fields'       => [
+				'before' => [
+					'type'    => 'color',
+					'label'   => '元のカラーコード',
+					'default' => 'rgba(255,255,255,1)',
+					'choices' => [
+						'alpha' => true,
+					],
+				],
+				'after'  => [
+					'type'    => 'color',
+					'label'   => '置換後のカラーコード',
+					'default' => 'rgba(255,255,255,1)',
+					'choices' => [
+						'alpha' => true,
+					],
+				],
+			]
 		) );
 
 		/**
@@ -531,7 +588,7 @@ class Customizer {
 			'default'     => 'ご不明な点はGrowGroup株式会社（052-753-6413）までご連絡下さい。',
 		) );
 
-		Kirki::add_section( 'growp_admincustomize_admin_menu', array(
+		Kirki::add_section( 'growp_admincustomize_admin', array(
 			'title'       => esc_attr__( 'クライアント用管理画面UI設定', 'growp' ),
 			'description' => esc_attr__( 'クライアント用の管理画面UI設定を行ってください。', 'growp' ),
 			'panel'       => 'growp_admincustomize',
@@ -543,7 +600,7 @@ class Customizer {
 			'settings'    => 'growp_admincustomize_admin_menu_menu',
 			'label'       => __( '管理メニュー設定', 'growp' ),
 			'description' => esc_attr__( '編集者に対して、簡素化した管理メニューを有効にするかどうか設定してください。', 'growp' ),
-			'section'     => 'growp_admincustomize_admin_menu',
+			'section'     => 'growp_admincustomize_admin',
 			'priority'    => 12,
 			'default'     => true,
 		) );
@@ -553,7 +610,7 @@ class Customizer {
 			'settings'    => 'growp_admincustomize_admin_menu_adminbar',
 			'label'       => __( '管理バー設定', 'growp' ),
 			'description' => esc_attr__( '編集者に対して、簡素化した管理バーを有効にするかどうか設定してください。', 'growp' ),
-			'section'     => 'growp_admincustomize_admin_menu',
+			'section'     => 'growp_admincustomize_admin',
 			'priority'    => 12,
 			'default'     => true,
 		) );
@@ -563,7 +620,17 @@ class Customizer {
 			'settings'    => 'growp_admincustomize_admin_menu_dashboard',
 			'label'       => __( 'ダッシュボード設定', 'growp' ),
 			'description' => esc_attr__( '編集者に対して、簡素化したダッシュボードを有効にするかどうか設定してください。', 'growp' ),
-			'section'     => 'growp_admincustomize_admin_menu',
+			'section'     => 'growp_admincustomize_admin',
+			'priority'    => 12,
+			'default'     => true,
+		) );
+
+		Kirki::add_field( $customizer_id, array(
+			'type'        => 'checkbox',
+			'settings'    => 'growp_admincustomize_admin_columns',
+			'label'       => __( '記事一覧のカラム設定', 'growp' ),
+			'description' => esc_attr__( '編集者に対して、記事一覧のカラムを調整します', 'growp' ),
+			'section'     => 'growp_admincustomize_admin',
 			'priority'    => 12,
 			'default'     => true,
 		) );
@@ -573,7 +640,7 @@ class Customizer {
 			'settings'    => 'growp_admincustomize_admin_menu_dashboard_org',
 			'label'       => __( 'オリジナルダッシュボードウィジェット', 'growp' ),
 			'description' => esc_attr__( 'オリジナルダッシュボードウィジェットを設定する場合は入力してください。', 'growp' ),
-			'section'     => 'growp_admincustomize_admin_menu',
+			'section'     => 'growp_admincustomize_admin',
 			'priority'    => 12,
 			'default'     => "",
 			'choices'     => [
@@ -582,15 +649,6 @@ class Customizer {
 			]
 		) );
 
-		Kirki::add_field( $customizer_id, array(
-			'type'        => 'checkbox',
-			'settings'    => 'growp_admincustomize_admin_update_notice',
-			'label'       => __( '更新通知設定', 'growp' ),
-			'description' => esc_attr__( '編集者に対して、更新通知をオフにします', 'growp' ),
-			'section'     => 'growp_admincustomize_admin_menu',
-			'priority'    => 12,
-			'default'     => true,
-		) );
 	}
 
 	/**
@@ -607,6 +665,7 @@ class Customizer {
 		wp_send_json_success( [ "message" => "コンポーネントを登録しました" ] );
 		exit;
 	}
+
 	public function get_html_info() {
 		$request = Request::createFromGlobals();
 //		if ( ! wp_verify_nonce( $request->get( "nonce" ), __FILE__ ) ) {
@@ -614,7 +673,9 @@ class Customizer {
 //			exit;
 //		}
 		$resource = Resource::get_instance();
-		wp_send_json_success($resource);
+		wp_send_json_success( $resource );
 		exit;
 	}
+
+
 }

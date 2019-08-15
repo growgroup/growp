@@ -2,6 +2,8 @@
 
 namespace Growp\Hooks;
 
+use function add_action;
+use function get_post_types;
 use Growp\Mock\FrontAndHome;
 use Growp\Mock\MwWpForm;
 use Growp\Mock\PrivacyPolicy;
@@ -9,6 +11,7 @@ use Growp\Mock\Sitemap;
 use Growp\Mock\TinymceAdvanced;
 use Growp\Mock\WpAdminUiCustomize;
 use Growp\TemplateTag\Tags;
+use Growp\TemplateTag\Utils;
 
 class Backend {
 
@@ -17,64 +20,133 @@ class Backend {
 	private function __construct() {
 
 		add_action( 'login_head', [ $this, 'login_head' ] );
+
+		add_action( "admin_init", [ $this, "original_dashboard_widget" ] );
+		add_action( "admin_init", [ $this, "disable_updated" ] );
+		add_filter( 'wp_dashboard_widgets', [ $this, "disable_dashoboard_widget" ], 100 );
+
 		add_action( 'admin_head', [ $this, 'admin_head_css_js' ] );
 		add_action( "admin_footer_text", [ $this, 'admin_footer_copyright' ] );
 		add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
 		add_action( "admin_menu", [ $this, 'admin_menu' ] );
 
-		add_filter( 'wp_dashboard_widgets', function () {
-			global $wp_meta_boxes;
-			unset( $wp_meta_boxes["dashboard"]["normal"]["core"]["dashboard_activity"] );
-			unset( $wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_quick_press"] );
-			unset( $wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_primary"] );
-
-			return [];
-		}, 100 );
-
-		// ようこそパネルを非表示
-		remove_action( "welcome_panel", "wp_welcome_panel" );
-
-		add_action( "admin_init", function () {
-			$org_dashboard_content = Tags::get_option( "growp_admincustomize_admin_menu_dashboard_org" );
-
-			if ( $org_dashboard_content ) {
-				add_action( "welcome_panel", function () use ( $org_dashboard_content ) {
-					$markdown = file_get_contents( get_theme_file_path( "assets/css/markdown.css" ) );
-					?>
-					<style>
-						<?php echo $markdown ?>
-					</style>
-					<div class="markdown-body">
-						<?php echo $org_dashboard_content; ?>
-					</div>
-					<?php
-				} );
-			}
-		} );
-
-		add_action( "admin_init", function () {
-			$update_notice = Tags::get_option( "growp_admincustomize_admin_update_notice" );
-
-			if ( $update_notice ) {
-				remove_action( 'admin_notices', 'update_nag', 3 );
-				remove_action( 'admin_notices', 'maintenance_nag', 10 );
-				remove_action( 'load-update-core.php', 'wp_update_plugins' );
-				add_filter( 'pre_site_transient_update_plugins', function () {
-					return null;
-				} );
-			}
-		} );
-
-
 		add_filter( "theme_templates", [ $this, 'theme_templates' ], 10, 4 );
 		add_action( 'admin_init', [ $this, 'add_editor_roles' ] );
 		add_action( 'editable_roles', [ $this, 'filter_editable_roles' ] );
-
 		add_filter( 'tiny_mce_before_init', [ $this, 'mce_options' ] );
 		add_action( "after_switch_theme", [ $this, 'mock_init' ] );
 		add_action( "admin_bar_menu", [ $this, 'admin_bar' ], 1000 );
+		$post_types = get_post_types( [
+			'public' => true
+		] );
+		foreach ( $post_types as $post_type ) {
+			add_filter( "manage_{$post_type}_posts_columns", function ( $column ) {
+
+				dump( $column );
+
+				if ( isset( $column["tags"] ) ) {
+					unset( $column["tags"] );
+				}
+				if ( isset( $column["comments"] ) ) {
+					unset( $column["comments"] );
+				}
+				if ( isset( $column["author"] ) ) {
+					unset( $column["author"] );
+				}
+
+				// Yoast SEOに対して無効化する
+				foreach (
+					[
+						"wpseo-links",
+						"wpseo-score",
+						"wpseo-title",
+						"wpseo-metadesc",
+						"wpseo-focuskw",
+						"wpseo-score-readability",
+					] as $_meta_key
+				) {
+					if ( isset( $column[ $_meta_key ] ) ) {
+						unset( $column[ $_meta_key ] );
+					}
+				}
+
+				return $column;
+			}, 99, 1 );
+		}
+
+
 	}
 
+	public function disable_dashoboard_widget() {
+		if ( ! Tags::get_option( "growp_admincustomize_admin_menu_dashboard" ) ) {
+			return "";
+		}
+		if ( Utils::is_administrator() ){
+			return "";
+		}
+		global $wp_meta_boxes;
+		unset( $wp_meta_boxes["dashboard"]["normal"]["core"]["dashboard_activity"] );
+		unset( $wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_quick_press"] );
+		unset( $wp_meta_boxes["dashboard"]["side"]["core"]["dashboard_primary"] );
+
+		return [];
+	}
+
+	/**
+	 * 更新を停止
+	 */
+	public function disable_updated() {
+		$update_notice = Tags::get_option( "growp_admincustomize_admin_update_notice" );
+		if ( Utils::is_administrator() ){
+			return "";
+		}
+		if ( $update_notice ) {
+			remove_action( 'admin_notices', 'update_nag', 3 );
+			remove_action( 'admin_notices', 'maintenance_nag', 10 );
+			remove_action( 'load-update-core.php', 'wp_update_plugins' );
+			add_filter( 'pre_site_transient_update_plugins', function () {
+				return null;
+			} );
+		}
+	}
+
+	/**
+	 * オリジナルダッシュボード
+	 * @return string
+	 */
+	public function original_dashboard_widget() {
+
+		$org_dashboard_content = Tags::get_option( "growp_admincustomize_admin_menu_dashboard_org" );
+		if ( Utils::is_administrator() ){
+			return "";
+		}
+		if ( $org_dashboard_content ) {
+			remove_action( "welcome_panel", "wp_welcome_panel" );
+			add_action( "welcome_panel", function () use ( $org_dashboard_content ) {
+				$markdown = file_get_contents( get_theme_file_path( "assets/css/markdown.css" ) );
+				?>
+				<style>
+					<?php echo $markdown ?>
+				</style>
+				<div class="markdown-body">
+					<?php echo $org_dashboard_content; ?>
+				</div>
+				<?php
+			} );
+		}
+
+	}
+
+	/**
+	 * テーマのテンプレート
+	 *
+	 * @param $templates
+	 * @param $themes
+	 * @param $post
+	 * @param $post_type
+	 *
+	 * @return array|mixed
+	 */
 	public function theme_templates( $templates, $themes, $post, $post_type ) {
 		$post_templates = [];
 		$files          = (array) $themes->get_files( 'php', 4, true );
@@ -103,10 +175,6 @@ class Backend {
 
 	}
 
-	public function admin_dashboard() {
-
-	}
-
 	/**
 	 * 管理バーを表示
 	 *
@@ -119,9 +187,7 @@ class Backend {
 		if ( ! $admin_bar ) {
 			return $wp_admin_bar;
 		}
-		$current_user = wp_get_current_user();
-		// 管理者の場合はそのまま表示
-		if ( $current_user->has_cap( "administrator" ) ) {
+		if ( Utils::is_administrator() ) {
 			return "";
 		}
 		$wp_admin_bar->remove_node( "wporg" );
@@ -133,6 +199,8 @@ class Backend {
 		$wp_admin_bar->remove_node( "updates" );
 		$wp_admin_bar->remove_node( "feedback" );
 		$wp_admin_bar->remove_node( "wp-logo" );
+		$wp_admin_bar->remove_node( "wpseo-menu" );
+		$wp_admin_bar->remove_node( "query-monitor" );
 	}
 
 
@@ -176,20 +244,21 @@ class Backend {
 	public function admin_head_css_js() {
 		$css = Tags::get_option( "growp_admincustomize_css_js_css" );
 		$js  = Tags::get_option( "growp_admincustomize_css_js_js" );
-		?>
-		<style>
-			<?php echo $css ?>
-		</style>
-		<script>
-			<?php echo $js ?>
-		</script>
-		<?php
-		$screen = get_current_screen();
-		if ( isset( $screen->base ) && $screen->base === "dashboard" ) {
+		if ( $css ) {
 			?>
-
+			<style>
+				<?php echo $css ?>
+			</style>
 			<?php
 		}
+		if ( $js ) {
+			?>
+			<script>
+				<?php echo $js ?>
+			</script>
+			<?php
+		}
+
 	}
 
 	/**
@@ -243,12 +312,10 @@ class Backend {
 			return false;
 		}
 		global $menu;
-		$current_user = wp_get_current_user();
-
-		// 管理者の場合はそのまま表示
-		if ( $current_user->has_cap( "administrator" ) ) {
+		if ( Utils::is_administrator() ) {
 			return $menu;
 		}
+
 		$media = $menu[10];
 		unset( $menu[10] );
 		unset( $menu[15] ); // リンク
@@ -258,7 +325,14 @@ class Backend {
 		unset( $menu[75] ); // ツール
 		unset( $menu[80] ); // 設定
 		unset( $menu["80.025"] ); // カスタムフィールド
-
+		foreach ( $menu as $mkey => $m ) {
+			if ( $m[2] === "edit.php?post_type=growp_acf_block" ) {
+				unset( $menu[ $mkey ] );
+			}
+			if ( $m[2] === "wpseo_dashboard" ) {
+				unset( $menu[ $mkey ] );
+			}
+		}
 		$menu["98.0098"] = $media;
 	}
 
