@@ -25,6 +25,7 @@ class Acf {
 	public function include_field_types() {
 		new AcfPostTypeSelector();
 		new AcfTaxonomySelector();
+		new AcfCodeField();
 	}
 
 	/**

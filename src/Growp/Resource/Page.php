@@ -3,6 +3,7 @@
 namespace Growp\Resource;
 
 class Page {
+
 	public $id = "";
 	public $title = "";
 	public $description = "";

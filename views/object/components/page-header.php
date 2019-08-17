@@ -20,8 +20,9 @@ global $post;
 
 $title = apply_filters( 'growp/page_header/title', get_the_title() );
 
-$subtitle = apply_filters( 'growp/page_header/subtitle', ucfirst( $post->post_name ) );
-$image    = apply_filters( 'growp/page_header/image', GUrl::asset( '/assets/images/img-page-header-format.jpg' ) );
+$subtitle = apply_filters( 'growp/page_header/subtitle', isset( $post->post_name ) ? strtoupper( $post->post_name ) : "" );
+
+$image = apply_filters( 'growp/page_header/image', GUrl::asset( '/assets/images/img-page-header-format.jpg' ) );
 if ( isset( $vars["pageheader_title"] ) && $vars["pageheader_title"] ) {
 	$title = $vars["pageheader_title"];
 }

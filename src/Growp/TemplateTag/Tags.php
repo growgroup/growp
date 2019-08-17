@@ -529,10 +529,25 @@ class Tags {
 		return count( $levels );
 	}
 
+	/**
+	 * テーマオプションを取得
+	 * @param $key
+	 * @param string $default
+	 *
+	 * @return mixed|void
+	 */
 	public static function get_option( $key, $default = "" ) {
 		return apply_filters( "growp/customizer/" . $key, self::get_theme_mod( $key, $default ) );
 	}
 
+	/**
+	 * テーマオプションを取得
+	 * @param $key
+	 * @param bool $callback
+	 * @param string $default
+	 *
+	 * @return bool
+	 */
 	public static function option( $key, $callback = false, $default = "" ) {
 		if ( is_callable( $callback ) ) {
 			$val = self::get_option( $key, $default );
@@ -547,10 +562,22 @@ class Tags {
 		}
 	}
 
+	/**
+	 * テーマオプションを出力
+	 * @param $key
+	 * @param string $default
+	 */
 	public static function the_option( $key, $default = "" ) {
 		echo static::get_option( $key, $default );
 	}
 
+	/**
+	 * テーマオプションを取得
+	 * @param $field_id
+	 * @param string $default_value
+	 *
+	 * @return bool|mixed
+	 */
 	public static function get_theme_mod( $field_id, $default_value = '' ) {
 		if ( $field_id ) {
 			if ( ! $default_value ) {

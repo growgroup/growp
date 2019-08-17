@@ -35,7 +35,7 @@ class Backend {
 		add_action( 'editable_roles', [ $this, 'filter_editable_roles' ] );
 		add_filter( 'tiny_mce_before_init', [ $this, 'mce_options' ] );
 		add_action( "after_switch_theme", [ $this, 'mock_init' ] );
-		add_action( "admin_bar_menu", [ $this, 'admin_bar' ], 1000 );
+		add_action( "wp_before_admin_bar_render", [ $this, 'admin_bar' ], 1000 );
 		$post_types = get_post_types( [
 			'public' => true
 		] );
@@ -81,7 +81,7 @@ class Backend {
 		if ( ! Tags::get_option( "growp_admincustomize_admin_menu_dashboard" ) ) {
 			return "";
 		}
-		if ( Utils::is_administrator() ){
+		if ( Utils::is_administrator() ) {
 			return "";
 		}
 		global $wp_meta_boxes;
@@ -97,7 +97,7 @@ class Backend {
 	 */
 	public function disable_updated() {
 		$update_notice = Tags::get_option( "growp_admincustomize_admin_update_notice" );
-		if ( Utils::is_administrator() ){
+		if ( Utils::is_administrator() ) {
 			return "";
 		}
 		if ( $update_notice ) {
@@ -117,7 +117,7 @@ class Backend {
 	public function original_dashboard_widget() {
 
 		$org_dashboard_content = Tags::get_option( "growp_admincustomize_admin_menu_dashboard_org" );
-		if ( Utils::is_administrator() ){
+		if ( Utils::is_administrator() ) {
 			return "";
 		}
 		if ( $org_dashboard_content ) {
@@ -182,7 +182,8 @@ class Backend {
 	 *
 	 * @return string
 	 */
-	public function admin_bar( $wp_admin_bar ) {
+	public function admin_bar(  ) {
+		global $wp_admin_bar;
 		$admin_bar = Tags::get_option( "growp_admincustomize_admin_menu_adminbar" );
 		if ( ! $admin_bar ) {
 			return $wp_admin_bar;
@@ -201,6 +202,9 @@ class Backend {
 		$wp_admin_bar->remove_node( "wp-logo" );
 		$wp_admin_bar->remove_node( "wpseo-menu" );
 		$wp_admin_bar->remove_node( "query-monitor" );
+//		dump($wp_admin_bar);
+		$wp_admin_bar->remove_menu( "new_draft" );
+
 	}
 
 

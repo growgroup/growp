@@ -86,7 +86,7 @@ class AcfBlock {
 				;(function ($) {
 					$(function () {
 						var $editor = $('#acf-field_block_settings_block_render_callback');
-						wp.codeEditor.initialize($editor);
+
 						var $button = $("<button />", {
 							class: "button button-secondary",
 							text: "プレビュー",
@@ -150,19 +150,9 @@ class AcfBlock {
 	public function admin_enqueue_scripts() {
 		$current_screen = get_current_screen();
 		if ( $current_screen->base === "post" && $current_screen->id === "growp_acf_block" ) {
+			wp_enqueue_script( 'growp_site_javascript', get_theme_file_uri( "assets/js/block-editor.js" ), "acf-pro-input", true );
 			wp_enqueue_script( "codemirror-twig", get_theme_file_uri( "/assets/js/twig.js" ), [ "wp-codemirror" ] );
-			wp_enqueue_code_editor(
-				array_merge(
-					array(
-						'type'       => "html",
-						'codemirror' => array(
-							'indentUnit' => 2,
-							'tabSize'    => 2,
-							'mode'       => "php"
-						),
-					)
-				)
-			);
+
 		}
 
 		wp_enqueue_script(
@@ -305,9 +295,10 @@ class AcfBlock {
 						'1' => '上書きする',
 						'0' => 'デフォルト',
 					],
-				] )->addField( "block_custom_template", "textarea", [
+				] )->addField( "block_custom_template", "acf_code_field", [
 					'label'         => "カスタムテンプレート",
-					'default_value' => $block_template
+					'default_value' => $block_template,
+					'mode' => "htmltwig"
 				] )->conditional( "block_custom_template_condition", "==", "1" );
 			$acf_block->addGroup( "block_margin", [
 				'label' => "間隔設定",
@@ -531,7 +522,14 @@ class AcfBlock {
 		          ->addText( "block_title", [ 'label' => 'ラベル' ] )
 		          ->addTextarea( "block_description", [ 'label' => '説明文' ] )
 		          ->addSelect( "block_render_template", [ 'label' => 'テンプレートを選択', 'choices' => $block_templates ] )
-		          ->addTextarea( "block_render_callback", [ 'label' => 'テンプレートを記述' ] )->conditional( "block_render_template", "==", "" )->orCondition( "block_render_template", "==", "none" )
+		          ->addField( "block_render_callback", "acf_code_field",
+			          [
+				          'label' => 'テンプレートを記述',
+				          'mode'  => "htmltwig"
+			          ]
+		          )
+		          ->conditional( "block_render_template", "==", "" )
+		          ->orCondition( "block_render_template", "==", "none" )
 		          ->addRepeater( "block_acf_settings", [
 			          'label'  => 'ACFフィールド',
 			          'layout' => 'block'
@@ -577,6 +575,11 @@ class AcfBlock {
 			'instructions'  => '<a href="https://developer.wordpress.org/resource/dashicons/#editor-break" target="_blank">ダッシュアイコンから入力</a>',
 			'default_value' => 'admin-site'
 		] )->setWidth( 33 );
+//		$acf_block->addField( "block_icon", [
+//			'label'         => 'アイコン',
+//			'instructions'  => '<a href="https://developer.wordpress.org/resource/dashicons/#editor-break" target="_blank">ダッシュアイコンから入力</a>',
+//			'default_value' => 'admin-site'
+//		] )->setWidth( 33 );
 		$acf_block->addRadio( "block_mode", [
 			'label'         => 'デフォルトの表示モード',
 			'default_value' => 'preview',
@@ -677,7 +680,7 @@ class AcfBlock {
 			'label'               => $this->post_type_label,
 			'description'         => __( 'ブロックを登録', 'growp' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'revisions' ),
+			'supports'            => array( 'title' ),
 			'hierarchical'        => false,
 			'public'              => false,
 			'show_ui'             => true,

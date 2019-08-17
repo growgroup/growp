@@ -8,12 +8,14 @@
  */
 
 use Growp\Customizer\Customizer;
+use Growp\Devtools\Devtools;
 use Growp\Editor\AcfBlock;
 use Growp\Editor\Acf;
 use Growp\Editor\BlockEditor;
 use Growp\Hooks\Backend;
+use Growp\Hooks\Comments;
 use Growp\Hooks\Frontend;
-use Growp\Resource\Resource;
+use Growp\Hooks\Plugins;
 use Growp\Template\Foundation;
 
 /**
@@ -25,19 +27,17 @@ define( 'GROWP_VERSION', '1.0.0' );
 // テンプレートのパス
 define( 'GROWP_TEMPLATE_PATH', __DIR__ );
 
-// CSSファイル
-define( "GROWP_STYLESHEET_URL", get_stylesheet_directory_uri() . "/assets/css/style.css" );
-
-// テーマのJavaScriptファイル
-define( "GROWP_JAVASCRIPT_URL", get_stylesheet_directory_uri() . "/assets/js/scripts.js" );
+// カスタマイザー
+define( 'GROWP_USE_STYLE_CUSTOMIZE', true );
 
 require_once __DIR__ . "/vendor/autoload.php";
 require_once __DIR__ . "/src/Growp/TemplateTag/Proxy.php";
 require_once __DIR__ . "/vendor/aristath/kirki/kirki.php";
 
-//require_once __DIR__ . "/vendor/";
 
 add_action( "registered_taxonomy", function () {
+	Comments::get_instance();
+	Plugins::get_instance();
 	Frontend::get_instance();
 	Backend::get_instance();
 	Foundation::get_instance();
@@ -45,22 +45,13 @@ add_action( "registered_taxonomy", function () {
 	AcfBlock::get_instance();
 	Customizer::get_instance();
 	BlockEditor::get_instance();
+	Devtools::get_instance();
 } );
 
 
 /**
  * テンプレートタグ定義
  */
-
-/**
- * アクションフック定義
- */
-require_once __DIR__ . "/src/hooks/comment.php";
-require_once __DIR__ . "/src/hooks/default-plugins.php";
-require_once __DIR__ . "/src/hooks/extras.php";
-//require_once __DIR__ . "/src/hooks/setup.php";
-require_once __DIR__ . "/src/hooks/sidebar.php";
-
 
 // テンプレートを固定ページとして作成
 // growp-setup を利用した際に有効
@@ -191,7 +182,6 @@ add_action( "init", function () {
 } );
 
 
-
-function growp_html_url(){
+function growp_html_url() {
 	return GUrl::asset();
 }

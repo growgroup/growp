@@ -5,12 +5,16 @@ namespace Growp\Resource;
 use const DIRECTORY_SEPARATOR;
 use Exception;
 use Gajus\Dindent\Indenter;
+use Symfony\Component\Cache\Exception\InvalidArgumentException;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Finder\Finder;
 
 class Resource {
-
+	/**
+	 * テーマ内の静的ファイル格納ディレクトリ
+	 * @var string
+	 */
 	private $base_dir_name = "resource";
 
 	// HTMLが格納されているディレクトリ
@@ -78,9 +82,6 @@ class Resource {
 		],
 		'project'   => [
 			'fa fa-map-marker',
-//			'c-map-search',
-//			'c-slidebar-menu js-slidebar-menu is-top-to-bottom',
-//			'c-slidebar-container js-slidebar-container is-top-to-bottom',
 		]
 	];
 
@@ -133,9 +134,12 @@ class Resource {
 	];
 
 	private function __construct() {
+		add_action( "update_option", [ $this, "clear_cache" ] );
+
 		$this->sitetree = new SiteTree();
 		$cache_hits     = $this->load_from_cache();
 		$cache_flag     = true;
+
 
 		foreach ( $cache_hits as $ch ) {
 			if ( ! $ch ) {
@@ -147,6 +151,7 @@ class Resource {
 			$this->set_dir();
 			$this->parse();
 		}
+
 
 	}
 
@@ -176,6 +181,7 @@ class Resource {
 	 */
 	public function load_from_cache() {
 		$cache = new FilesystemCache( $this->cache_key );
+
 		$props = [];
 
 		foreach ( static::$cache_prop_keys as $prop_key ) {
@@ -189,6 +195,14 @@ class Resource {
 		}
 
 		return static::$cache_hits;
+	}
+
+	/**
+	 * キャッシュをクリア
+	 */
+	public function clear_cache() {
+		$cache = new FilesystemCache( $this->cache_key );
+		$cache->clear();
 	}
 
 	/**
@@ -214,15 +228,22 @@ class Resource {
 		$finder       = $this->get_finder( $resource_dir );
 		$finder->directories();
 		$finder->depth( "==0" );
-		$target_dir = "";
+		$target_dir         = "";
+		$default_target_dir = "";
 		foreach ( $finder as $dir ) {
-			if ( $dir->getPathname() !== "." && $dir->getPathname() !== ".." ) {
+			if ( $dir->getPathname() !== "."
+			     && $dir->getPathname() !== ".."
+			     && strpos( $dir->getPathname(), "resource/default" ) === false ) {
 				$target_dir = $dir->getPathname();
 			}
+			if ( strpos( $dir->getPathname(), "resource/default" ) !== false ) {
+				$default_target_dir = $dir->getPathname();
+			}
 		}
-
+		if ( ! $target_dir ) {
+			$target_dir = $default_target_dir;
+		}
 		$this->relative_html_path = $this->base_dir_name . DIRECTORY_SEPARATOR . basename( $target_dir ) . DIRECTORY_SEPARATOR . "dist";
-
 
 		$this->html_dir = apply_filters( 'growp/resource/path', $target_dir );
 		$this->dist_dir = $this->get_path( "dist" );
@@ -296,7 +317,12 @@ class Resource {
 				$this->set_metadata( "site_description", $page->description );
 			}
 		}
-		$this->set_cache();
+		try {
+			$this->set_cache();
+		} catch ( InvalidArgumentException $exception ) {
+
+		}
+
 	}
 
 	/**
@@ -546,8 +572,14 @@ class Resource {
 				return $_css_file;
 			}
 		}
+
 		return false;
 	}
+
+	/**
+	 * リライト後のCSSファイルを取得する
+	 * @return bool|mixed
+	 */
 	public static function get_rewrite_main_css_file_path() {
 		$resource = Resource::get_instance();
 		foreach ( $resource->css_files as $_css_file ) {
@@ -555,6 +587,7 @@ class Resource {
 				return $_css_file;
 			}
 		}
+
 		return static::get_default_main_css_file_path();
 	}
 

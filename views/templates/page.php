@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: 幅狭テンプレート
- * Foundation: free
+ * Template Name: デフォルトテンプレート
+ * Foundation: base
  * Title: タイトル
  * Subtitle: サブタイトル
  * Formatting: false

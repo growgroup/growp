@@ -3,6 +3,8 @@
 namespace Growp\Template;
 
 
+use function do_action;
+
 abstract class BaseComponent {
 
 	public $component_name = "";
@@ -42,6 +44,7 @@ abstract class BaseComponent {
 	public static function get( $name, $vars = [] ) {
 		$instance = new static( $name, $vars );
 		$instance->render();
+		do_action( "growp/get_component", $instance, $name );
 	}
 
 	/**

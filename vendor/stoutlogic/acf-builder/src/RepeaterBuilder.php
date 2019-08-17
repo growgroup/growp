@@ -68,6 +68,6 @@ class RepeaterBuilder extends GroupBuilder
      */
     private function getDefaultButtonLabel()
     {
-        return Inflector::singularize($this->getLabel()) . "を追加";
+        return 'Add ' . Inflector::singularize($this->getLabel());
     }
 }

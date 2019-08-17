@@ -2,7 +2,11 @@
 
 namespace Growp\TemplateTag;
 
+use const ABSPATH;
 use function is_user_logged_in;
+use function site_url;
+use function str_replace;
+use const WP_CONTENT_DIR;
 use function wp_get_theme;
 
 class Utils {
@@ -32,5 +36,10 @@ class Utils {
 		}
 
 		return false;
+	}
+
+	public static function get_relative_url( $path ) {
+		$base = str_replace( ABSPATH, "", $path );
+		return site_url( "/" . $base );
 	}
 }

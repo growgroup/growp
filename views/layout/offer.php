@@ -9,6 +9,7 @@ $default_vars = [
 	'time'            => "お電話での受付時間は平日 9:00〜18:00 （土日祝除く）",
 	'button_url'      => "/contact/",
 	'button_text'     => "メールでのお問い合わせはこちら",
+	'align'    => "",
 	'button_label'    => "メールでのお問い合わせはこちら",
 ];
 $vars         = wp_parse_args( $vars, $default_vars );
