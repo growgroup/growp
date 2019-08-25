@@ -9,16 +9,31 @@
  */
 
 //$vars = Foundation::get_vars();
+use Growp\Hooks\SearchForm;
+use Growp\Hooks\SearchModel;
 use Growp\Template\Component;
 
 global $post;
+
+//echo $input->html();
+//echo $select->html();
+//exit;
+?>
+<div class="l-section is-xlg">
+	<div class="l-container">
+
+	</div>
+</div>
+<?php
 if ( $post->post_content ) {
 	remove_filter( "the_codntent", "wpautop" );
 	the_content();
 } else {
+
 	?>
 	<section class="l-section is-lg is-color-secondary">
 		<div class="l-container">
+
 			<h2 class="c-heading is-xlg is-bottom"><span>ABOUT</span>
 				<small>私たちについて</small>
 			</h2>

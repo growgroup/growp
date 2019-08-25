@@ -1,8 +1,8 @@
 <?php
 /**
  * Template Name: 投稿詳細
- * Title: Blog
- * Subtitle: ブログ
+ * xTitle: Blog
+ * xSubtitle: ブログ
  * PageHeaderTitle: ブログ
  * PageHeaderSubtitle: Blog
  * Formatting: false

@@ -2,21 +2,6 @@
 
 namespace Growp\Template;
 
-use function add_filter;
-use function apply_filters;
-use function array_unshift;
-use function defined;
-use function dump;
-use function file_exists;
-use function get_theme_file_path;
-use Growp\Exception\TemplateErrorException;
-use function ob_end_clean;
-use function ob_get_contents;
-use function stat;
-use function var_dump;
-use function wp_reset_postdata;
-use function wp_reset_query;
-
 /**
  * Class Layout
  * @package Growp\Template
@@ -32,6 +17,8 @@ class Foundation {
 	protected $base = "";
 
 	public $content = "";
+
+	public $vars = "";
 
 	private static $instance = null;
 
@@ -74,23 +61,6 @@ class Foundation {
 		return static::$instance;
 	}
 
-	/**
-	 * テンプレートを変更する
-	 *
-	 * @param $name
-	 *
-	 * @throws TemplateErrorException
-	 */
-	public static function use( $name ) {
-		$layoutObject = static::get_instance();
-		/**
-		 * この時点でnameがセットされている場合は例外を投げる
-		 */
-		if ( $layoutObject->name ) {
-			throw new TemplateErrorException( "テンプレートがすでにセットされています", "not_template_change_timing" );
-		}
-		$layoutObject->name = $name;
-	}
 
 	/**
 	 * template_include フックでテンプレートを書き換える
@@ -209,10 +179,10 @@ class Foundation {
 
 	/**
 	 * テンプレート変数を取得する
-	 * @return mixed_
+	 * @return array
 	 */
 	public static function get_vars() {
-		$layoutObject = static::get_instance();
+		$layoutObject = self::get_instance();
 
 		return $layoutObject->vars;
 	}

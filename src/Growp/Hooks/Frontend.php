@@ -2,9 +2,11 @@
 
 namespace Growp\Hooks;
 
+use function array_map;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
+use function get_terms;
 use function get_theme_file_path;
 use Growp\Menu\Menu;
 use Growp\Resource\Resource;
@@ -38,6 +40,45 @@ class Frontend {
 		$this->change_template_path();
 		new Menu( "header_nav", "ヘッダーナビゲーション" );
 		new Menu( "footer_nav", "フッターナビゲーション" );
+//		$searchFormSetting = [
+//			[
+//				'name'          => 's_name',
+//				'query_type'    => 'tax_query',
+//				'input_type'    => 'text',
+//				'value'         => '',
+//				'default_value' => '',
+//				'attrs'         => [
+//					'placeholder' => "test",
+//					'required'    => true,
+//					'class'       => "test",
+//					'id'          => "test",
+//				],
+//			],
+//			[
+//				'name'          => 's_select',
+//				'query_type'    => 'tax_query',
+//				'input_type'    => 'select',
+//				'value'         => '',
+//				'default_value' => '',
+//				'choices'       => function () {
+//					return array_map( function ( $a ) {
+//						return [
+//							'value' => $a->term_id,
+//							'label' => $a->name,
+//						];
+//					}, get_terms( [ 'taxonomy' => "category" ] ) );
+//				},
+//				'attrs'         => [
+//					'placeholder' => "test",
+//					'required'    => true,
+//					'class'       => "test",
+//					'id'          => "test",
+//				],
+//			]
+//		];
+//
+//		$search_form       = new SearchForm( $searchFormSetting );
+//		$search_form->set_template( "<form method='post' action='/home/'>{{s_select|raw}} {{s_name|raw}}<button>送信</button></form>" );
 	}
 
 	/**

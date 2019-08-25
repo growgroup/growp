@@ -2,6 +2,8 @@
 
 namespace Growp\Devtools;
 
+use function get_bloginfo;
+use Growp\Devtools\Packages\DevInfo;
 use Growp\Devtools\Packages\LinkCheck;
 use Growp\Devtools\Packages\MetaInfo;
 use Growp\Devtools\Packages\Note;
@@ -22,6 +24,7 @@ class Devtools {
 		Note::get_instance();
 		LinkCheck::get_instance();
 		MetaInfo::get_instance();
+		DevInfo::get_instance();
 		add_action( "admin_bar_menu", [ $this, 'admin_bar' ], 99 );
 	}
 
