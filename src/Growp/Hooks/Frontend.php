@@ -37,6 +37,12 @@ class Frontend {
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'growp_scripts' ], 10 );
 		add_shortcode( 'growp_component', [ $this, 'growp_shortcode_get_component' ] );
+		add_action( 'wp_head', function(){
+			echo Tags::get_option("growp_base_tagmanager_head");
+		}, 10 );
+		add_action( 'wp_body_open', function(){
+			echo Tags::get_option("growp_base_tagmanager_body_open");
+		}, 10 );
 		$this->change_template_path();
 		new Menu( "header_nav", "ヘッダーナビゲーション" );
 		new Menu( "footer_nav", "フッターナビゲーション" );
