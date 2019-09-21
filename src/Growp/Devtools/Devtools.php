@@ -2,12 +2,14 @@
 
 namespace Growp\Devtools;
 
-use function get_bloginfo;
+use Growp\Devtools\Packages\ComponentInfo;
 use Growp\Devtools\Packages\DevInfo;
+use Growp\Devtools\Packages\HtmlInfo;
 use Growp\Devtools\Packages\LinkCheck;
 use Growp\Devtools\Packages\MetaInfo;
 use Growp\Devtools\Packages\Note;
 use Growp\TemplateTag\Utils;
+use function wp_localize_script;
 
 class Devtools {
 
@@ -18,6 +20,7 @@ class Devtools {
 	 * 初期化
 	 */
 	private function __construct() {
+		// ログインしていない場合は実行しない
 		if ( ! Utils::is_administrator() ) {
 			return false;
 		}
@@ -25,7 +28,61 @@ class Devtools {
 		LinkCheck::get_instance();
 		MetaInfo::get_instance();
 		DevInfo::get_instance();
+		HtmlInfo::get_instance();
+		ComponentInfo::get_instance();
+
 		add_action( "admin_bar_menu", [ $this, 'admin_bar' ], 99 );
+		add_action( "wp_enqueue_scripts", [ $this, "assets" ] );
+		add_action( "admin_enqueue_scripts", [ $this, "assets" ] );
+	}
+
+	/**
+	 * 開発ツールで必要な静的ファイル群を登録
+	 */
+	public function assets() {
+		wp_enqueue_code_editor(
+			array_merge(
+				array(
+					'type'       => "html",
+					'codemirror' => array(
+						'indentUnit' => 2,
+						'tabSize'    => 2,
+						'mode'       => "php"
+					),
+				)
+			)
+		);
+		wp_enqueue_script(
+			'growp_jbox',
+			'https://cdn.jsdelivr.net/npm/jbox@1.0.5/dist/jBox.all.min.js',
+			[ 'jquery', 'customize-preview' ],
+			"",
+			true
+		);
+		wp_enqueue_style(
+			"growp_jbox",
+			"https://cdn.jsdelivr.net/npm/jbox@1.0.5/dist/jBox.all.css",
+			[],
+			"",
+			"all"
+		);
+		wp_enqueue_style(
+			"growp_admin_css",
+			get_theme_file_uri( "/assets/css/admin.css" ),
+			[],
+			"",
+			"all"
+		);
+		wp_enqueue_style(
+			"growp_themecustomizer",
+			get_theme_file_uri( 'assets/css/theme-customizer.css' ),
+			[],
+			"",
+			"all"
+		);
+		wp_localize_script( "jquery", "GROWP", [
+			'nonce' => Utils::create_nonce(),
+		] );
 	}
 
 	public function admin_bar( $wp_admin_bar ) {

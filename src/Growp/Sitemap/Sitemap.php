@@ -1,6 +1,7 @@
 <?php
 
 namespace Growp\Sitemap;
+
 /**
  * Class GROWP_Sitemap
  * サイトマップを出力するためのクラス

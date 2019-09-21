@@ -668,10 +668,6 @@ class Customizer {
 
 	public function get_html_info() {
 		$request = Request::createFromGlobals();
-//		if ( ! wp_verify_nonce( $request->get( "nonce" ), __FILE__ ) ) {
-//			wp_send_json_error( [ "message" => "不正なアクセス" ] );
-//			exit;
-//		}
 		$resource = Resource::get_instance();
 		wp_send_json_success( $resource );
 		exit;

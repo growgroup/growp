@@ -7,6 +7,7 @@
  * =====================================================
  */
 
+use Growp\Config\Config;
 use Growp\Customizer\Customizer;
 use Growp\Devtools\Devtools;
 use Growp\Editor\AcfBlock;
@@ -35,7 +36,8 @@ require_once __DIR__ . "/src/Growp/TemplateTag/Proxy.php";
 require_once __DIR__ . "/vendor/aristath/kirki/kirki.php";
 
 
-add_action( "registered_taxonomy", function () {
+add_action( "after_setup_theme", function () {
+	Config::get_instance();
 	Comments::get_instance();
 	Plugins::get_instance();
 	Frontend::get_instance();
@@ -45,7 +47,10 @@ add_action( "registered_taxonomy", function () {
 	AcfBlock::get_instance();
 	Customizer::get_instance();
 	BlockEditor::get_instance();
-	Devtools::get_instance();
+
+	if ( Config::get( "use_devtools" ) ) {
+		Devtools::get_instance();
+	}
 } );
 
 

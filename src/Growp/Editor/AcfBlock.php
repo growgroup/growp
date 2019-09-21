@@ -154,23 +154,8 @@ class AcfBlock {
 			wp_enqueue_script( "codemirror-twig", get_theme_file_uri( "/assets/js/twig.js" ), [ "wp-codemirror" ] );
 
 		}
-
-		wp_enqueue_script(
-			'growp_jbox',
-			'https://cdn.jsdelivr.net/npm/jbox@1.0.5/dist/jBox.all.min.js',
-			[ 'jquery', 'customize-preview' ],
-			"",
-			true
-		);
-		wp_enqueue_style(
-			"growp_jbox",
-			"https://cdn.jsdelivr.net/npm/jbox@1.0.5/dist/jBox.all.css",
-			[],
-			"",
-			"all"
-		);
 		wp_localize_script( "growp_theme_customizer", "GROWP_THEMECUSTOMIZER", [
-			"nonce" => wp_create_nonce( __FILE__ ),
+			"nonce" => wp_create_nonce( "GROWP_THEMECUSTOMIZER" ),
 		] );
 	}
 

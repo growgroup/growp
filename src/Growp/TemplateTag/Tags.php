@@ -3,6 +3,7 @@
 namespace Growp\TemplateTag;
 
 use ErrorException;
+use Growp\Config\Config;
 use Growp\Template\Foundation;
 use WP_Term;
 use WPSEO_Primary_Term;
@@ -29,7 +30,7 @@ class Tags {
 			return $imageurl;
 		}
 
-		return get_theme_file_uri( "/assets/images/img-default-thumbnail.jpg" );
+		return Config::get( "default_thumbnail_url" );
 	}
 
 
@@ -261,7 +262,7 @@ class Tags {
 			return $image_url;
 		}
 
-		return GUrl::asset( "/assets/images/img-default-thumbnail.jpg" );
+		return Url::asset( "/assets/images/img-default-thumbnail.jpg" );
 	}
 
 	/**
@@ -531,6 +532,7 @@ class Tags {
 
 	/**
 	 * テーマオプションを取得
+	 *
 	 * @param $key
 	 * @param string $default
 	 *
@@ -542,6 +544,7 @@ class Tags {
 
 	/**
 	 * テーマオプションを取得
+	 *
 	 * @param $key
 	 * @param bool $callback
 	 * @param string $default
@@ -564,6 +567,7 @@ class Tags {
 
 	/**
 	 * テーマオプションを出力
+	 *
 	 * @param $key
 	 * @param string $default
 	 */
@@ -573,6 +577,7 @@ class Tags {
 
 	/**
 	 * テーマオプションを取得
+	 *
 	 * @param $field_id
 	 * @param string $default_value
 	 *

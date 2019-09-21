@@ -3,6 +3,10 @@
 namespace Growp\Hooks;
 
 use function add_action;
+use function count;
+use function esc_attr;
+use function explode;
+use function get_page_by_path;
 use function get_post_types;
 use Growp\Mock\FrontAndHome;
 use Growp\Mock\MwWpForm;
@@ -10,8 +14,17 @@ use Growp\Mock\PrivacyPolicy;
 use Growp\Mock\Sitemap;
 use Growp\Mock\TinymceAdvanced;
 use Growp\Mock\WpAdminUiCustomize;
+use Growp\Resource\Resource;
 use Growp\TemplateTag\Tags;
 use Growp\TemplateTag\Utils;
+use function implode;
+use function join;
+use function strpos;
+use function update_post_meta;
+use function wp_insert_post;
+use function wp_send_json_error;
+use function wp_send_json_success;
+use function wp_verify_nonce;
 
 class Backend {
 
@@ -36,13 +49,15 @@ class Backend {
 		add_filter( 'tiny_mce_before_init', [ $this, 'mce_options' ] );
 		add_action( "after_switch_theme", [ $this, 'mock_init' ] );
 		add_action( "wp_before_admin_bar_render", [ $this, 'admin_bar' ], 1000 );
+
+		add_filter( 'kirki_telemetry', '__return_false' );
+
 		$post_types = get_post_types( [
 			'public' => true
 		] );
+
 		foreach ( $post_types as $post_type ) {
 			add_filter( "manage_{$post_type}_posts_columns", function ( $column ) {
-
-				dump( $column );
 
 				if ( isset( $column["tags"] ) ) {
 					unset( $column["tags"] );
@@ -53,7 +68,6 @@ class Backend {
 				if ( isset( $column["author"] ) ) {
 					unset( $column["author"] );
 				}
-
 				// Yoast SEOに対して無効化する
 				foreach (
 					[
@@ -74,15 +88,89 @@ class Backend {
 			}, 99, 1 );
 		}
 
+		add_action( "wp_ajax_growp_create_page", function () {
+			$_keys   = [
+				'action',
+				'nonce',
+				'pageKey',
+				'post_content_save',
+				'post_name',
+				'post_title',
+			];
+			$_values = [];
+			foreach ( $_keys as $key ) {
+				$_values[ $key ] = isset( $_POST[ $key ] ) ? esc_html( $_POST[ $key ] ) : "";
+			}
+//			echo '<pre>';
+//			echo var_dump($_values["nonce"]);
+//			echo '</pre>';
+//			if ( ! wp_verify_nonce( $_values["nonce"], "GROWP_THEMECUSTOMIZER" ) ) {
+//				wp_send_json_error([
+//					"message" => "ページを作成できませんでした。不正なアクセス"
+//				]);
+//				exit;
+//			}
+			$resource     = Resource::get_instance();
+			$sitetree     = $resource->sitetree;
+			$pageKey      = $_values["pageKey"];
+			$post_name    = $_values["post_name"];
+			$current_site = $sitetree[ $pageKey ];
+			$post_content = " ";
+			if ( $_values["post_content_save"] === "1" ) {
+				$post_content = $current_site->main_content_html;
+			}
+
+			$_post_slug = explode( "/", $post_name );
+			$parent     = "";
+
+			if ( get_page_by_path( $post_name ) )
+			if ( count( $_post_slug ) !== 1 ) {
+				$post_name = $_post_slug[ ( count( $_post_slug ) - 1 ) ];
+				unset( $_post_slug[ count( $_post_slug ) - 1 ] );
+				$parent = join( "/", $_post_slug );
+			}
+
+//			echo '<pre>';
+//			echo var_dump( $parent );
+////			echo var_dump( $post_slug );
+//			echo '</pre>';
+//			exit;
+
+			if ( $parent ) {
+				$parentpost = get_page_by_path( $parent );
+			}
+//			exit;
+			$args = [
+				'post_title'   => esc_html( $_values["post_title"] ),
+				'post_name'    => $post_name,
+				'post_status'  => "publish",
+				'post_type'    => "page",
+				'post_content' => $post_content,
+			];
+			if ( $parentpost ) {
+				$args["post_parent"] = $parentpost->ID;
+			}
+			$_post_id = wp_insert_post( $args );
+			update_post_meta( $_post_id, "growp_inserted_true", true );
+			wp_send_json_success( [
+				'message' => "ページを作成しました",
+				'post_id' => $_post_id,
+			] );
+		} );
+
 
 	}
 
+	/**
+	 * ダッシュボードのウィジェットを非表示にする
+	 * @return array|string
+	 */
 	public function disable_dashoboard_widget() {
 		if ( ! Tags::get_option( "growp_admincustomize_admin_menu_dashboard" ) ) {
-			return "";
+			return [];
 		}
 		if ( Utils::is_administrator() ) {
-			return "";
+			return [];
 		}
 		global $wp_meta_boxes;
 		unset( $wp_meta_boxes["dashboard"]["normal"]["core"]["dashboard_activity"] );
@@ -182,7 +270,7 @@ class Backend {
 	 *
 	 * @return string
 	 */
-	public function admin_bar(  ) {
+	public function admin_bar() {
 		global $wp_admin_bar;
 		$admin_bar = Tags::get_option( "growp_admincustomize_admin_menu_adminbar" );
 		if ( ! $admin_bar ) {
@@ -374,4 +462,6 @@ class Backend {
 
 		return $init_array;
 	}
+
+
 }

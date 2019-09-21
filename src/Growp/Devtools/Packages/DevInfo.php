@@ -88,10 +88,10 @@ class DevInfo {
 												</td>
 												<td><code><?php echo get_the_permalink() ?></code></td>
 												<td>
-													<a href="<?php echo get_edit_post_link() ?>" target="_blank">
+													<a class="c-label is-sm" href="<?php echo get_edit_post_link() ?>" target="_blank">
 														編集
 													</a>
-													<a onclick="return (confirm('本当に削除しますか？') ? true : false);" href="<?php echo get_delete_post_link( get_the_ID() ) ?>">
+													<a class="c-label is-sm" onclick="return (confirm('本当に削除しますか？') ? true : false);" href="<?php echo get_delete_post_link( get_the_ID() ) ?>">
 														削除
 													</a>
 												</td>

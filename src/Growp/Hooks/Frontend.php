@@ -8,6 +8,7 @@ use function file_get_contents;
 use function file_put_contents;
 use function get_terms;
 use function get_theme_file_path;
+use Growp\Config\Config;
 use Growp\Menu\Menu;
 use Growp\Resource\Resource;
 use Growp\Template\Component;
@@ -37,16 +38,16 @@ class Frontend {
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'growp_scripts' ], 10 );
 		add_shortcode( 'growp_component', [ $this, 'growp_shortcode_get_component' ] );
-		add_action( 'wp_head', function(){
-			echo Tags::get_option("growp_base_tagmanager_head");
+		add_action( 'wp_head', function () {
+			echo Tags::get_option( "growp_base_tagmanager_head" );
 		}, 10 );
-		add_action( 'wp_body_open', function(){
-			echo Tags::get_option("growp_base_tagmanager_body_open");
+		add_action( 'wp_body_open', function () {
+			echo Tags::get_option( "growp_base_tagmanager_body_open" );
 		}, 10 );
 		$this->change_template_path();
 		new Menu( "header_nav", "ヘッダーナビゲーション" );
 		new Menu( "footer_nav", "フッターナビゲーション" );
-//		$searchFormSetting = [
+		//		$searchFormSetting = [
 //			[
 //				'name'          => 's_name',
 //				'query_type'    => 'tax_query',
@@ -131,7 +132,9 @@ class Frontend {
 			)
 		);
 
-		static::rewrite_color_stylesheet_file();
+		if ( Config::get( "use_themecustomizer_stylesheet" ) ) {
+			static::rewrite_color_stylesheet_file();
+		}
 	}
 
 	/**
@@ -159,10 +162,7 @@ class Frontend {
 		];
 		foreach ( $templates as $template ) {
 			add_filter( "{$template}_template_hierarchy", function ( $templates ) {
-
 				foreach ( $templates as $key => $template ) {
-
-
 					if ( strpos( $template, "views/templates" ) !== false ) {
 						$templates[ $key ] = $template;
 						continue;
@@ -171,7 +171,6 @@ class Frontend {
 				}
 
 				return $templates;
-
 			} );
 		}
 

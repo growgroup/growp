@@ -19,7 +19,48 @@ class MwWpForm extends BaseMock {
 			'post_type'    => 'mw-wp-form',
 			'post_name'    => 'mw-wp-form-contact',
 			'post_status'  => 'publish',
-			'post_content' => " ",
+			'post_content' => ' <div class="c-forms">
+
+<div class="c-forms__block">
+<div class="c-forms__title"><span>氏名</span>
+<div class="c-forms__label">必須</div>
+</div>
+<div class="c-forms__content">[mwform_text name="氏名" placeholder="お名前をご記入ください。" class="c-forms__input"]</div>
+</div>
+<div class="c-forms__block">
+<div class="c-forms__title"><span>メールアドレス</span>
+<div class="c-forms__label">必須</div>
+</div>
+<div class="c-forms__content">[mwform_text name="メールアドレス" placeholder="メールアドレスをご記入ください。" class="c-forms__input"]</div>
+</div>
+<div class="c-forms__block">
+<div class="c-forms__title"><span>電話番号</span>
+<div class="c-forms__label">必須</div>
+</div>
+<div class="c-forms__content">[mwform_text name="電話番号" placeholder="電話番号をご記入ください。" class="c-forms__input"]</div>
+</div>
+<div class="c-forms__block">
+<div class="c-forms__title"><span>お問い合わせ内容</span>
+<div class="c-forms__label">必須</div>
+</div>
+<div class="c-forms__content">[mwform_textarea name="お問い合わせ内容" placeholder="お問い合わせ内容をご記入ください。" class="c-forms__textarea"]</div>
+</div>
+
+<div class="c-forms__block">
+              <div class="c-forms__title">個人情報の<br class="u-hidden-sm">取扱いについて<span class="c-forms__label">必須</span>
+              </div>
+              <div class="c-forms__content  is-vertical-middle">
+                <div class="c-forms__privacy">
+                  [mwform_checkbox name="個人情報保護方針の内容に同意する" children="同意する :　"]<label for="privacy-policy"><a href="/privacy-policy/">個人情報保護方針</a>の内容に同意する</label>
+                </div>
+              </div>
+            </div>
+<div class="c-forms__submit">
+<p class="u-mbs u-text-center is-sm">[mwform_bconfirm class="c-button is-lg" value="confirm"]確認画面へ[/mwform_bconfirm]</p>
+<p class="u-mbs u-text-center is-sm">[mwform_bsubmit name="submit" class="c-button is-lg" value="send"]送信する[/mwform_bsubmit]</p>
+<p class="u-mbs u-text-center is-sm">[mwform_bback class="c-button is-lg" value="back"]戻る[/mwform_bback]</p>
+</div>
+</div>',
 		);
 		$mw_wp_form_id       = $this->insert_post( $defaults_mw_wp_form )->get_insert_id( $defaults_mw_wp_form["post_name"] );
 		/**

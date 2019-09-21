@@ -1,5 +1,7 @@
 <?php
+
 namespace Growp\Mock;
+
 use Growp\Mock\BaseMock;
 
 /**
@@ -20,12 +22,11 @@ class FrontAndHome extends BaseMock {
 			'post_status'  => "publish",
 		) );
 
-
 		$this->insert_post( array(
-			'post_title'   => "ブログ",
+			'post_title'   => "お知らせ",
 			'post_type'    => 'page',
 			'post_content' => "",
-			'post_name'    => "home",
+			'post_name'    => "news",
 			'post_status'  => "publish",
 		) );
 

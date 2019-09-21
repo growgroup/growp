@@ -1,4 +1,5 @@
 ;(function ($) {
+
 	var register_lock = false;
 	$(document).on("click", "#growp_view_sitemap", function (e) {
 		e.preventDefault();
@@ -12,7 +13,7 @@
 		}).done(function (res) {
 			var content = res.data;
 			var _sitetree = res.data.sitetree; 
-			var sitetree = []
+			var sitetree = [];
 			for (var key in _sitetree) {
 				sitetree.push(_sitetree[key])
 			}
