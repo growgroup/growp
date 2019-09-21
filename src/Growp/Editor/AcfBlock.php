@@ -3,7 +3,7 @@
 namespace Growp\Editor;
 
 use Exception;
-use Growp\Template\ACfComponent;
+use Growp\Template\AcfComponent;
 use Growp\Template\BaseComponent;
 use Growp\Template\Component;
 use Growp\TemplateTag\Utils;
@@ -245,7 +245,7 @@ class AcfBlock {
 				$block_config['render_callback'] = function ( $_block ) use ( $b, $self, $block ) {
 					$fields          = get_fields();
 					$fields["align"] = "align" . $_block["align"];
-					ACfComponent::get( $b["block_render_template"], $fields );
+					AcfComponent::get( $b["block_render_template"], $fields );
 				};
 			} else {
 				$block_config['render_callback'] = function ( $b ) use ( $self, $block ) {
