@@ -72,7 +72,7 @@ class MetaInfo {
 									return $el.attr("content")
 								},
 								error_case: (result) => {
-									if (result.search("noindex") !== -1) {
+									if (result && result.search("noindex") !== -1) {
 										return false;
 									}
 									return true;
