@@ -72,7 +72,7 @@ function growp_shortcode_get_component( $atts ) {
 	ob_start();
 	GTemplate::get_component( $atts["name"] );
 	$content = ob_get_contents();
-	ob_clean();
+	ob_end_clean();
 	return $content;
 }
 add_shortcode( 'growp_component', 'growp_shortcode_get_component' );
