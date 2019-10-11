@@ -326,7 +326,7 @@ class GNav {
 		endif;
 		for ( $n = 1; $n <= $total; $n ++ ) :
 			if ( $n == $current ) :
-				$page_links[] = "<li class='is-active'><span class='page-numbers current'>" . $args['before_page_number'] . number_format_i18n( $n ) . $args['after_page_number'] . "</span></li>";
+				$page_links[] = "<li class='is-active'><span class='page-numbers current is-current'>" . $args['before_page_number'] . number_format_i18n( $n ) . $args['after_page_number'] . "</span></li>";
 				$dots         = true;
 			else :
 				if ( $args['show_all'] || ( $n <= $end_size || ( $current && $n >= $current - $mid_size && $n <= $current + $mid_size ) || $n > $total - $end_size ) ) :
