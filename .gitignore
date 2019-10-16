@@ -42,6 +42,6 @@ bower_components
 !bower_components/font-awesome/fonts
 assets/components
 .map
-dist
+# dist
 .idea
 

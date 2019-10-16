@@ -1,0 +1,62 @@
+.js-note-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #000;
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  text-align: center;
+  padding-top: 9px;
+  z-index: 100;
+
+  a {
+    color: #fff;
+
+    i {
+      font-size: 32px;
+    }
+  }
+}
+
+.modal {
+  width: 95%;
+}
+
+.collapsible-header i {
+  font-size: 1rem;
+  width: auto;
+  margin-right: 8px;
+}
+
+.collapsible-header {
+  padding: 8px;
+}
+
+.collapsible-body {
+  padding: 12px;
+}
+
+.note-item {
+  //margin-bottom: 24px;
+  //border-bottom: 2px solid #ccc;
+  .note-date {
+    font-size: 13px;
+    //color: #888;
+  }
+
+  .note-text {
+    font-size: 14px;
+    //color: #888;
+  }
+}
+.js-notewrap textarea:focus {
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.js-note-text {
+  white-space: normal;
+  word-break: break-all;
+}

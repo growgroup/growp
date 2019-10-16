@@ -1,0 +1,129 @@
+.js-notewrap .js-note-button {
+	position: fixed;
+	bottom: 40%;
+	right: 10px;
+	background: #000;
+	width: 50px;
+	height: 50px;
+	border-radius: 4px;
+	text-align: center;
+	padding-top: 9px;
+	z-index: 100;
+}
+
+.js-note-button a {
+	color: #fff;
+}
+
+.js-note-button a i {
+	font-size: 32px;
+}
+
+.js-notewrap .modal {
+	width: 95%;
+}
+.js-notewrap .collapsible {
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.04), 0 3px 1px -2px rgba(0, 0, 0, 0.08), 0 1px 5px 0 rgba(0, 0, 0, 0.2)
+}
+
+.js-notewrap .collapsible-header i {
+	font-size: 1rem;
+	width: auto;
+	margin-right: 8px;
+}
+
+.js-notewrap .collapsible-header {
+	padding: 8px;
+}
+
+.js-notewrap .collapsible-body {
+	padding: 12px;
+}
+
+.js-notewrap .note-item .note-date {
+	font-size: 13px;
+}
+
+.js-notewrap .note-item .note-text {
+	font-size: 14px;
+}
+
+.js-notewrap textarea:focus {
+	outline: none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.js-notewrap .js-note-text {
+	white-space: normal;
+	word-break: break-all;
+}
+
+.js-notewrap {
+	margin-top: 20px;
+}
+
+.js-notewrap textarea.materialize-textarea {
+	min-height: 250px;
+}
+
+.js-notewrap .js-note-text {
+	line-height: 1.5em;
+}
+
+.js-notewrap .modal {
+	height: 90vh;
+}
+
+.modal {
+	-webkit-overflow-scrolling: touch
+}
+
+.sortable-ghost {
+	opacity: 0.8
+}
+
+.sortable-chosen .collapsible-header {
+	background: #d7edff;
+}
+
+.note-date__excerpt strong {
+	font-weight: bold;
+	font-size: 14px;
+}
+.js-notewrap iframe {
+	width: 100%;
+	min-height: 200px;
+	border: none;
+}
+.c-table.is-dev {
+	table-layout: fixed;
+	font-size: 14px;
+	letter-spacing: 0px;
+}
+.c-table.is-dev th {
+	background: #E8E8E8;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.c-table.is-dev td,
+.c-table.is-dev th {
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.c-table.is-dev td:first-child,
+.c-table.is-dev th:first-child {
+	width: 100px;
+}
+.c-table.is-dev code {
+	display: inline-block;
+	background: #E8E8E8;
+	border-radius: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	/*word-break: break-all;*/
+	white-space: normal;
+	max-width: 300px;
+	overflow-x: scroll;
+}

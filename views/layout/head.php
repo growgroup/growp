@@ -1,0 +1,17 @@
+<?php
+/**
+ * サイト共通 head 内 タグ
+ *
+ * @category components
+ * @package growp
+ * @since 1.0.0
+ */
+?>
+
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php wp_head(); ?>
+</head>
