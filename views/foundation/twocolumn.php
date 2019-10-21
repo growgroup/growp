@@ -30,7 +30,7 @@ Component::get( "main-visual" );
 Component::get( "page-header" );
 Component::get( "breadcrumb" );
 ?>
-<main class="l-main">
+<main class="l-main"> 
 	<?php
 	echo Foundation::get_content();
 	?>

@@ -302,8 +302,10 @@ class Frontend {
 			$css_data        = str_replace( "#65A04D", $primary_color, $css_data );
 			$css_data        = str_replace( "#F9F7F0", $secondary_color, $css_data );
 			$css_data        = str_replace( "#E04B3A", $accent_color, $css_data );
-			foreach ( $other_colors as $color ) {
-				$css_data = str_replace( $color["before"], $color["after"], $css_data );
+			if ( $other_colors ) {
+				foreach ( $other_colors as $color ) {
+					$css_data = str_replace( $color["before"], $color["after"], $css_data );
+				}
 			}
 			file_put_contents( get_theme_file_path( $resource->relative_html_path . "/assets/css/style_rewrite.css" ), $css_data );
 			foreach ( $resource->css_files as $file_key => $file ) {

@@ -156,12 +156,13 @@ class HtmlInfo {
 						for (let key in _siteTree) {
 							siteTree.push(_siteTree[key])
 						}
-						siteTree = siteTree.sort(function (a, b) {
-							if (a.relative_path === "/index.html") {
-								return -1;
-							}
-							return 1;
-						});
+
+						// siteTree = siteTree.sort(function (a, b) {
+						// 	if (a.relative_path === "/index.html") {
+						// 		return -1;
+						// 	}
+						// 	return 1;
+						// });
 						let $htmlInfoTable = $("<table />", {class: "g-sitetree-table"});
 						$htmlInfoTable.append($("<thead><tr><th>ID</th><th>タイトル</th><th>スラッグ</th><th>HTML</th></tr></thead>"));
 						let $htmlInfoTable_tbody = $("<tbody />");

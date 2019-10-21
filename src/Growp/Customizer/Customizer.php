@@ -666,12 +666,7 @@ class Customizer {
 		exit;
 	}
 
-	public function get_html_info() {
-		$request = Request::createFromGlobals();
-		$resource = Resource::get_instance();
-		wp_send_json_success( $resource );
-		exit;
-	}
+
 
 
 }
