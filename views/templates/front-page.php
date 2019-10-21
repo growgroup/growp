@@ -1,10 +1,10 @@
 <?php
 /**
  * Template Name: トップページ
- * Title: タイトル
- * Description: サブタイトル
- * PageHeaderTitle: サブタイトル
- * PageHeaderSubtitle: サブタイトル
+ * Title#: タイトル
+ * Description#: サブタイトル
+ * PageHeaderTitle#: サブタイトル
+ * PageHeaderSubtitle#: サブタイトル
  * Formatting: false
  */
 

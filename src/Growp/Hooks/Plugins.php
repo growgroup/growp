@@ -112,6 +112,12 @@ class Plugins {
 				'force_activation' => false,
 			],
 			[
+				'name'             => 'WP Multibyte Patch',
+				'slug'             => 'wp-multibyte-patch',
+				'required'         => true,
+				'force_activation' => false,
+			],
+			[
 				'name'             => 'User Switching',
 				'slug'             => 'user-switching',
 				'required'         => false,

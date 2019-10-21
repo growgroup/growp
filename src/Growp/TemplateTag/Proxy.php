@@ -42,6 +42,7 @@ class GTemplate {
 		load_template( Foundation::get_instance()->get_template_path(), false );
 		$templatedata = ob_get_contents();
 		ob_end_clean();
+
 		return $templatedata;
 	}
 }

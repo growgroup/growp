@@ -2,22 +2,10 @@
 
 namespace Growp\Hooks;
 
-use function array_map;
-use function file_exists;
-use function file_get_contents;
-use function file_put_contents;
-use function get_terms;
-use function get_theme_file_path;
 use Growp\Config\Config;
 use Growp\Menu\Menu;
 use Growp\Resource\Resource;
-use Growp\Template\Component;
-use Growp\Template\Foundation;
 use Growp\TemplateTag\Tags;
-use const GROWP_VERSION;
-use function remove_filter;
-use function str_replace;
-use function strpos;
 
 /**
  * Class Frontend
@@ -40,55 +28,31 @@ class Frontend {
 		add_filter( 'style_loader_tag', [ $this, 'clean_style_tag' ] );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'growp_scripts' ], 10 );
-		add_shortcode( 'growp_component', [ $this, 'growp_shortcode_get_component' ] );
+		add_action( 'excerpt_more', [ $this, 'excerpt_more' ] );
+
 		add_action( 'wp_head', function () {
 			echo Tags::get_option( "growp_base_tagmanager_head" );
 		}, 10 );
+
 		add_action( 'wp_body_open', function () {
 			echo Tags::get_option( "growp_base_tagmanager_body_open" );
 		}, 10 );
 		$this->change_template_path();
 		new Menu( "header_nav", "ヘッダーナビゲーション" );
 		new Menu( "footer_nav", "フッターナビゲーション" );
-		//		$searchFormSetting = [
-//			[
-//				'name'          => 's_name',
-//				'query_type'    => 'tax_query',
-//				'input_type'    => 'text',
-//				'value'         => '',
-//				'default_value' => '',
-//				'attrs'         => [
-//					'placeholder' => "test",
-//					'required'    => true,
-//					'class'       => "test",
-//					'id'          => "test",
-//				],
-//			],
-//			[
-//				'name'          => 's_select',
-//				'query_type'    => 'tax_query',
-//				'input_type'    => 'select',
-//				'value'         => '',
-//				'default_value' => '',
-//				'choices'       => function () {
-//					return array_map( function ( $a ) {
-//						return [
-//							'value' => $a->term_id,
-//							'label' => $a->name,
-//						];
-//					}, get_terms( [ 'taxonomy' => "category" ] ) );
-//				},
-//				'attrs'         => [
-//					'placeholder' => "test",
-//					'required'    => true,
-//					'class'       => "test",
-//					'id'          => "test",
-//				],
-//			]
-//		];
-//
-//		$search_form       = new SearchForm( $searchFormSetting );
-//		$search_form->set_template( "<form method='post' action='/home/'>{{s_select|raw}} {{s_name|raw}}<button>送信</button></form>" );
+	}
+
+	/**
+	 * 記事一覧の続きを読む文字数
+	 *
+	 */
+	public function excerpt_more( $more ) {
+		if ( 0 == get_theme_mod( 'single_char_num', 50 ) ) {
+			return "";
+		}
+		$more = ' &hellip; <span class="c-button is-more">' . __( 'More', 'growp' ) . '</span>';
+
+		return $more;
 	}
 
 	/**
@@ -274,7 +238,7 @@ class Frontend {
 				"src"    => "",
 				'deps'   => array(),
 				'media'  => "all",
-				'ver'    => GROWP_VERSION,
+				'ver'    => Config::get( "assets_version" ),
 			) );
 			extract( $style );
 			wp_enqueue_style( "growp_" . $style['handle'], $style['src'], $style['deps'], $style['ver'], $style['media'] );
@@ -303,7 +267,7 @@ class Frontend {
 				'deps'      => array(),
 				'media'     => "all",
 				'in_footer' => true,
-				'ver'       => GROWP_VERSION,
+				'ver'       => Config::get( "assets_version" ),
 			) );
 			wp_enqueue_script( "growp_" . $js['handle'], $js['src'], $js['deps'], $js['ver'], $js['in_footer'] );
 		}
@@ -317,23 +281,6 @@ class Frontend {
 		}
 	}
 
-	/**
-	 * コンポーネントをショートコードで呼び出し
-	 */
-	public function growp_shortcode_get_component( $atts ) {
-		$atts = shortcode_atts( array(
-			'name' => '',
-		), $atts, 'growp_component' );
-		if ( empty( $atts["name"] ) ) {
-			return "";
-		}
-		ob_start();
-		Component::get( $atts["name"] );
-		$content = ob_get_contents();
-		ob_clean();
-
-		return $content;
-	}
 
 	/**
 	 * CSSファイルのカラーコードを書き換える

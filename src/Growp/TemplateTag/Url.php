@@ -3,6 +3,7 @@
 namespace Growp\TemplateTag;
 
 use Growp\Resource\Resource;
+use function home_url;
 
 class Url {
 
@@ -26,6 +27,11 @@ class Url {
 	 */
 	public static function the_asset( $path = "" ) {
 		echo static::asset( $path );
+	}
+
+
+	public static function the_url( $path = "" ) {
+		echo home_url( $path );
 	}
 
 }

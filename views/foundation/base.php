@@ -13,6 +13,7 @@
 use Growp\Template\Component;
 use Growp\Template\Foundation;
 use Growp\Template\LayoutComponent;
+
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>

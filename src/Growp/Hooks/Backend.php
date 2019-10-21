@@ -2,12 +2,6 @@
 
 namespace Growp\Hooks;
 
-use function add_action;
-use function count;
-use function esc_attr;
-use function explode;
-use function get_page_by_path;
-use function get_post_types;
 use Growp\Mock\FrontAndHome;
 use Growp\Mock\MwWpForm;
 use Growp\Mock\PrivacyPolicy;
@@ -17,14 +11,6 @@ use Growp\Mock\WpAdminUiCustomize;
 use Growp\Resource\Resource;
 use Growp\TemplateTag\Tags;
 use Growp\TemplateTag\Utils;
-use function implode;
-use function join;
-use function strpos;
-use function update_post_meta;
-use function wp_insert_post;
-use function wp_send_json_error;
-use function wp_send_json_success;
-use function wp_verify_nonce;
 
 class Backend {
 
@@ -49,6 +35,8 @@ class Backend {
 		add_filter( 'tiny_mce_before_init', [ $this, 'mce_options' ] );
 		add_action( "after_switch_theme", [ $this, 'mock_init' ] );
 		add_action( "wp_before_admin_bar_render", [ $this, 'admin_bar' ], 1000 );
+
+		add_action( "init", [ $this, "setup" ] );
 
 		add_filter( 'kirki_telemetry', '__return_false' );
 
@@ -87,8 +75,14 @@ class Backend {
 				return $column;
 			}, 99, 1 );
 		}
+	}
 
-
+	public function setup() {
+		add_theme_support( 'editor-styles' );
+		add_editor_style( [
+			Resource::get_rewrite_main_css_file_path(),
+			get_theme_file_uri( "/assets/css/overwrite.css" ),
+		] );
 	}
 
 	/**

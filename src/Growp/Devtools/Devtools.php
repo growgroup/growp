@@ -2,12 +2,7 @@
 
 namespace Growp\Devtools;
 
-use Growp\Devtools\Packages\ComponentInfo;
-use Growp\Devtools\Packages\DevInfo;
-use Growp\Devtools\Packages\HtmlInfo;
-use Growp\Devtools\Packages\LinkCheck;
-use Growp\Devtools\Packages\MetaInfo;
-use Growp\Devtools\Packages\Note;
+use Growp\Config\Config;
 use Growp\TemplateTag\Utils;
 use function wp_localize_script;
 
@@ -24,12 +19,8 @@ class Devtools {
 		if ( ! Utils::is_administrator() ) {
 			return false;
 		}
-		Note::get_instance();
-		LinkCheck::get_instance();
-		MetaInfo::get_instance();
-		DevInfo::get_instance();
-		HtmlInfo::get_instance();
-		ComponentInfo::get_instance();
+
+		Utils::load_modules( "active_devtools" );
 
 		add_action( "admin_bar_menu", [ $this, 'admin_bar' ], 99 );
 		add_action( "wp_enqueue_scripts", [ $this, "assets" ] );

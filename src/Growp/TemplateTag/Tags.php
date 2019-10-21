@@ -5,7 +5,6 @@ namespace Growp\TemplateTag;
 use ErrorException;
 use Growp\Config\Config;
 use Growp\Template\Foundation;
-use function is_wp_error;
 use WP_Term;
 use WPSEO_Primary_Term;
 use Kirki;
@@ -290,10 +289,10 @@ class Tags {
 			$post_id = get_the_ID();
 		}
 		$terms = get_the_terms( $post_id, $taxonomy );
-		if ( is_wp_error( $terms) || ! $terms ){
+		if ( is_wp_error( $terms ) || ! $terms ) {
 			return "";
 		}
-		$list  = "<div>";
+		$list = "<div>";
 		foreach ( $terms as $t ) {
 			$list .= '<span><a href="' . get_term_link( $t, $taxonomy ) . '" class="">' . $t->name . '</a></span>';
 		}

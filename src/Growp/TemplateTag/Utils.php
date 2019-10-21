@@ -3,6 +3,7 @@
 namespace Growp\TemplateTag;
 
 use const ABSPATH;
+use function class_exists;
 use Growp\Config\Config;
 use function is_user_logged_in;
 use function site_url;
@@ -50,6 +51,7 @@ class Utils {
 	 */
 	public static function get_relative_url( $path ) {
 		$base = str_replace( ABSPATH, "", $path );
+
 		return site_url( "/" . $base );
 	}
 
@@ -60,4 +62,16 @@ class Utils {
 	public static function verify_nonce( $nonce ) {
 		return wp_verify_nonce( $nonce, Config::get( "nonce" ) );
 	}
+
+	public static function load_modules( $key ) {
+
+		$active_devtools = Config::get( $key );
+		$method          = 'get_instance';
+		foreach ( $active_devtools as $tool ) {
+			if ( class_exists( $tool ) ) {
+				$tool::$method();
+			}
+		}
+	}
+
 }

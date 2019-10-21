@@ -2,6 +2,7 @@
 
 namespace Growp\Editor;
 
+use function get_theme_file_uri;
 use Growp\Resource\Resource;
 use GUrl;
 
@@ -32,9 +33,12 @@ class BlockEditor {
 	 * @return void
 	 */
 	public function setup() {
-		add_theme_support( 'editor-styles' );
 		add_theme_support( 'align-wide' );
-		add_editor_style( Resource::get_rewrite_main_css_file_path());
+		add_theme_support( 'editor-styles' );
+		add_editor_style( [
+			Resource::get_rewrite_main_css_file_path(),
+			get_theme_file_uri( "/assets/css/overwrite.css" ),
+		] );
 	}
 
 	/**
@@ -59,7 +63,7 @@ class BlockEditor {
 				)
 			);
 			wp_enqueue_script( 'growp_site_javascript_main', GUrl::asset() . "/assets/js/app.js", [ 'wp-block-library' ], true );
-			wp_enqueue_script( 'growp_site_javascript', get_theme_file_uri( "assets/js/block-editor.js" ), ['acf-blocks'], true );
+			wp_enqueue_script( 'growp_site_javascript', get_theme_file_uri( "assets/js/block-editor.js" ), [ 'acf-blocks' ], true );
 		} );
 	}
 

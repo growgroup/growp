@@ -148,8 +148,8 @@ class Resource {
 //			}
 //		}
 //		if ( ! $cache_flag ) {
-			$this->set_dir();
-			$this->parse();
+		$this->set_dir();
+		$this->parse();
 //		}
 
 
@@ -320,12 +320,13 @@ class Resource {
 			}
 		}
 
-		$this->sitetree->uasort(function($a, $b){
-			if ( $a->relative_path == "/index.html"  ) {
-				return -10;
+		$this->sitetree->uasort( function ( $a, $b ) {
+			if ( $a->relative_path == "/index.html" ) {
+				return - 10;
 			}
+
 			return 0;
-		});
+		} );
 
 		try {
 			$this->set_cache();
@@ -414,14 +415,13 @@ class Resource {
 		$page->description       = $crawler->filter( 'meta[name=\'description\']' )->first()->attr( "content" );
 		$main_content            = $crawler->filter( "*[class*='l-main']" );
 		$page->main_content_html = "";
-		$page->raw_html = "";
+		$page->raw_html          = "";
 		try {
 			$page->main_content_html = $this->replace_url( $main_content->first()->html() );
-			$page->raw_html = $crawler->filter( "html" )->first()->html();
+			$page->raw_html          = $crawler->filter( "html" )->first()->html();
 		} catch ( Exception $e ) {
 
 		}
-
 
 
 		$page->components['layout']    = $this->parse_component( $crawler, "layout", "*[class^='l-']" );

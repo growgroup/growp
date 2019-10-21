@@ -2,8 +2,8 @@
 /**
  * Template Name: デフォルトテンプレート
  * Foundation: base
- * Title: タイトル
- * Subtitle: サブタイトル
+ * #Title: タイトル
+ * #Subtitle: サブタイトル
  * Formatting: false
  */
 
