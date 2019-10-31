@@ -27,7 +27,7 @@ if ( have_posts() ) : ?>
 
 	endwhile;
 
-	growp_paging_nav();
+	GNav::the_paging_nav();
 
 else :
 
