@@ -92,19 +92,3 @@ function growp_scripts() {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
-
-/**
- * link タグに付与されるid属性を削除
- *
- * @params $input string
- * @since 1.2.0
- */
-function growp_clean_style_tag( $input ) {
-	preg_match_all( "!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input,
-		$matches );
-	$media = $matches[3][0] !== '' && $matches[3][0] !== 'all' ? ' media="' . $matches[3][0] . '"' : '';
-
-	return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
-}
-
-add_filter( 'style_loader_tag', 'growp_clean_style_tag' );
