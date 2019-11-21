@@ -14,6 +14,19 @@ $content = GTemplate::get_content();
 
 wp_reset_query();
 
+//if ( is_page() ) {
+//	$post_id = get_the_ID();
+//	$_post   = get_post( $post_id );
+//	if ( ! $_post->post_content ) {
+//		// 改行は取り除いた上で挿入する＜ビジュアルエディタからHTMLエディタに変えたときの変な改行を防ぐため＞
+//		$insert_content = str_replace( "\n", "", $content);
+//		wp_update_post( [
+//			"ID"           => $post_id,
+//			"post_content" => $insert_content,
+//		] );
+//	}
+//}
+
 GTemplate::get_template( "foundation/head" );
 GTemplate::get_layout( "header" );
 GTemplate::get_layout( "global-nav" );
