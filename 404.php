@@ -19,9 +19,9 @@
 			<p>大変申し訳ございませんが、お探しのページは、削除されたか、ファイル名が間違っている可能性があります。アドレスの確認、もしくはトップページよりお探しください。</p>
 
 			<div class="u-mbs is-lg">
-				<p class="u-text-center">
+				<div class="u-text-center">
 					<a href="/" class="c-button is-xlg">トップページへ戻る</a>
-				</p>
+				</div>
 			</div>
 		</div>
 	</div>
