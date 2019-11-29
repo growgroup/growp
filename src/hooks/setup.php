@@ -118,6 +118,9 @@ function growp_add_editor_roles() {
 	$role->add_cap( 'create_users' );
 	$role->add_cap( 'remove_users' );
 	$role->add_cap( 'edit_users' );
+	$role->add_cap( 'edit_user' );
+	$role->add_cap( 'promote_users' );
+	$role->add_cap( 'promote_user' );
 	$role->add_cap( 'list_users' );
 }
 
