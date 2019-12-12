@@ -536,4 +536,175 @@ class GTag
         $levels = get_post_ancestors( $post_id );
         return count( $levels );
     }
+
+	
+	/**
+	 * YouTubeのURLからビデオIDを取得する
+	 *
+	 * @param $url
+	 *
+	 * @return mixed|string
+	 */
+	public static function get_youtube_video_id( $url ) {
+		$match = array();
+		preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match );
+		if ( isset( $match[1] ) ) {
+			return $match[1];
+		}
+
+		return "";
+	}
+
+	/**
+	 * 指定件数分の記事を取得する
+	 *
+	 * @param $post_number
+	 * @param string $post_type
+	 * @param string $orderby
+	 * @param string $exclude
+	 *
+	 * @return int[]|WP_Post[]
+	 */
+	public static function get_posts_number( $post_number, $post_type = "post", $orderby = "", $exclude = "" ) {
+		$args = array(
+			"post_type"      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => $post_number
+		);
+
+		if ( ! empty( $orderby ) ) {
+			$args["orderby"] = $orderby;
+		}
+		if ( ! empty( $exclude ) ) {
+			$args["exclude"] = $exclude;
+		}
+
+		return self::get_posts( $args );
+	}
+
+	/**
+	 * 特定カテゴリーに属する記事を取得する
+	 *
+	 * @param $category_id
+	 * @param $post_number
+	 * @param string $post_type
+	 * @param string $taxonomy
+	 * @param string $orderby
+	 * @param string $exclude
+	 *
+	 * @return int[]|WP_Post[]
+	 */
+	public static function get_posts_category( $category_id, $post_number, $post_type = "post", $taxonomy = "category", $orderby = "", $exclude = "" ) {
+		$args = array(
+			"post_type"      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => $post_number,
+			'tax_query'      => array(
+				array(
+					'taxonomy'         => $taxonomy,
+					'field'            => 'term_id',
+					'terms'            => array( $category_id ),
+					'include_children' => true,
+				),
+			),
+		);
+		if ( ! empty( $orderby ) ) {
+			$args["orderby"] = $orderby;
+		}
+		if ( ! empty( $exclude ) ) {
+			$args["exclude"] = $exclude;
+		}
+
+		return self::get_posts( $args );
+	}
+
+
+	/**
+	 * すべてのタームを取得する
+	 *
+	 * @param $taxonomies
+	 * @param string $orderby
+	 * @param bool $is_root_only
+	 *
+	 * @return array|int|WP_Error
+	 */
+	public static function get_all_term( $taxonomies, $orderby = "", $is_root_only = false ) {
+
+		$args = array(
+			'hide_empty' => false,
+		);
+		if ( ! empty( $orderby ) ) {
+			$args["orderby"] = $orderby;
+		}
+
+		if ( $is_root_only ) {
+			$args["parent"] = 0;
+		}
+
+		return get_terms( $taxonomies, $args );
+
+	}
+
+	/**
+	 * カスタムフィールドから記事を取得する
+	 *
+	 * @param $meta_key
+	 * @param $meta_value
+	 * @param string $compare
+	 * @param string $post_type
+	 * @param int $post_number
+	 *
+	 * @return int[]|WP_Post[]
+	 */
+	public static function get_posts_by_meta_field( $meta_key, $meta_value, $compare = "=", $post_type = "post", $post_number = 99999 ) {
+		$args = array(
+			"post_type"      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => $post_number,
+			'meta_query'     => array(
+				array(
+					'key'     => $meta_key,
+					'value'   => $meta_value,
+					'compare' => $compare,
+				),
+			),
+		);
+
+		return self::get_posts( $args );
+	}
+
+	/**
+	 * 記事取得のラップメソッド
+	 *
+	 * @param $args
+	 *
+	 * @return int[]|WP_Post[]
+	 */
+	public static function get_posts( $args ) {
+
+		$defaults = array(
+			'posts_per_page'   => 6,
+			'category'         => 0,
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'include'          => array(),
+			'exclude'          => array(),
+			'meta_key'         => '',
+			'meta_value'       => '',
+			'post_type'        => 'post',
+			'suppress_filters' => true,
+			'offset'           => 0,
+			'category_name'    => '',
+			'post_mime_type'   => '',
+			'post_parent'      => '',
+			'author'           => '',
+			'post_status'      => 'publish',
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return get_posts( $args );
+	}
+
+
 }
