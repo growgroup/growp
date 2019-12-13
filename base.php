@@ -15,36 +15,58 @@ $content = GTemplate::get_content();
 wp_reset_query();
 
 //if ( is_page() ) {
-//	$post_id = get_the_ID();
-//	$_post   = get_post( $post_id );
-//	if ( ! $_post->post_content ) {
-//		// 改行は取り除いた上で挿入する＜ビジュアルエディタからHTMLエディタに変えたときの変な改行を防ぐため＞
-//		$insert_content = str_replace( "\n", "", $content);
-//		wp_update_post( [
-//			"ID"           => $post_id,
-//			"post_content" => $insert_content,
-//		] );
-//	}
+//        $post_id = get_the_ID();
+//        $_post   = get_post( $post_id );
+//        if ( ! $_post->post_content ) {
+//                // 改行は取り除いた上で挿入する＜ビジュアルエディタからHTMLエディタに変えたときの変な改行を防ぐため＞
+//                $insert_content = str_replace( "\n", "", $content);
+//                wp_update_post( [
+//                        "ID"           => $post_id,
+//                        "post_content" => $insert_content,
+//                ] );
+//        }
 //}
 
 GTemplate::get_template( "foundation/head" );
 GTemplate::get_layout( "header" );
-GTemplate::get_layout( "global-nav" );
+//GTemplate::get_layout( "global-nav" );
 GTemplate::get_component( "mainvisual" );
 GTemplate::get_component( "page-header" );
 $wrapper = apply_filters( 'growp/wrapper', 'onecolumn' );
-if ( $wrapper === "onecolumn" ){
-	echo $content;
-	unset( $content );
+
+// 1カラム用
+if ( $wrapper === "onecolumn" ) {
+        ?>
+        <section class="l-main">
+                <?php
+                echo $content;
+                unset( $content );
+                ?>
+        </section>
+        <?php
+// 2カラム用
 } else {
-	echo $content;
-	unset( $content );
+        ?>
+        <div class="l-wrapper">
+                <div class="l-container is-two-columns">
+                        <section class="l-main is-two-columns">
+                                <?php
+                                echo $content;
+                                unset( $content );
+                                ?>
+                        </section>
+                        <aside class="l-aside" data-sticky-container>
+                                <?php
+                                // サイドバー
+                                GTemplate::get_layout( "sidebar" );
+                                ?>
+                        </aside>
+                </div>
+        </div>
+        <?php
 }
-// サイドバー
-GTemplate::get_layout( "sidebar" );
 
 // フッター取得前のアクションフック
 do_action( 'get_footer' );
-
 // フッターを取得
 GTemplate::get_layout( "footer" );
