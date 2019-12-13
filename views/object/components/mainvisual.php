@@ -9,3 +9,4 @@
 if ( ! is_front_page() ){
 	return false;
 }
+?>
