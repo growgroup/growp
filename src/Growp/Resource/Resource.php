@@ -411,12 +411,14 @@ class Resource {
 			$page->type = $matches[1][0];
 		}
 		$crawler                 = new Crawler( $contents );
-		$page->title             = $crawler->filter( "title" )->first()->html();
-		$page->description       = $crawler->filter( 'meta[name=\'description\']' )->first()->attr( "content" );
-		$main_content            = $crawler->filter( "*[class*='l-main']" );
+
 		$page->main_content_html = "";
 		$page->raw_html          = "";
 		try {
+			$page->title             = $crawler->filter( "title" )->first()->html();
+			$page->description       = $crawler->filter( 'meta[name=\'description\']' )->first()->attr( "content" );
+
+			$main_content            = $crawler->filter( "*[class*='l-main']" );
 			$page->main_content_html = $this->replace_url( $main_content->first()->html() );
 			$page->raw_html          = $crawler->filter( "html" )->first()->html();
 		} catch ( Exception $e ) {
