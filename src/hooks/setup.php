@@ -93,7 +93,7 @@ add_filter( 'init', 'growp_head_cleanup', 10 );
  */
 function growp_protect_authorpage() {
 	if ( is_author() ) {
-		wp_redirect( home_url( '/404/' ) );
+		wp_redirect( home_url( '/' ) );
 		exit;
 	}
 }
