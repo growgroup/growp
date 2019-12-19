@@ -68,11 +68,11 @@ class GTag
             return false;
         }
 
-        if ($field && isset($terms[0]->{$field})) {
+        if ( !empty($field) && isset($terms[0]->{$field})) {
             return esc_html($terms[0]->{$field});
         }
 
-        return esc_html($terms[0]);
+        return $terms[0];
     }
 
 
