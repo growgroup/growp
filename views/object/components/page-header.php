@@ -31,3 +31,5 @@ $pageheaders = apply_filters( 'growp/page_header', array(
 		</h1>
 	</div>
 </div>
+
+<?php GTemplate::get_component( "breadcrumb" ); ?>
