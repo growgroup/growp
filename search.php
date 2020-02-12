@@ -8,29 +8,56 @@
  * @see http://codex.wordpress.org/Template_Hierarchy
  * =====================================================
  */
+?>
 
-if ( have_posts() ) : ?>
 
-	<header class="page-header">
-		<h1 class="page-title">
-			<i class="fa fa-search"></i>
-			<?php
-			$search_text = __( 'Search Results for&#x3A; %s', 'growp' );
-			printf( $search_text, '<span>「' . get_search_query() . '」</span>' ); ?></h1>
-	</header><!-- .page-header -->
+<section class="l-section is-xxlg">
+	<div class="l-container">
+		<div class="row">
+			<div class="large-10 is-push-lg-1 small-12">
+				<div class="u-mbs is-bottom is-lg">
+					<div class="c-archive">
 
-	<?php
-	while ( have_posts() ) :
+						<header class="page-header">
+							<h1 class="page-title">
+								<i class="fa fa-search"></i>
+								<?php
+								$search_text = __( 'Search Results for&#x3A; %s', 'growp' );
+								printf( $search_text, '<span>「' . get_search_query() . '」</span>' ); ?></h1>
+						</header><!-- .page-header -->
+						<div class="c-news  is-onecolumn">
+							<div class="c-news__content">
+								<?php
+								if ( have_posts() ) : ?>
 
-		the_post();
-		get_template_part( 'templates/content', 'search' );
 
-	endwhile;
+									<?php
+									while ( have_posts() ) :
 
-	GNav::the_paging_nav();
+										the_post();
+										GTemplate::get_project( "search-item" );
 
-else :
+									endwhile;
 
-	get_template_part( 'templates/content', 'none' );
 
-endif;
+								else :
+									?>
+									<div class="u-mbs is-xxlg u-text-center " style="width: 100% !important;">
+										該当がありませんでした
+									</div>
+								<?php
+								endif;
+								?>
+							</div>
+
+							<?php
+							echo GNav::get_paging_nav( "前へ", "次へ" );
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
