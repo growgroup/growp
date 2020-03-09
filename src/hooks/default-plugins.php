@@ -89,8 +89,8 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 			),
 
 			array(
-				'name'             => 'Google Analytics Dashboard for WP (GADWP)',
-				'slug'             => 'google-analytics-dashboard-for-wp',
+				'name'             => 'GAinWP Google Analytics Integration for WordPress',
+				'slug'             => 'ga-in',
 				'required'         => false,
 				'force_activation' => false,
 			),
