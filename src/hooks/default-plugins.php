@@ -96,6 +96,19 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 			),
 
 			array(
+				'name'             => 'Classic Editor',
+				'slug'             => 'classic-editor',
+				'required'         => false,
+				'force_activation' => false,
+			),
+
+			array(
+				'name'             => 'Admin Columns',
+				'slug'             => 'codepress-admin-columns',
+				'required'         => false,
+				'force_activation' => false,
+			),
+			array(
 				'name'     => 'Advanced Custom Fields Pro',
 				'slug'     => 'google-analytics-dashboard-for-wp',
 				'required' => false,
