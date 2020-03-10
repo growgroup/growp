@@ -110,7 +110,7 @@ if ( class_exists( 'TGM_Plugin_Activation' ) ) {
 			),
 			array(
 				'name'     => 'Advanced Custom Fields Pro',
-				'slug'     => 'google-analytics-dashboard-for-wp',
+				'slug'     => 'advanced-custom-fields-pro',
 				'required' => false,
 				'source'   => 'https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip',
 			),
