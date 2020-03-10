@@ -16,7 +16,7 @@ if ( is_front_page() ) {
 global $post;
 $title       = apply_filters( 'growp/page_header/title', get_the_title() );
 $subtitle    = apply_filters( 'growp/page_header/subtitle', mb_strtoupper( $post->post_name ) );
-$image       = apply_filters( 'growp/page_header/image', GUrl::asset( '/assets/images/bg-page-header-' . $post->post_name . '.jpg' ) );
+$image       = apply_filters( 'growp/page_header/image', GUrl::asset( '/assets/images/img-page-header-' . $post->post_name . '.jpg' ) );
 $pageheaders = apply_filters( 'growp/page_header', array(
 	'title'    => $title,
 	'subtitle' => $subtitle,
