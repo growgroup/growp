@@ -176,10 +176,9 @@ class GROWP_Mw_Wp_Form_Mock extends GROWP_Create_Mock {
 ※尚、ご入力いただいたメールアドレス宛に<br>
 お問い合わせ内容を記載した自動返信メールが配信されております。<br>
 そちらも併せてご確認くださいませ。<br>
-<p>
-<p class="u-text-center">
+<div class="u-text-center u-mbs">
 <a href="/" class="c-button">トップへ戻る</a>
-</p>'
+</div>'
 		);
 
 		$shortcode = '[mwform_formkey key="' . $mw_wp_form_id . '"]';
