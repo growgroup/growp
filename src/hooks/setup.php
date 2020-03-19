@@ -191,3 +191,74 @@ add_action( 'admin_head', 'growp_icpo_admin_style' );
 
 
 
+add_action( 'admin_footer', 'mw_wp_form_format_mail' );
+
+function mw_wp_form_format_mail() {
+	$screen = get_current_screen();
+	if ( $screen->id === "mw-wp-form" && $screen->base === "post" ) {
+	?>
+	<script type="html/template" id="mw_wp_form_copymailtext">
+		<div id="mw-wp-form_copymailtext" class="postbox">
+			<button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">パネルを閉じる: アドオン</span><span class="toggle-indicator" aria-hidden="true"></span></button>
+			<h2 class="hndle ui-sortable-handle"><span>メール内容</span></h2>
+			<div class="inside">
+				<p>現在のフォームからメール返信文の一部を自動生成します。</p>
+				<p>
+					<textarea name="copymailtext" id="" cols="32" rows="10"></textarea>
+					<a href="#" class="js-copymailtext button button-primary">メール文面を生成</a>
+				</p>
+			</div>
+		</div>
+	</script>
+	<script>
+		(function ($) {
+			var GenerateMWWPFormMailText = function () {
+				return this;
+			};
+			GenerateMWWPFormMailText.prototype = {
+				init: function () {
+					$("#mw-wp-form_addon").before($("#mw_wp_form_copymailtext").html());
+					this.generate();
+				},
+				generate: function () {
+					var $form = $("#content");
+					var form_html = $form.val();
+					var lines = form_html.match(/\[mwform.*?name=\"(.*?)\"/gi);
+					var $names = ["【 お問い合わせ内容 】"];
+					var _list = [];
+					for (var i = 0; i < lines.length; i++) {
+						var line = lines[i].match(/\[mwform.*?name=\"(.*?)\"/i);
+						if (line[1] === "submit") {
+							continue;
+						}
+						if (line[1] === "個人情報の取り扱いについて同意する") {
+							continue;
+						}
+						if (line[1] === "個人情報保護方針について同意する") {
+							continue;
+						}
+						var _name = line[1];
+						$names.push('');
+						$names.push('[' + _name + ']');
+						$names.push('{' + _name + '}');
+					}
+					var $textarea = $("textarea[name=copymailtext]");
+					$textarea.val($names.join("\n"));
+					$textarea.html($names.join("\n"));
+				},
+				trigger: function () {
+					var self = this;
+					$(".js-copymailtext").on("click", function (e) {
+						e.preventDefault();
+						self.generate();
+						$("#mw-wp-form_validation .add-btn").click();
+					});
+				}
+			}
+			window.GenerateMWWPFormMailTextObject = new GenerateMWWPFormMailText();
+			GenerateMWWPFormMailTextObject.init();
+		})(jQuery)
+	</script>
+	<?php
+	}
+}
