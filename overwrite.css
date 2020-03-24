@@ -177,3 +177,25 @@ a img.aligncenter {
 	width: auto;
 	z-index: 100000; /* Above WP toolbar. */
 }
+
+.logged-in.admin-bar .l-header-variable,
+.logged-in.admin-bar .l-header-minimal {
+	top: 32px;
+}
+
+.mw_wp_form_confirm .c-forms__privacy {
+	display: none !important;
+}
+
+.mw_wp_form_confirm #zipauto,
+.mw_wp_form_confirm .c-forms__note,
+.mw_wp_form_confirm .c-forms__block.is-privacy-policy {
+	display: none !important;
+}
+
+.mw_wp_form_confirm .c-forms__privacy a,
+.mw_wp_form_confirm .c-forms__block a {
+	text-decoration: none !important;
+	color: inherit !important;
+	pointer-events: none !important;
+}
