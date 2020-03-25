@@ -125,7 +125,7 @@ class GNav {
 		global $post;
 		if ( $post ) {
 			$url  = get_post_type_archive_link( $post->post_type );
-			$html .= '<li><a href="' . $url . '" class="c-post-navs__archive c-button is-sm ' . $post->post_type . '"><span><i class="fa fa-th" aria-hidden="true"></i>' . $list_text . '</span></a></li>';
+			$html .= '<li><a href="' . $url . '" class="c-post-navs__archive c-button is-sm ' . $post->post_type . '"><span><i class="fa fa-th" aria-hidden="true"></i> ' . $list_text . '</span></a></li>';
 		} else {
 			$html .= '<li>&nbsp;</li>';
 		}
