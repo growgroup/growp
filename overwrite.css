@@ -183,6 +183,10 @@ a img.aligncenter {
 	top: 32px;
 }
 
+.mw_wp_form_confirm .u-hidden-mw-wp-confirm {
+	display: none !important;
+}
+
 .mw_wp_form_confirm .c-forms__privacy {
 	display: none !important;
 }
