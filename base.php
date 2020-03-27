@@ -23,6 +23,7 @@ wp_reset_query();
 //                wp_update_post( [
 //                        "ID"           => $post_id,
 //                        "post_content" => $insert_content,
+//                        "page_template" => "template-allhtml.php"
 //                ] );
 //        }
 //}
