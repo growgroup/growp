@@ -160,6 +160,47 @@ function growp_override_mce_options( $init_array ) {
 add_filter( 'tiny_mce_before_init', 'growp_override_mce_options' );
 
 /**
+ * 保存時のiframe等の自動削除を停止
+ *
+ * @param $content
+ *
+ * @return mixed
+ */
+function growp_content_save_pre( $content ) {
+	global $allowedposttags;
+
+	// iframeとiframeで使える属性を指定する
+	$allowedposttags['iframe'] = array(
+		'class'        => array(),
+		'src'          => array(),
+		'width'        => array(),
+		'height'       => array(),
+		'frameborder'  => array(),
+		'scrolling'    => array(),
+		'marginheight' => array(),
+		'marginwidth'  => array(),
+		'style'        => array()
+	);
+	$allowedposttags['script'] = array(
+		'async'        => array(),
+		'class'        => array(),
+		'src'          => array(),
+		'charset'      => array(),
+		'width'        => array(),
+		'height'       => array(),
+		'frameborder'  => array(),
+		'scrolling'    => array(),
+		'marginheight' => array(),
+		'marginwidth'  => array(),
+		'style'        => array()
+	);
+
+	return $content;
+}
+add_filter( 'content_save_pre', 'growp_content_save_pre' );
+
+
+/**
  * ページヘッダーのフィルター
  *
  * @param $init_array
