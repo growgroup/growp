@@ -162,7 +162,7 @@ class GNav {
 	 *
 	 * @return string
 	 */
-	public static function get_paging_nav( $prev_text = "&laquo; 前へ", $next_text = "次へ &raquo;" ) {
+	public static function get_paging_nav( $prev_text = "<i class=\"fa fa-angle-left\" aria-hidden=\"true\"></i>", $next_text = "<i class=\"fa fa-angle-right\" aria-hidden=\"true\"></i>" ) {
 
 		$html = "";
 		$html .= '<div class="c-pagination">';
@@ -194,7 +194,7 @@ class GNav {
 	 * @param string $prev_text 前へボタンのテキスト
 	 * @param string $next_text 次へボタンのテキスト
 	 */
-	public static function the_paging_nav( $prev_text = "&laquo; 前へ", $next_text = "次へ &raquo;" ) {
+	public static function the_paging_nav( $prev_text = "<i class=\"fa fa-angle-left\" aria-hidden=\"true\"></i>", $next_text = "<i class=\"fa fa-angle-right\" aria-hidden=\"true\"></i>" ) {
 		echo self::get_paging_nav( $prev_text, $next_text );
 	}
 
