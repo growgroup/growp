@@ -66,6 +66,7 @@ require_once dirname( __FILE__ ) . "/src/hooks/sidebar.php";
 function growp_create_pages()
 {
    if (!get_option("growp_create_pages")) {
+        update_option("growp_create_pages", true);
         $files = glob(__DIR__ . "/page-*.php");
         foreach ($files as $file) {
             $fileheaders = get_file_data($file, ["Page Slug", "Template Name", "Page Template Name"]);
@@ -78,7 +79,6 @@ function growp_create_pages()
             ]);
             update_post_meta($post_id, "_wp_page_template", $fileheaders[2]);
         }
-        update_option("growp_create_pages", true);
    }
 }
 
