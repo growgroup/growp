@@ -270,8 +270,17 @@ class GROWP_Devtool {
 	}
 
 	public function render_devinfo() {
-		\Routes::map( '/growp/devinfo/', function () {
+
+		if ( isset($_GET["growp_devtool"]) && $_GET["growp_devtool"] === "true" ){
 			add_action( "wp", function () {
+				if ( ! is_user_logged_in() ){
+					return false;
+				}
+				$current_user = wp_get_current_user();
+				if ( ! $current_user->has_cap("administrator") ){
+					return "";
+				}
+
 				$post_types = get_post_types( [ 'public' => true ] );
 				$taxonomies = get_taxonomies();
 				?>
@@ -442,9 +451,7 @@ class GROWP_Devtool {
 				<?php
 				exit;
 			} );
-
-			return true;
-		}, [], 400, 10 );
+		}
 	}
 
 	public function render_template() {
@@ -550,7 +557,7 @@ class GROWP_Devtool {
 				'id'     => "devinfo",
 				'parent' => "growp_dev",
 				'title'  => "全ページ情報",
-				'href'   => '/growp/devinfo/',
+				'href'   => '/?growp_devtool=true',
 			] );
 			$wp_admin_bar->add_node( [
 				'id'     => "metainfo",
