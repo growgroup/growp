@@ -1,4 +1,12 @@
 <?php
+/*
+Plugin Name: GrowGroup_開発者ツール
+Plugin URI: https://github.com/growgroup/growp/edit/master/src/classes/class-devtool.php
+Description: 開発時のツール
+Version: 1.0.0
+Author: growgroup
+Author URI: https://github.com/growgroup/
+*/
 
 class GROWP_Devtool {
 
