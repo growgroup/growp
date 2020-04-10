@@ -6,7 +6,28 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
 {
+    public static $prefixLengthsPsr4 = array (
+        'C' => 
+        array (
+            'Composer\\Installers\\' => 20,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Composer\\Installers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
+    );
+
     public static $prefixesPsr0 = array (
+        'R' => 
+        array (
+            'Routes' => 
+            array (
+                0 => __DIR__ . '/..' . '/upstatement/routes',
+            ),
+        ),
         'D' => 
         array (
             'Detection' => 
@@ -17,13 +38,15 @@ class ComposerStaticInit959640e3514bf740a61b4372a7a5050d
     );
 
     public static $classMap = array (
-        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
+        'AltoRouter' => __DIR__ . '/..' . '/altorouter/altorouter/AltoRouter.php',
         'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit959640e3514bf740a61b4372a7a5050d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit959640e3514bf740a61b4372a7a5050d::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit959640e3514bf740a61b4372a7a5050d::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit959640e3514bf740a61b4372a7a5050d::$classMap;
 

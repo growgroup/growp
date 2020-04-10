@@ -37,6 +37,9 @@ require_once dirname( __FILE__ ) . "/src/classes/class-walker-nav.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-sitemap.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-acfadminbar.php";
 
+// 開発ツール (不要な際はコメントアウト)
+require_once dirname( __FILE__ ) . "/src/classes/class-devtool.php";
+
 /**
  * 初期コンテンツの作成
  */
