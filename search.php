@@ -51,7 +51,7 @@
 							</div>
 
 							<?php
-							echo GNav::get_paging_nav( "前へ", "次へ" );
+							echo GNav::get_paging_nav();
 							?>
 						</div>
 					</div>
