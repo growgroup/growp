@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="<?php GUrl::the_asset() ?>/assets/images/favicon.ico" rel="icon" />
 <link href="<?php GUrl::the_asset() ?>/assets/images/favicon.ico" rel="shortcut icon" />
-<link href="<?php GUrl::the_asset() ?>/assets/images/web-clipicon.png" rel="apple-touch-icon" />
+<link href="<?php GUrl::the_asset() ?>/assets/images/web-clip.png" rel="apple-touch-icon" />
 <?php wp_head(); ?>
 </head>
 
