@@ -37,6 +37,15 @@ require_once dirname( __FILE__ ) . "/src/classes/class-walker-nav.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-sitemap.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-acfadminbar.php";
 
+/**
+ * モデル
+ */
+require_once dirname( __FILE__ ) . "/src/models/base_post.php";
+require_once dirname( __FILE__ ) . "/src/models/base_term.php";
+require_once dirname( __FILE__ ) . "/src/models/related_posts.php";
+require_once dirname( __FILE__ ) . "/src/models/category.php";
+require_once dirname( __FILE__ ) . "/src/models/post.php";
+
 // 開発ツール (不要な際はコメントアウト)
 require_once dirname( __FILE__ ) . "/src/classes/class-devtool.php";
 
