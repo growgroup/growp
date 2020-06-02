@@ -8,14 +8,16 @@
  * =====================================================
  */
 ?>
-<a href="<?php the_permalink() ?>" id="post-<?php the_ID(); ?>" <?php post_class( 'p-post-item is-horizon' ); ?>>
-	<div class="p-post-item__thumbnail" <?php GTag::the_thumbnail_style_attribute( get_the_ID() ) ?>></div>
-	<h3 class="p-post-item__title"><?php the_title() ?></h3>
-	<p class="p-post-item__detail">
-		<?php the_excerpt() ?>
-	</p>
-	<div class="p-post-item__category c-label">
-		<?php echo GTag::get_first_term( get_the_ID(), "category", "name" ) ?>
+<a class="c-news__block" href="<?php the_permalink() ?>">
+	<div class="c-news__sup">
+		<div class="c-news__label">
+			<?php echo GTag::get_first_term( get_the_ID(), "category", "name" ) ?>
+		</div>
+		<div class="c-news__date">
+			<?php the_time( 'Y.m.d' ) ?>
+		</div>
+	</div>
+	<div class="c-news__text">
+		<?php the_title() ?>
 	</div>
 </a>
-
