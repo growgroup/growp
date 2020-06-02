@@ -118,25 +118,25 @@ class GNav {
 			if ( ! $prev_text ) {
 				$prev_text = $prev->post_title;
 			}
-			$html .= '<li><a href="' . $prev_url . '" class="c-post-navs__prev c-button is-sm is-arrow-left"><span>' . $prev_text . '</span></a></li>';
+			$html .= '<li class="c-post-navs__prev"><a href="' . $prev_url . '" class=" c-button is-sm is-arrow-left"><span>' . $prev_text . '</span></a></li>';
 		} else {
-			$html .= '<li>&nbsp;</li>';
+			$html .= '<li class="c-post-navs__prev">&nbsp;</li>';
 		}
 		global $post;
 		if ( $post ) {
 			$url  = get_post_type_archive_link( $post->post_type );
-			$html .= '<li><a href="' . $url . '" class="c-post-navs__archive c-button is-sm ' . $post->post_type . '"><span><i class="fa fa-th" aria-hidden="true"></i> ' . $list_text . '</span></a></li>';
+			$html .= '<li class="c-post-navs__archive"><a href="' . $url . '" class=" c-button is-sm ' . $post->post_type . '"><span><i class="fa fa-th" aria-hidden="true"></i> ' . $list_text . '</span></a></li>';
 		} else {
-			$html .= '<li>&nbsp;</li>';
+			$html .= '<li class="c-post-navs__archive">&nbsp;</li>';
 		}
 		if ( $next ) {
 			$next_url = get_the_permalink( $next->ID );
 			if ( ! $next_text ) {
 				$next_text = $next->post_title;
 			}
-			$html .= '<li><a href="' . $next_url . '" class="c-post-navs__next c-button is-sm"><span>' . $next_text . '</span></a></li>';
+			$html .= '<li class="c-post-navs__next"><a href="' . $next_url . '" class=" c-button is-sm"><span>' . $next_text . '</span></a></li>';
 		} else {
-			$html .= '<li>&nbsp;</li>';
+			$html .= '<li class="c-post-navs__next">&nbsp;</li>';
 		}
 		$html .= '</ul></nav>';
 		return $html;
