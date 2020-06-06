@@ -155,6 +155,12 @@ abstract class gm_base_term {
 	}
 
 	public function is_tax() {
+		if ( $this->taxonomy === "category" ) {
+			return is_category( $this->term_id );
+		}
+		if ( $this->taxonomy === "post_tag" ) {
+			return is_tag( $this->term_id );
+		}
 		return ( is_tax( $this->taxonomy, [ $this->term_id ] ) );
 	}
 
