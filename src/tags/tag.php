@@ -706,5 +706,48 @@ class GTag
 		return get_posts( $args );
 	}
 
+	public static function get_parent_page_id( $page_id ) {
+		$page = get_post( $page_id );
+		if ( isset( $page->post_parent ) && $page->post_parent !== 0 ) {
+			return static::get_parent_page_id( $page->post_parent );
+		}
 
+		return $page_id;
+	}
+
+	public static function get_child_pages( $parent_page_id ) {
+		$pages = get_pages( [
+			'parent'      => $parent_page_id,
+			'sort_column' => 'menu_order',
+		] );
+
+		return $pages;
+	}
+
+	public static function generate_subnav( $path ) {
+		$_page = get_page_by_path( $path );
+		$pages = GTag::get_child_pages( $_page->ID );
+		foreach ( $pages as $page ) {
+			$list_image = get_field( "p_list_image", $page->ID );
+			?>
+			<li>
+				<a href="<?php echo get_the_permalink( $page->ID ) ?>">
+					<img src="<?php echo GTag::get_attachment_url( $list_image, "full" ) ?>" alt="" />
+					<span><?php echo $page->post_title ?></span></a>
+			</li>
+			<?php
+		}
+	}
+
+	public static function generate_subnav_list( $path ) {
+		$_page = get_page_by_path( $path );
+		$pages = GTag::get_child_pages( $_page->ID );
+		foreach ( $pages as $page ) {
+			?>
+			<li>
+				<a href="<?php echo get_the_permalink( $page->ID ) ?>"><?php echo $page->post_title ?></a>
+			</li>
+			<?php
+		}
+	}
 }
