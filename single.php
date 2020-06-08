@@ -47,7 +47,7 @@ the_post();
 					) );
 					?>
 				</div>
-				<div class="u-mbs is-bottom">
+				<div class="u-mbs">
 					<div class="c-button-social">
 						<?php if ( function_exists( 'ADDTOANY_SHARE_SAVE_KIT' ) ) {
 							ADDTOANY_SHARE_SAVE_KIT();
