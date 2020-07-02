@@ -47,6 +47,16 @@ class GTemplate {
 	}
 
 	/**
+	 * ブロックをインクルード
+	 *
+	 * @param $file
+	 * @param array $data
+	 */
+	public static function get_block( $file, $data = array() ) {
+		self::get_template( 'object/components/blocks/' . $file, $data );
+	}
+
+	/**
 	 * プロジェクト依存コンポーネントをインクルード
 	 *
 	 * @param $file
