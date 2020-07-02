@@ -21,11 +21,11 @@ if ( ! $items ) {
 						</div>
 						<div class="large-8 small-12">
 							<div class="c-block__content">
-								<div class="c-block__title">
+								<div class="c-block__title c-heading is-sm is-border-under is-bottom">
 									<?php echo $item["title"]; ?>
 								</div>
 								<div class="c-block__text">
-									<?php echo $item["text"]; ?>
+									<p><?php echo $item["text"]; ?></p>
 								</div>
 							</div>
 						</div>
