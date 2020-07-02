@@ -96,22 +96,7 @@ class GGoogleJob {
 		// ※求人の募集内容を取得する処理を記述します。
 		// $descriptionによしなに要項を入力ください。
 		// ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-
-		$detail_1    = get_field( "c_requirement_detail_1", $this->post_id );
-		$detail_2    = get_field( "c_requirement_detail_2", $this->post_id );
-		$description = "";
-		if ( $detail_1 ) {
-			$description .= "------------------" . PHP_EOL;
-			$description .= "新卒採用" . PHP_EOL;
-			$description .= "------------------" . PHP_EOL;
-			$description .= trim( $detail_1 ) . PHP_EOL . PHP_EOL . PHP_EOL;
-		}
-		if ( $detail_2 ) {
-			$description .= "------------------" . PHP_EOL;
-			$description .= "中途採用" . PHP_EOL;
-			$description .= "------------------" . PHP_EOL;
-			$description .= trim( $detail_2 ) . PHP_EOL . PHP_EOL . PHP_EOL;
-		}
+		$description =  get_field( "c_requirement_detail", $this->post_id );
 
 		$description = str_replace( array( "<th>" ), "■", $description );
 		$description = strip_tags( $description );
