@@ -143,3 +143,14 @@ if ( class_exists( "MW_WP_Form_Abstract_Validation_Rule" ) ) {
 		return $validation_rules;
 	} );
 }
+
+
+/**
+ * AddToAny シェアボタンのメタボックスを表示しない
+ */
+function growp_remove_share_box() {
+	$post_types = get_post_types( array( 'public' => true) );
+	remove_meta_box( 'A2A_SHARE_SAVE_meta', $post_types, 'side' );
+}
+
+add_action( 'add_meta_boxes', 'growp_remove_share_box', 40 );
