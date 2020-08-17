@@ -95,3 +95,16 @@ function growp_create_pages()
 }
 
 // add_action("init", "growp_create_pages");
+
+
+function growp_fontloader() {
+	// TODO: 以下にWebフォントロード用のスクリプトを記述する
+	?>
+	<script>
+	</script>
+	<?php
+}
+
+add_action('wp_head', 'growp_fontloader');
+add_action('admin_head', 'growp_fontloader');
+
