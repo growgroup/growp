@@ -105,6 +105,6 @@ function growp_fontloader() {
 	<?php
 }
 
-add_action('wp_head', 'growp_fontloader');
-add_action('admin_head', 'growp_fontloader');
+add_action('wp_head', 'growp_fontloader',1);
+add_action('admin_head', 'growp_fontloader',1);
 
