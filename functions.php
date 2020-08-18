@@ -97,6 +97,24 @@ function growp_create_pages()
 // add_action("init", "growp_create_pages");
 
 
+function growp_acf_op_init() {
+
+	// Check function exists.
+	if ( function_exists( 'acf_add_options_page' ) ) {
+		// Register options page.
+		$option_page = acf_add_options_page( array(
+			'page_title' => "サイトオプション",
+			'menu_title' => "サイトオプション",
+			'menu_slug'  => 'theme-general-settings',
+			'capability' => 'edit_posts',
+			'redirect'   => false
+		) );
+	}
+}
+// ACF オプションページを利用する場合は以下のコメントアウトを外す
+// add_action( 'acf/init', 'growp_acf_op_init' );
+
+
 function growp_fontloader() {
 	// TODO: 以下にWebフォントロード用のスクリプトを記述する
 	?>
@@ -106,5 +124,11 @@ function growp_fontloader() {
 }
 
 add_action('wp_head', 'growp_fontloader',1);
-add_action('admin_head', 'growp_fontloader',1);
+
+function growp_editor_webfont() {
+	// TODO: 以下にGoogleFontsのインポート用URLを記述する
+	$font_url = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto+Condensed:wght@700&display=swap';
+	add_editor_style( $font_url );
+}
+add_action( 'after_setup_theme', 'growp_editor_webfont',1 );
 
