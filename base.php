@@ -20,6 +20,7 @@ wp_reset_query();
 //        if ( ! $_post->post_content ) {
 //                // 改行は取り除いた上で挿入する＜ビジュアルエディタからHTMLエディタに変えたときの変な改行を防ぐため＞
 //                $insert_content = str_replace( "\n", "", $content);
+//                $insert_content .= '<div style="display:none;"><p>&nbsp;</p></div>';
 //                wp_update_post( [
 //                        "ID"           => $post_id,
 //                        "post_content" => $insert_content,
