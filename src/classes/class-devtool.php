@@ -21,7 +21,67 @@ class GROWP_Devtool {
 		add_action( "wp_footer", [ $this, 'render_template' ] );
 		add_action( "wp_footer", [ $this, "render_script" ] );
 		$this->render_devinfo();
+		add_action( "admin_bar_menu", function ( $wp_admin_bar ) {
+			if ( ! is_admin() && is_page() ) {
+				$wp_admin_bar->add_node( [
+						'id'    => "growp_update_page",
+						'title' => "<svg style='vertical-align: middle;' width=\"24px\" height=\"23px\" viewBox=\"0 0 94 91\"><g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"><g><rect id=\"Rectangle\" fill=\"#FFFFFF\" x=\"0\" y=\"0\" width=\"94\" height=\"91\" rx=\"8\"></rect><path d=\"M34,23 C32.2492851,23.016762 31.0124687,24.2619372 31,26 L31,68.999989 L62,68.999989 C63.7272872,69.0042742 64.9873241,67.7530043 65,66 L65,23 L34,23 Z M58,63 L37,63 C36.2230911,62.9985419 36.0041962,62.7850405 36,62 L36,29 C36,28.2181034 36.2201192,28 37,28 L58,28 C58.7414684,28 58.9615875,28.2181034 59,29 L59,41 L50,41 C49.3717545,40.9474695 49.1516353,41.1655729 49,42 L49,52 C49.1558315,52.3570375 49.3747264,52.5705389 50,52 L54,52 C54.521062,52.5705389 54.7399569,52.3570375 54,52 L54,47 L59,47 L59,62 C59.0004175,62.6474341 58.9433802,62.7774784 59,63 C58.7420065,62.9625493 58.6068483,63.0091408 58,63 Z\" fill=\"#5F6817\" fill-rule=\"nonzero\"></path></g></g></svg> テンプレートから更新",
+						'href'  => add_query_arg( [
+								'growp_update_page' => "true",
+								'nonce'             => wp_create_nonce( __FILE__ )
+						] ),
+				] );
+		
+			}
+		
+			return "";
+		}, 100 );
+		
+		add_action( "admin_bar_menu", function ( $wp_admin_bar ) {
+			if ( ! is_admin() && is_page() ) {
+				$wp_admin_bar->add_node( [
+						'id'    => "growp_update_page",
+						'title' => "<svg style='vertical-align: middle;' width=\"24px\" height=\"23px\" viewBox=\"0 0 94 91\"><g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\"><g><rect id=\"Rectangle\" fill=\"#FFFFFF\" x=\"0\" y=\"0\" width=\"94\" height=\"91\" rx=\"8\"></rect><path d=\"M34,23 C32.2492851,23.016762 31.0124687,24.2619372 31,26 L31,68.999989 L62,68.999989 C63.7272872,69.0042742 64.9873241,67.7530043 65,66 L65,23 L34,23 Z M58,63 L37,63 C36.2230911,62.9985419 36.0041962,62.7850405 36,62 L36,29 C36,28.2181034 36.2201192,28 37,28 L58,28 C58.7414684,28 58.9615875,28.2181034 59,29 L59,41 L50,41 C49.3717545,40.9474695 49.1516353,41.1655729 49,42 L49,52 C49.1558315,52.3570375 49.3747264,52.5705389 50,52 L54,52 C54.521062,52.5705389 54.7399569,52.3570375 54,52 L54,47 L59,47 L59,62 C59.0004175,62.6474341 58.9433802,62.7774784 59,63 C58.7420065,62.9625493 58.6068483,63.0091408 58,63 Z\" fill=\"#5F6817\" fill-rule=\"nonzero\"></path></g></g></svg> テンプレートから更新",
+						'href'  => add_query_arg( [
+								'growp_update_page' => "true",
+								'nonce'             => wp_create_nonce( __FILE__ )
+						] ),
+				] );
+			}
+			return "";
+		}, 100 );
+		add_action( "growp_get_content", [$this, 'update_page'] );
 	}
+	
+	public function update_page( $content ) {
+		if (
+				is_user_logged_in()
+				&& isset( $_GET["growp_update_page"] )
+				&& $_GET["growp_update_page"]
+				&& $_GET["nonce"]
+				&& wp_verify_nonce( $_GET["nonce"], __FILE__ )
+		) {
+			$post_id = get_the_ID();
+			$_post   = get_post( $post_id );
+			if ( $_post->post_type === "page" && ! $_post->post_content ) {
+				// 改行は取り除いた上で挿入する＜ビジュアルエディタからHTMLエディタに変えたときの変な改行を防ぐため＞
+				$insert_content = str_replace( "\n", "", $content );
+				wp_update_post( [
+						"ID"            => $post_id,
+						"post_content"  => $insert_content,
+						"page_template" => "template-allhtml.php"
+				] );
+				$url = remove_query_arg( [
+						"growp_update_page",
+						"nonce",
+				] );
+				$url = add_query_arg( [ "growp_updated_page" => true ], $url );
+				wp_redirect( $url );
+				exit;
+			}
+	
+		}
+	} 
 
 
 
