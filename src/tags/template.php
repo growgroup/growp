@@ -84,7 +84,7 @@ class GTemplate {
 		load_template( GTag::get_template_path(), false );
 		$templatedata = ob_get_contents();
 		ob_end_clean();
-
+		do_action("growp_get_content", $templatedata);
 		return $templatedata;
 	}
 
