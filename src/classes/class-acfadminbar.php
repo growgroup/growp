@@ -1,11 +1,25 @@
-<?php 
+<?php
 
 class GROWP_AcfAdminBar {
 
 	public function __construct() {
 		add_filter( "admin_bar_menu", [ $this, "adminbar" ], 90 );
+		add_action( "wp_footer", function () {
+			?>
+			<script>
+				(function ($) {
+					$(function () {
+						$("#wp-admin-bar-growp_acf > .ab-item").on("click",function (){
+							$(this).next(".ab-sub-wrapper").toggle()
+						})
+					})
+				})(jQuery)
+			</script>
+			<?php
+		}, 90 );
+
 	}
-  
+
 	public function adminbar( $wp_admin_bar ) {
 		if ( is_user_logged_in() ) {
 			$currentuser = wp_get_current_user();
@@ -58,7 +72,6 @@ class GROWP_AcfAdminBar {
 						$wp_admin_bar->add_node( $args );
 
 						foreach ( $object["sub_fields"] as $sub ) {
-
 							$args = array(
 								'id'     => $sub["key"],
 								'title'  => $sub["label"] . " : <input disabled type='text' style='-webkit-appearance: none; background: transparent; border: none; padding: 0; color: #fff;' value='" . $sub["name"] . "' />",
