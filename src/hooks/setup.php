@@ -303,3 +303,12 @@ function mw_wp_form_format_mail() {
 	<?php
 	}
 }
+
+
+/**
+ * 固定ページの親ページとして下書き、非公開の記事も参照できるように
+ */
+add_filter('page_attributes_dropdown_pages_args', function($dropdown_args) {
+    $dropdown_args['post_status'] = array('publish','draft','private');
+    return $dropdown_args;
+}, 1, 1);
