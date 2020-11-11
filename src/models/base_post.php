@@ -150,15 +150,48 @@ abstract class gm_base_post {
 	 *
 	 * @param $key
 	 * @param string $default
+	 * @param boolean $raw
 	 *
 	 * @return mixed|string
 	 */
-	public function get_field_value( $key, $default = "" ) {
+	public function get_field_value( $key, $default = "", $raw = false ) {
 		if ( isset( $this->fields[ $key ]["value"] ) && $this->fields[ $key ]["value"] ) {
+			if ( $raw === false ) {
+				if ( $this->fields[ $key ]["type"] === "taxonomy" ) {
+					if ( ! is_array( $this->fields[ $key ]["value"] ) ) {
+						$term = get_term( $this->fields[ $key ]["value"] );
+
+						return $term->name;
+					}
+					if ( is_array( $this->fields[ $key ]["value"] ) ) {
+						$terms = [];
+						foreach ( $this->fields[ $key ]["value"] as $term_id ) {
+							$terms[] = get_term( $term_id );
+						}
+
+						return $terms;
+					}
+				}
+				if ( $this->fields[ $key ]["type"] === "image" && is_numeric( $this->fields[ $key ]["value"] ) ) {
+					return wp_get_attachment_image_url( $this->fields[ $key ]["value"], "full" );
+				}
+			}
+
 			return $this->fields[ $key ]["value"];
 		}
 
 		return $default;
+	}
+
+	/**
+	 * カスタムフィールドを持っているか
+	 *
+	 * @param $key
+	 *
+	 * @return int
+	 */
+	public function has( $key ) {
+		return ( $this->get_field_value( $key ) ) ? 1 : 0;
 	}
 
 	/**
@@ -173,6 +206,15 @@ abstract class gm_base_post {
 			return $this->terms[ $taxonomy ];
 		}
 
+		return false;
+	}
+
+	public function the_terms_map( $taxonomy, $callback ) {
+		if ( isset( $this->terms[ $taxonomy ] ) && is_callable( $callback ) ) {
+			foreach ( $this->terms[ $taxonomy ] as $term ) {
+				$callback( $term );
+			}
+		}
 		return false;
 	}
 
@@ -252,10 +294,10 @@ abstract class gm_base_post {
 	 */
 	public function get_post_title( $excerpt = false ) {
 		if ( $excerpt ) {
-			return mb_strimwidth( $this->post->post_title, 0, $excerpt );
+			return esc_html( mb_strimwidth( $this->post->post_title, 0, $excerpt ) );
 		}
 
-		return $this->post->post_title;
+		return esc_html( $this->post->post_title );
 	}
 
 	/**
@@ -288,6 +330,7 @@ abstract class gm_base_post {
 		if ( $first_term && isset( $first_term->name ) ) {
 			return $first_term->name;
 		}
+
 		return false;
 	}
 
@@ -306,4 +349,89 @@ abstract class gm_base_post {
 
 		return $first_img;
 	}
+
+	public function get_content() {
+		$content = get_the_content( null, null, $this->post_id );
+		$content = apply_filters( "the_content", $content );
+		$content = str_replace( ']]>', ']]&gt;', $content );
+
+		return $content;
+	}
+
+	protected function print_data_table_column( $label, $value, $merge = false ) {
+		$colspan = '';
+		if ( $merge ) {
+			$colspan = "colspan='3'";
+		}
+		?>
+		<th>
+			<?php echo $label; ?>
+		</th>
+		<td <?php echo $colspan; ?>>
+			<?php echo $value; ?>
+		</td>
+		<?php
+	}
+
+	protected function get_row_value( $tr ) {
+
+		$value = $this->get_field_value( $tr["key"] );
+		if ( $value ) {
+			if ( is_array( $value ) && isset( $value["label"] ) ) {
+				$value = $tr["before"] . $value["label"] . $tr["after"];
+			}
+			$value = $tr["before"] . $value . $tr["after"];
+		} else {
+			$value = false;
+		}
+
+		return $value;
+	}
+
+
+	protected function print_data_table( $keys ) {
+		$row_column = 0;
+		echo '<table class="c-table-lg">';
+		foreach ( $keys as $tr ) {
+			$value = $this->get_row_value( $tr );
+			if ( ! $value ) {
+				continue;
+			}
+			if ( isset( $tr["merge"] ) && $tr["merge"] ) {
+				if ( $row_column == 2 ) {
+					echo "</tr>";
+				}
+				echo "<tr>";
+				$this->print_data_table_column( $tr["label"], $value, true );
+				echo "</tr>";
+				$row_column = 0;
+			} else if ( isset( $tr["multiple"] ) && $tr["multiple"] ) {
+				if ( $value ) {
+					foreach ( $value as $item ) {
+						echo "<tr>";
+						$this->print_data_table_column( $item["th"], $item["td"] );
+						echo "</tr>";
+						$row_column = 0;
+					}
+				}
+			} else {
+				echo "<tr>";
+				$this->print_data_table_column( $tr["label"], $value );
+				$row_column ++;
+				echo "</tr>";
+			}
+		}
+		if ( $row_column != 2 ) {
+
+			echo "</tr>";
+		}
+		echo '</table>';
+
+	}
+
+	public function generate_table( $keys = [] ) {
+		$this->print_data_table( $keys );
+	}
+
+
 }
