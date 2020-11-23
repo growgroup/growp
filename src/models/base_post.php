@@ -133,7 +133,19 @@ abstract class gm_base_post {
 			return [];
 		}
 		foreach ( $this->taxonomies as $taxonomy ) {
-			$this->terms[ $taxonomy ] = get_the_terms( $this->post_id, $taxonomy );
+			$terms  = [];
+			$_terms = get_the_terms( $this->post_id, $taxonomy );
+			if ( $_terms ) {
+				foreach ( $_terms as $term ) {
+					$classname = "gm_" . $term->taxonomy;
+					if ( class_exists( $classname ) ) {
+						$terms[] = new $classname( $term->term_id );
+					} else {
+						$terms[] = $term;
+					}
+				}
+				$this->terms[ $taxonomy ] = $terms;
+			}
 		}
 	}
 
