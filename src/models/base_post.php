@@ -294,7 +294,7 @@ abstract class gm_base_post {
 	 * @return false|string
 	 */
 	public function get_post_date( $format = "Y.m.d" ) {
-		return get_the_date( $format );
+		return get_the_date( $format, $this->post_id );
 	}
 
 	/**
