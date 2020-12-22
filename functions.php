@@ -35,7 +35,7 @@ require_once dirname( __FILE__ ) . "/src/classes/class-tgm-plugin-activation.php
 require_once dirname( __FILE__ ) . "/src/classes/class-walker-comment.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-walker-nav.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-sitemap.php";
-require_once dirname( __FILE__ ) . "/src/classes/class-acfadminbar.php";
+// require_once dirname( __FILE__ ) . "/src/classes/class-acfadminbar.php";
 
 /**
  * モデル
@@ -47,7 +47,7 @@ require_once dirname( __FILE__ ) . "/src/models/category.php";
 require_once dirname( __FILE__ ) . "/src/models/post.php";
 
 // 開発ツール (不要な際はコメントアウト)
-require_once dirname( __FILE__ ) . "/src/classes/class-devtool.php";
+// require_once dirname( __FILE__ ) . "/src/classes/class-devtool.php";
 
 /**
  * 初期コンテンツの作成
