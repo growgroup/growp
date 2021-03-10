@@ -317,3 +317,24 @@ add_filter('page_attributes_dropdown_pages_args', function($dropdown_args) {
     $dropdown_args['post_status'] = array('publish','draft','private');
     return $dropdown_args;
 }, 1, 1);
+
+// 【WordPress】更新・バージョンアップの停止、無効化
+// 管理者以外
+add_action("init", function (){
+	if( current_user_can("administrator") ){
+		return;
+	}
+	// コア
+	add_filter( 'pre_site_transient_update_core', '__return_zero' );
+	remove_action( 'wp_version_check', 'wp_version_check' );
+	remove_action( 'admin_init', '_maybe_update_core' );
+
+	// プラグイン
+	remove_action( 'load-update-core.php', 'wp_update_plugins' );
+	add_filter( 'pre_site_transient_update_plugins', create_function( '$a', "return null;" ) );
+
+	// テーマ
+	remove_action( 'load-update-core.php', 'wp_update_themes' );
+	add_filter( 'pre_site_transient_update_themes', create_function( '$a', "return null;" ) );
+
+});
