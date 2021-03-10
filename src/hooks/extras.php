@@ -29,8 +29,8 @@ add_filter( 'body_class', 'growp_body_classes' );
 /**
  * 抜粋文をカスタマイズ
  *
- * @since 1.2.1
  * @return void
+ * @since 1.2.1
  */
 
 add_action( 'excerpt_more', 'growp_change_more' );
@@ -64,17 +64,19 @@ add_filter( 'excerpt_length', 'growp_excerpt_length', 999 );
  */
 function growp_shortcode_get_component( $atts ) {
 	$atts = shortcode_atts( array(
-		'name' => '',
+			'name' => '',
 	), $atts, 'growp_component' );
-	if( empty($atts["name"]) ) {
+	if ( empty( $atts["name"] ) ) {
 		return "";
 	}
 	ob_start();
 	GTemplate::get_component( $atts["name"] );
 	$content = ob_get_contents();
 	ob_end_clean();
+
 	return $content;
 }
+
 add_shortcode( 'growp_component', 'growp_shortcode_get_component' );
 
 
@@ -103,7 +105,7 @@ if ( class_exists( "MW_WP_Form_Abstract_Validation_Rule" ) ) {
 			if ( ! \MWF_Functions::is_empty( $value ) ) {
 				if ( preg_match( "/(й|ц|у|к|е|н|г|ш|щ|з|х|ъ|ф|ы|в|а|п|р|о|л|д|ж|э|я|ч|с|м|и|т|ь|б|ю|П)/", $value, $matches ) ) {
 					$defaults = array(
-						'message' => "キリル文字は含むことができません。"
+							'message' => "キリル文字は含むことができません。"
 					);
 					$options  = array_merge( $defaults, $options );
 
@@ -113,7 +115,7 @@ if ( class_exists( "MW_WP_Form_Abstract_Validation_Rule" ) ) {
 				if ( ! preg_match( "/[一-龠]+|[ぁ-ん]+|[ァ-ヴー]+|[一-龠]+|[ａ-ｚＡ-Ｚ０-９]/u", $value ) ) {
 
 					$defaults = array(
-						'message' => "日本語での入力をお願いします"
+							'message' => "日本語での入力をお願いします"
 					);
 					$options  = array_merge( $defaults, $options );
 
@@ -131,8 +133,8 @@ if ( class_exists( "MW_WP_Form_Abstract_Validation_Rule" ) ) {
 		public function admin( $key, $value ) {
 			?>
 			<label><input type="checkbox" <?php checked( $value[ $this->getName() ],
-					1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( '日本語チェック',
-					'mw-wp-form' ); ?></label>
+						1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( '日本語チェック',
+						'mw-wp-form' ); ?></label>
 			<?php
 		}
 	}
@@ -149,7 +151,7 @@ if ( class_exists( "MW_WP_Form_Abstract_Validation_Rule" ) ) {
  * AddToAny シェアボタンのメタボックスを表示しない
  */
 function growp_remove_share_box() {
-	$post_types = get_post_types( array( 'public' => true) );
+	$post_types = get_post_types( array( 'public' => true ) );
 	remove_meta_box( 'A2A_SHARE_SAVE_meta', $post_types, 'side' );
 }
 
@@ -182,3 +184,73 @@ add_action( 'add_meta_boxes', 'growp_remove_share_box', 40 );
 //
 //	return $links;
 //}
+
+/**
+ * 管理メニューの削除
+ *
+ * @param $wp_admin_bar
+ */
+function growp_remove_bar_menus( $wp_admin_bar ) {
+	//WordPressアイコン
+	$wp_admin_bar->remove_menu( 'wp-logo' );
+	//WordPressアイコン -> WordPress について
+	$wp_admin_bar->remove_menu( 'about' );
+	//WordPressアイコン -> WordPress.org
+	$wp_admin_bar->remove_menu( 'wporg' );
+	//WordPressアイコン -> ドキュメンテーション
+	$wp_admin_bar->remove_menu( 'documentation' );
+	//WordPressアイコン -> サポートフォーラム
+	$wp_admin_bar->remove_menu( 'support-forums' );
+	//WordPressアイコン -> フィードバック
+	$wp_admin_bar->remove_menu( 'feedback' );
+
+	//サイト情報
+//	$wp_admin_bar->remove_menu( 'site-name' );
+	//サイト情報 -> ダッシュボード
+//	$wp_admin_bar->remove_menu( 'dashboard' );
+	//サイト情報 -> テーマ
+	$wp_admin_bar->remove_menu( 'themes' );
+	//サイト情報 -> ウィジェット
+	$wp_admin_bar->remove_menu( 'widgets' );
+	//サイト情報 -> メニュー
+	$wp_admin_bar->remove_menu( 'menus' );
+	//サイト情報 -> ヘッダー
+	$wp_admin_bar->remove_menu( 'header' );
+
+	//カスタマイズ
+	$wp_admin_bar->remove_menu( 'customize' );
+
+	//コメント
+	$wp_admin_bar->remove_menu( 'comments' );
+
+	//新規
+	$wp_admin_bar->remove_menu( 'new-content' );
+	//新規 -> 投稿
+	$wp_admin_bar->remove_menu( 'new-post' );
+	//新規 -> メディア
+	$wp_admin_bar->remove_menu( 'new-media' );
+	//新規 -> 固定ページ
+	$wp_admin_bar->remove_menu( 'new-page' );
+	//新規 -> ユーザー
+	$wp_admin_bar->remove_menu( 'new-user' );
+
+	// Analytics
+	$wp_admin_bar->remove_menu( 'gainwp-1' );
+
+	//〜の編集
+//	$wp_admin_bar->remove_menu( 'edit' );
+
+	//こんにちは、[ユーザー名]　さん
+//	$wp_admin_bar->remove_menu( 'my-account' );
+	//ユーザー -> ユーザー名・アイコン
+//	$wp_admin_bar->remove_menu( 'user-info' );
+	//ユーザー -> プロフィールを編集
+//	$wp_admin_bar->remove_menu( 'edit-profile' );
+	//ユーザー -> ログアウト
+//	$wp_admin_bar->remove_menu( 'logout' );
+
+	//検索
+	$wp_admin_bar->remove_menu( 'search' );
+}
+
+add_action( 'admin_bar_menu', 'growp_remove_bar_menus', 99 );
