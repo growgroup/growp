@@ -537,7 +537,7 @@ class GTag
 		return count( $levels );
 	}
 
-	
+
 	/**
 	 * YouTubeのURLからビデオIDを取得する
 	 *
@@ -755,24 +755,24 @@ class GTag
 
 		if( !class_exists( 'WP_Http' ) )
 			include_once( ABSPATH . WPINC . '/class-http.php' );
-	
+
 		$http = new WP_Http();
 		$response = $http->request( $url );
 		if( $response['response']['code'] != 200 ) {
 			return false;
 		}
-	
+
 		$upload = wp_upload_bits( basename($url), null, $response['body'] );
 		if( !empty( $upload['error'] ) ) {
 			return false;
 		}
-	
+
 		$file_path = $upload['file'];
 		$file_name = basename( $file_path );
 		$file_type = wp_check_filetype( $file_name, null );
 		$attachment_title = sanitize_file_name( pathinfo( $file_name, PATHINFO_FILENAME ) );
 		$wp_upload_dir = wp_upload_dir();
-	
+
 		$post_info = array(
 			'guid'           => $wp_upload_dir['url'] . '/' . $file_name,
 			'post_mime_type' => $file_type['type'],
@@ -780,13 +780,151 @@ class GTag
 			'post_content'   => '',
 			'post_status'    => 'inherit',
 		);
-	
+
 		$attach_id = wp_insert_attachment( $post_info, $file_path, $parent_post_id );
 		require_once( ABSPATH . 'wp-admin/includes/image.php' );
 		$attach_data = wp_generate_attachment_metadata( $attach_id, $file_path );
 		wp_update_attachment_metadata( $attach_id,  $attach_data );
 		return $attach_id;
 	}
-	
-	
+
+
+	public static function get_link_url() {
+		$post_url  = get_permalink();
+		$link_data = get_field( "c_links" );
+
+		if ( ! $link_data || $link_data["type"] == "normal" ) {
+			// 投稿記事を表示
+		} else if ( $link_data["type"] == "file" ) {
+			$file = wp_get_attachment_url( $link_data["link_file"] );
+			if ( $file ) {
+				return $file;
+			}
+		} else if ( $link_data["type"] == "url" ) {
+			if ( $link_data["link_url"] ) {
+				return $link_data["link_url"];
+			}
+		}
+
+		return $post_url;
+	}
+
+	public static function is_info_link_enable() {
+		$link_data = get_field( "c_links" );
+
+		if ( ! $link_data || $link_data["type"] == "none" ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public static function get_link_target() {
+		$target    = "_self";
+		$link_data = get_field( "c_links" );
+
+		if ( ! $link_data || $link_data["type"] == "normal" ) {
+			// 投稿記事を表示
+		} else if ( $link_data["type"] == "file" ) {
+			$file = wp_get_attachment_link( $link_data["link_file"] );
+			if ( $file ) {
+				$target = "_blank";
+			}
+		} else if ( $link_data["type"] == "url" ) {
+
+
+			if ( self::is_file_link( $link_data["link_url"] ) ) {
+				$target = "_blank";
+			}
+			if ( self::is_external_link( $link_data["link_url"] ) ) {
+				$target = "_blank";
+			}
+		}
+
+		return $target;
+	}
+
+	public static function is_external_link( $url ) {
+		if ( strpos( $url, get_site_url() ) !== false // 自社サイトのURLが含まれていれば内部リンク
+			 || strpos( $url, "://" ) === false ) { // ://が含まれていなければ内部リンク
+
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	public static function is_external_info() {
+		$result    = false;
+		$link_data = get_field( "c_links" );
+		if ( ! $link_data || $link_data["type"] == "normal" ) {
+
+		} else if ( $link_data["type"] == "file" ) {
+			$file = wp_get_attachment_link( $link_data["link_file"] );
+			if ( $file ) {
+				$result = true;
+			}
+		} else if ( $link_data["type"] == "url" ) {
+			if ( $link_data["link_url"] ) {
+				$result = true;
+			}
+		}
+
+		return $result;
+	}
+
+
+	public static function is_file_link( $url ) {
+		$type = array( 'jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'xls', 'doc', 'xls', 'docx', 'xlsx' );
+
+		$ext = explode( ".", $url );
+		if ( $ext && count( $ext ) > 0 && in_array( $ext[ count( $ext ) - 1 ], $type ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static function get_link_label() {
+
+		$label     = " ページを表示 ";
+		$link_data = get_field( "c_links" );
+		if ( $link_data["type"] == "file" ) {
+			$label = " ファイルを表示 ";
+		} else if ( $link_data["type"] == "url" ) {
+			$url = self::get_link_url();
+
+			if ( self::is_file_link( $url ) ) {
+				$label = " ファイルを表示 ";
+			}
+		}
+		$label .= GTag::get_link_icon();
+
+		return $label;
+	}
+
+	public static function get_link_icon() {
+		$link_data = get_field( "c_links" );
+		$icon      = "";
+		if ( ! $link_data ) {
+			return "";
+		}
+		if ( $link_data["type"] == "url" ) {
+			if ( $link_data["link_url"] && self::is_external_link( $link_data["link_url"] ) ) {
+				$icon = "fa-external-link";
+			}
+		}
+		if ( $link_data["type"] == "file" ) {
+			if ( ! $link_data || empty( $link_data["icon"] ) ) {
+				return "";
+			}
+			$icon = $link_data["icon"];
+		}
+		if ( empty( $icon ) ) {
+			return "";
+		}
+
+		return '<i class="fa ' . $icon . '" aria-hidden="true"></i>';
+	}
 }
