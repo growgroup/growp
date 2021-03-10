@@ -7,28 +7,11 @@
  * @package growp
  * @since 1.0.0
  */
-?>
-<footer class="l-footer" role="contentinfo">
-	<div class="l-container">
-		<div class="row">
-			<div class="footer__contents">
-				<?php
-				growp_dynamic_sidebar( 'footer-primary' );
-				?>
-			</div>
-		</div>
-		<div class="footer__copyright site-info">
-			<div class="row text-center">
-				<span class="sep">
-					<?php echo get_theme_mod( 'copyright_text',
-						'copyright © ' . date( 'Y' ) . ' | ' . get_bloginfo( 'name' ) ); ?>
-				</span>
-			</div>
-		</div>
-	</div>
-</footer>
 
-<?php wp_footer(); ?>
+// フッターは管理画面のサイトオプションより設定下さい。分岐がある場合は、ショートコード[growp_component name="year"]などで記載下さい。
+$footer_html = get_field("o_site_footer","option");
+echo do_shortcode($footer_html);
+wp_footer(); ?>
 
 </body>
 </html>

@@ -149,10 +149,15 @@ function growp_override_mce_options( $init_array ) {
 
 	$init_array['valid_elements']          = '*[*]';
 	$init_array['extended_valid_elements'] = '*[*]';
-	$init_array['valid_children']          = '+a[' . implode( '|', array_keys( $allowedposttags ) ) . ']';
+	$init_array['valid_children']          = '+a[' . implode( '|', array_keys( $allowedposttags ) ) . '|link|meta|style|script]';
+	$init_array['valid_children']          .= ',+body[' . implode( '|', array_keys( $allowedposttags ) ) . '|link|meta|style|script]';
+	$init_array['valid_children']          .= ',+div[' . implode( '|', array_keys( $allowedposttags ) ) . '|link|meta|style|script]';
+	$init_array['valid_children']          .= ',+span[' . implode( '|', array_keys( $allowedposttags ) ) . '|link|meta|style|script]';
 	$init_array['indent']                  = true;
 	$init_array['wpautop']                 = false;
 	$init_array['force_p_newlines']        = false;
+	$init_array['block_formats'] = '段落=p;見出し2=h2;見出し3=h3;見出し4=h4;見出し5=h5;見出し6=h6;整形済みテキスト=pre;';
+
 
 	return $init_array;
 }
@@ -228,7 +233,7 @@ function growp_icpo_admin_style() {
 <?php
 }
 add_action( 'admin_head', 'growp_icpo_admin_style' );
- 
+
 
 
 

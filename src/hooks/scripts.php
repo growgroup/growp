@@ -1,6 +1,6 @@
 <?php
 /**
- * テーマで使用する js, cssの登録
+ * テーマ/管理画面で使用する js, cssの登録
  * =====================================================
  * @package  growp
  * @license  GPLv2 or later
@@ -91,4 +91,10 @@ function growp_scripts() {
 	if ( is_single() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+}
+
+add_action( 'admin_enqueue_scripts', 'growp_admin_style' );
+
+function growp_admin_style() {
+	wp_enqueue_style( 'growp_admin_style', get_template_directory_uri() . '/admin.css?ver='.GROWP_VERSIONING );
 }

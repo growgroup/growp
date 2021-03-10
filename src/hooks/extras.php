@@ -154,3 +154,31 @@ function growp_remove_share_box() {
 }
 
 add_action( 'add_meta_boxes', 'growp_remove_share_box', 40 );
+
+
+/**
+ * パンくずリストの調整
+ * コメントアウトを外すことで、カスタム投稿タイプのアーカイブURLを以下より追加可能
+ */
+//add_filter( 'wpseo_breadcrumb_links', 'growp_yoast_seo_breadcrumb_append_link' );
+//function growp_yoast_seo_breadcrumb_append_link( $links ) {
+//
+//	$breadcrumb   = array();
+//
+//	if ( is_post_type_archive( "interview" ) || is_singular("interview") ) {
+//		$breadcrumb[] = array(
+//				'url'  => site_url( '/recruit/' ),
+//				'text' => '採用情報',
+//		);
+//		array_splice( $links, 1, - 2, $breadcrumb );
+//	}
+//	if ( is_post_type_archive( "requirement" ) || is_singular("requirement") ) {
+//		$breadcrumb[] = array(
+//				'url'  => site_url( '/recruit/' ),
+//				'text' => '採用情報',
+//		);
+//		array_splice( $links, 1, - 2, $breadcrumb );
+//	}
+//
+//	return $links;
+//}

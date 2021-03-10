@@ -112,7 +112,7 @@ function growp_acf_op_init() {
 	}
 }
 // ACF オプションページを利用する場合は以下のコメントアウトを外す
-// add_action( 'acf/init', 'growp_acf_op_init' );
+add_action( 'acf/init', 'growp_acf_op_init' );
 
 
 function growp_fontloader() {
