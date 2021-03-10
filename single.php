@@ -85,15 +85,17 @@ the_post();
 							</div>
 							<div class="c-card-post  is-tag-hidden">
 								<div class="row">
-									<div class="c-news__content">
-										<?php
-										global $post;
-										foreach ( $related_posts as $post ) :
-											setup_postdata( $post );
-											GTemplate::get_project( "post-item" );
-										endforeach;
-										wp_reset_postdata();
-										?>
+									<div class="c-news  is-onecolumn">
+										<div class="c-news__content">
+											<?php
+											global $post;
+											foreach ( $related_posts as $post ) :
+												setup_postdata( $post );
+												GTemplate::get_project( "post-item" );
+											endforeach;
+											wp_reset_postdata();
+											?>
+										</div>
 									</div>
 								</div>
 							</div>
