@@ -203,3 +203,7 @@ a img.aligncenter {
 	color: inherit !important;
 	pointer-events: none !important;
 }
+
+.wp-embedded-content{
+	width: 100% !important;
+}
