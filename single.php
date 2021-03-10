@@ -83,21 +83,17 @@ the_post();
 							<div class="u-mbs is-bottom is-sm">
 								<h2 class="c-heading is-lg is-border"><span>関連コンテンツ</span></h2>
 							</div>
-							<div class="c-card-post  is-tag-hidden">
-								<div class="row">
-									<div class="c-news  is-onecolumn">
-										<div class="c-news__content">
-											<?php
-											global $post;
-											foreach ( $related_posts as $post ) :
-												setup_postdata( $post );
-												GTemplate::get_project( "post-item" );
-											endforeach;
-											wp_reset_postdata();
-											?>
-										</div>
-									</div>
-								</div>
+							<div class="c-news  is-onecolumn">
+
+								<?php
+								global $post;
+								foreach ( $related_posts as $post ) :
+									setup_postdata( $post );
+									GTemplate::get_project( "post-item" );
+								endforeach;
+								wp_reset_postdata();
+								?>
+
 							</div>
 						</div>
 					<?php endif; ?>
