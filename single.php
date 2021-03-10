@@ -57,8 +57,8 @@ the_post();
 					<?php
 					the_content();
 					wp_link_pages( array(
-						'before' => '<div class="page-links">' . __( 'Pages:', 'growp' ),
-						'after'  => '</div>',
+							'before' => '<div class="page-links">' . __( 'Pages:', 'growp' ),
+							'after'  => '</div>',
 					) );
 					?>
 				</div>
@@ -85,14 +85,16 @@ the_post();
 							</div>
 							<div class="c-card-post  is-tag-hidden">
 								<div class="row">
-									<?php
-									global $post;
-									foreach ( $related_posts as $post ) :
-										setup_postdata( $post );
-										GTemplate::get_project( "post-item" );
-									endforeach;
-									wp_reset_postdata();
-									?>
+									<div class="c-news__content">
+										<?php
+										global $post;
+										foreach ( $related_posts as $post ) :
+											setup_postdata( $post );
+											GTemplate::get_project( "post-item" );
+										endforeach;
+										wp_reset_postdata();
+										?>
+									</div>
 								</div>
 							</div>
 						</div>
