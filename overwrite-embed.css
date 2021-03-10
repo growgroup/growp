@@ -11,6 +11,7 @@
 }
 .c-embed a {
 	display: block;
+	color: #333;
 }
 .c-embed a:hover {
 	opacity: 0.7 !important;
