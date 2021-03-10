@@ -204,6 +204,10 @@ a img.aligncenter {
 	pointer-events: none !important;
 }
 
-.wp-embedded-content{
+.wp-embedded-content {
+	display: block;
 	width: 100% !important;
+	max-width: 100% !important;
+	margin-top: 16px;
+	margin-bottom: 16px;
 }
