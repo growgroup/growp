@@ -191,6 +191,9 @@ add_action( 'add_meta_boxes', 'growp_remove_share_box', 40 );
  * @param $wp_admin_bar
  */
 function growp_remove_bar_menus( $wp_admin_bar ) {
+	if( current_user_can("administrator") ){
+		return;
+	}
 	//WordPressアイコン
 	$wp_admin_bar->remove_menu( 'wp-logo' );
 	//WordPressアイコン -> WordPress について
