@@ -22,6 +22,7 @@
 
 <body <?php body_class(); ?>>
 <?php
+// 管理画面＞サイトオプションより設定
 // スライドバー出力
 $slidebar_html = get_field("o_site_slidebar","option");
 echo do_shortcode($slidebar_html);
