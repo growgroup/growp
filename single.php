@@ -84,16 +84,16 @@ the_post();
 								<h2 class="c-heading is-lg is-border"><span>関連コンテンツ</span></h2>
 							</div>
 							<div class="c-news  is-onecolumn">
-
-								<?php
-								global $post;
-								foreach ( $related_posts as $post ) :
-									setup_postdata( $post );
-									GTemplate::get_project( "post-item" );
-								endforeach;
-								wp_reset_postdata();
-								?>
-
+								<div class="c-news__content">
+									<?php
+									global $post;
+									foreach ( $related_posts as $post ) :
+										setup_postdata( $post );
+										GTemplate::get_project( "post-item" );
+									endforeach;
+									wp_reset_postdata();
+									?>
+								</div>
 							</div>
 						</div>
 					<?php endif; ?>
