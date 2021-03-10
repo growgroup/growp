@@ -256,4 +256,4 @@ function growp_remove_bar_menus( $wp_admin_bar ) {
 	$wp_admin_bar->remove_menu( 'search' );
 }
 
-add_action( 'admin_bar_menu', 'growp_remove_bar_menus', 99 );
+add_action( 'admin_bar_menu', 'growp_remove_bar_menus', 99999 );
