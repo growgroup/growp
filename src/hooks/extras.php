@@ -238,7 +238,7 @@ function growp_remove_bar_menus( $wp_admin_bar ) {
 	$wp_admin_bar->remove_menu( 'new-user' );
 
 	// Analytics
-	$wp_admin_bar->remove_menu( 'gainwp-1' );
+	$wp_admin_bar->remove_menu( 'gainwp' );
 
 	//〜の編集
 //	$wp_admin_bar->remove_menu( 'edit' );
