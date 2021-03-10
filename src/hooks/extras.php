@@ -191,7 +191,7 @@ add_action( 'add_meta_boxes', 'growp_remove_share_box', 40 );
  * @param $wp_admin_bar
  */
 function growp_remove_bar_menus( $wp_admin_bar ) {
-	if( current_user_can("administrator") ){
+	if ( current_user_can( "administrator" ) ) {
 		return;
 	}
 	//WordPressアイコン
@@ -236,6 +236,11 @@ function growp_remove_bar_menus( $wp_admin_bar ) {
 	$wp_admin_bar->remove_menu( 'new-page' );
 	//新規 -> ユーザー
 	$wp_admin_bar->remove_menu( 'new-user' );
+
+	// Duplicate post
+	$wp_admin_bar->remove_menu( 'duplicate-post' );
+	$wp_admin_bar->remove_menu( 'new-draft' );
+	$wp_admin_bar->remove_menu( 'rewrite-republish' );
 
 	// Analytics
 	$wp_admin_bar->remove_node( 'gainwp-1' );
