@@ -8,7 +8,6 @@
  * @see http://codex.wordpress.org/Template_Hierarchy
  * =====================================================
  */
-global $post;
 the_post();
 ?>
 
