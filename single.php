@@ -9,6 +9,12 @@
  * =====================================================
  */
 the_post();
+
+// 関連記事を表示する際には、以下の関数をここで呼び出しておかないとレイアウトが崩れる。
+// おそらくob_系関数のせいだと思われる。
+if ( function_exists( "yarpp_get_related" ) ) {
+	$related_posts = yarpp_get_related( array( "post_type" => "post" ) );
+}
 ?>
 
 <section class="l-section is-lg">
@@ -74,9 +80,8 @@ the_post();
 				?>
 
 				<?php
-				if ( function_exists( "yarpp_get_related" ) ):
-					$related_posts = yarpp_get_related( array( "post_type" => "post" ) );
-					if ( $related_posts ) :
+				if ( function_exists( "yarpp_get_related" ) ){
+					if ( $related_posts ) {
 						?>
 						<div class="u-mbs is-top is-lg">
 							<div class="u-mbs is-bottom is-sm">
@@ -86,17 +91,18 @@ the_post();
 								<div class="c-news__content">
 									<?php
 									global $post;
-									foreach ( $related_posts as $post ) :
+									foreach ( $related_posts as $post ){
 										setup_postdata( $post );
 										GTemplate::get_project( "post-item" );
-									endforeach;
+									}
 									wp_reset_postdata();
 									?>
 								</div>
 							</div>
 						</div>
-					<?php endif; ?>
-				<?php endif; ?>
+				<?php
+					}
+				} ?>
 			</div>
 		</div>
 	</div>
