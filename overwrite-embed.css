@@ -9,7 +9,10 @@
 	border: none;
 	box-shadow: none;
 }
-.c-embed a {
+.c-embed a,
+.c-embed a:visited,
+.c-embed a:focus,
+.c-embed a:active {
 	display: block;
 	color: #333;
 }
