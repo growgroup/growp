@@ -338,3 +338,37 @@ add_action("init", function (){
 	add_filter( 'pre_site_transient_update_themes', create_function( '$a', "return null;" ) );
 
 });
+
+
+
+/**
+ * 記事スラッグに日本語が含まれていたら自動的に英語に変換
+ * https://www.warna.info/archives/2317/comment-page-1/
+ */
+add_filter( 'wp_unique_post_slug', 'growp_unique_post_slug', 10, 4 );
+function growp_unique_post_slug( $slug, $post_ID, $post_status, $post_type ) {
+	if ( preg_match( '/(%[0-9a-f]{2})+/', $slug ) ) {
+		$slug = utf8_uri_encode( $post_type ) . '-' . $post_ID;
+	}
+
+	return $slug;
+}
+
+/**
+ * カテゴリ・タクソノミー等のスラッグに日本語が含まれていたら自動的に英語に変換
+ * https://www.nxworld.net/wp-create-taxonomies-auto-slug.html
+ */
+add_action( 'create_category', 'growp_post_taxonomy_auto_slug', 10 );
+add_action( 'create_post_tag', 'growp_post_taxonomy_auto_slug', 10 );
+//add_action( 'create_works_cat', 'growp_post_taxonomy_auto_slug', 10 ); // 必要に応じてカスタムタクソノミーを追加
+function growp_post_taxonomy_auto_slug( $term_id ) {
+	$tax  = str_replace( 'create_', '', current_filter() );
+	$term = get_term( $term_id, $tax );
+	if ( preg_match( '/(%[0-9a-f]{2})+/', $term->slug ) ) {
+		$args = array(
+				'slug' => $term->taxonomy . '-' . $term->term_id
+		);
+		wp_update_term( $term_id, $tax, $args );
+	}
+}
+
