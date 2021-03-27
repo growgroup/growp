@@ -35,6 +35,7 @@ require_once dirname( __FILE__ ) . "/src/classes/class-tgm-plugin-activation.php
 require_once dirname( __FILE__ ) . "/src/classes/class-walker-comment.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-walker-nav.php";
 require_once dirname( __FILE__ ) . "/src/classes/class-sitemap.php";
+require_once dirname( __FILE__ ) . "/src/classes/class-yoast-seo-index-clear.php";
 // require_once dirname( __FILE__ ) . "/src/classes/class-acfadminbar.php";
 
 /**
