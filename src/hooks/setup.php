@@ -15,6 +15,9 @@
 
 
 function growp_setup() {
+	
+	// 重大なエラー時のメール送信を停止
+	add_filter( 'wp_fatal_error_handler_enabled', '__return_false' );
 
 	load_theme_textdomain( 'growp', get_template_directory() . '/languages' );
 	load_theme_textdomain( 'tgmpa', get_template_directory() . '/languages' );
