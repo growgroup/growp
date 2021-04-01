@@ -10,7 +10,8 @@
  * =====================================================
  */
 
-$content = GTemplate::get_content();
+$content_save = GTemplate::get_content();
+$content      = do_shortcode( $content_save );
 
 wp_reset_query();
 
@@ -19,7 +20,7 @@ wp_reset_query();
 //        $_post   = get_post( $post_id );
 //        if ( ! $_post->post_content ) {
 //                // 改行は取り除いた上で挿入する＜ビジュアルエディタからHTMLエディタに変えたときの変な改行を防ぐため＞
-//                $insert_content = str_replace( "\n", "", $content);
+//                $insert_content = str_replace( "\n", "", $content_save);
 //                $insert_content .= '<div style="display:none;"><p>&nbsp;</p></div>';
 //                wp_update_post( [
 //                        "ID"           => $post_id,
