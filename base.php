@@ -13,6 +13,11 @@
 $content_save = GTemplate::get_content();
 $content      = do_shortcode( $content_save );
 
+// 見出し内の改行によるスペースを無くすための処理
+$content = str_replace( "\t", "", $content );
+$content = str_replace( "\n", "", $content );
+$content = str_replace( "\r", "", $content );
+
 wp_reset_query();
 
 //if ( is_page() ) {
