@@ -11,6 +11,7 @@
 while ( have_posts() ) :
 	the_post();
 	?>
+
 	<div class="l-section">
 		<div class="l-container">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'page' ); ?>>

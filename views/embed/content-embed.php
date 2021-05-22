@@ -1,9 +1,5 @@
 <?php
 
-use PropertyManager\Models\Sale;
-use PropertyManager\Models\Rental;
-
-
 /**
  * Contains the post embed content template part
  *

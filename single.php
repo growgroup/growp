@@ -80,7 +80,7 @@ if ( function_exists( "yarpp_get_related" ) ) {
 				?>
 
 				<?php
-				if ( function_exists( "yarpp_get_related" ) ){
+				if ( function_exists( "yarpp_get_related" ) ) {
 					if ( $related_posts ) {
 						?>
 						<div class="u-mbs is-top is-lg">
@@ -91,7 +91,7 @@ if ( function_exists( "yarpp_get_related" ) ) {
 								<div class="c-news__content">
 									<?php
 									global $post;
-									foreach ( $related_posts as $post ){
+									foreach ( $related_posts as $post ) {
 										setup_postdata( $post );
 										GTemplate::get_project( "post-item" );
 									}
@@ -100,7 +100,7 @@ if ( function_exists( "yarpp_get_related" ) ) {
 								</div>
 							</div>
 						</div>
-				<?php
+						<?php
 					}
 				} ?>
 			</div>

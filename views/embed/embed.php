@@ -9,16 +9,15 @@
  * @subpackage oEmbed
  * @since 4.4.0
  */
-
-get_header( 'embed' );
+get_template_part( 'views/embed/header-embed' );
 
 if ( have_posts() ) :
 	while ( have_posts() ) :
 		the_post();
-		get_template_part( 'embed', 'content' );
+		get_template_part( 'views/embed/content-embed' );
 	endwhile;
 else :
-	get_template_part( 'embed', '404' );
+	get_template_part( 'views/embed', '404' );
 endif;
 
-get_footer( 'embed' );
+get_template_part( 'views/embed/footer-embed' );

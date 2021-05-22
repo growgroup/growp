@@ -31,6 +31,6 @@ growp_fontloader();
 ?>
 <link rel="stylesheet" href="<?php echo GROWP_STYLESHEET_URL; ?>">
 <link rel="stylesheet" href="<?php echo get_theme_file_uri( "/overwrite.css" ); ?>">
-<link rel="stylesheet" href="<?php echo get_theme_file_uri( "/overwrite-embed.css" ); ?>">
+<link rel="stylesheet" href="<?php echo get_theme_file_uri( "/assets/css/overwrite-embed.css" ); ?>">
 </head>
 <body <?php body_class(); ?>>

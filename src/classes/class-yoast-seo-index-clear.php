@@ -44,7 +44,7 @@ class GROWP_Yoast_SEO_Index_Clear{
         <?php
     }
 
-    public function get_instance() {
+    public static function get_instance() {
         if( ! static::$instance ){
             static::$instance = new self();
         }

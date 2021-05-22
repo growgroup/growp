@@ -51,11 +51,6 @@ require_once dirname( __FILE__ ) . "/src/models/post.php";
 // require_once dirname( __FILE__ ) . "/src/classes/class-devtool.php";
 
 /**
- * 初期コンテンツの作成
- */
-require_once dirname( __FILE__ ) . "/src/mock/mock.php";
-
-/**
  * テンプレートタグ定義
  */
 require_once dirname( __FILE__ ) . "/src/tags/nav.php";
@@ -112,6 +107,7 @@ function growp_acf_op_init() {
 		) );
 	}
 }
+
 // ACF オプションページを利用する場合は以下のコメントアウトを外す
 add_action( 'acf/init', 'growp_acf_op_init' );
 
@@ -132,4 +128,5 @@ function growp_editor_webfont() {
 	add_editor_style( $font_url );
 }
 add_action( 'after_setup_theme', 'growp_editor_webfont',1 );
+
 

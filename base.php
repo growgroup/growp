@@ -44,34 +44,34 @@ $wrapper = apply_filters( 'growp/wrapper', 'onecolumn' );
 
 // 1カラム用
 if ( $wrapper === "onecolumn" ) {
-        ?>
-        <section class="l-main">
-                <?php
-                echo $content;
-                unset( $content );
-                ?>
-        </section>
-        <?php
+	?>
+	<section class="l-main">
+		<?php
+		echo $content;
+		unset( $content );
+		?>
+	</section>
+	<?php
 // 2カラム用
 } else {
-        ?>
-        <div class="l-wrapper">
-                <div class="l-container is-two-columns">
-                        <section class="l-main is-two-columns">
-                                <?php
-                                echo $content;
-                                unset( $content );
-                                ?>
-                        </section>
-                        <aside class="l-aside" data-sticky-container>
-                                <?php
-                                // サイドバー
-                                GTemplate::get_layout( "sidebar" );
-                                ?>
-                        </aside>
-                </div>
-        </div>
-        <?php
+	?>
+	<div class="l-wrapper">
+		<div class="l-container is-two-columns">
+			<section class="l-main is-two-columns">
+				<?php
+				echo $content;
+				unset( $content );
+				?>
+			</section>
+			<aside class="l-aside" data-sticky-container>
+				<?php
+				// サイドバー
+				GTemplate::get_layout( "sidebar" );
+				?>
+			</aside>
+		</div>
+	</div>
+	<?php
 }
 
 // フッター取得前のアクションフック

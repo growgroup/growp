@@ -27,9 +27,15 @@ class GROWP_Theme_Wrapper {
 
 	static function wrap( $template ) {
 
+		/**
+		 * 埋め込み除外
+		 */
+		if ( basename( $template ) === "embed.php" ) {
+			$templates = [ 'views/embed/embed.php' ];
+			return locate_template( $templates );
+		}
 		self::$main_template = $template;
-
-		self::$base = substr( basename( self::$main_template ), 0, - 4 );
+		self::$base          = substr( basename( self::$main_template ), 0, - 4 );
 
 		if ( 'index' == self::$base ) {
 			self::$base = false;
@@ -38,7 +44,6 @@ class GROWP_Theme_Wrapper {
 		$templates = array( 'base.php' );
 
 		if ( self::$base ) {
-
 			array_unshift( $templates, sprintf( 'base-%s.php', apply_filters( "growp_theme_wrapper_base", self::$base ) ) );
 
 			return locate_template( $templates );

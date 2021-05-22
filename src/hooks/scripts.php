@@ -25,14 +25,14 @@ function growp_scripts() {
 		// app.css
 		array(
 			'handle' => "app",
-			'src'    => get_theme_file_uri("/assets/css/app.css"),
+			'src'    => get_theme_file_uri( "/assets/css/app.css" ),
 			'deps'   => array(),
 			'media'  => "all",
 		),
 		// 上書き用のスタイルシートを登録
 		array(
 			'handle' => "overwrite",
-			'src'    => get_theme_file_uri("/overwrite.css"),
+			'src'    => get_theme_file_uri( "/overwrite.css" ),
 			'deps'   => array(),
 			'media'  => "all",
 		),
@@ -58,7 +58,7 @@ function growp_scripts() {
 		// 子テーマのメインとなる app.js を登録
 		array(
 			'handle'    => "app", // ハンドル名
-			'src'       => get_theme_file_uri("/assets/js/app.js"), // ファイルのURL
+			'src'       => get_theme_file_uri( "/assets/js/app.js" ), // ファイルのURL
 			'deps'      => array( "jquery" ), // 依存するスクリプトのハンドル名
 			'in_footer' => true, // wp_footer に出力
 		),
@@ -66,7 +66,7 @@ function growp_scripts() {
 		// 追加用JavaScript
 		array(
 			'handle'    => "overwrite",
-			'src'       => get_theme_file_uri("/overwrite.js"),
+			'src'       => get_theme_file_uri( "/overwrite.js" ),
 			'deps'      => array( "jquery" ),
 			'in_footer' => true,
 		),
@@ -93,8 +93,9 @@ function growp_scripts() {
 	}
 }
 
-add_action( 'admin_enqueue_scripts', 'growp_admin_style' );
 
-function growp_admin_style() {
-	wp_enqueue_style( 'growp_admin_style', get_template_directory_uri() . '/admin.css?ver='.GROWP_VERSIONING );
-}
+
+add_action( 'admin_enqueue_scripts', function () {
+	wp_enqueue_style( 'growp_admin_style', get_template_directory_uri() . '/assets/css/admin-editor.css?ver=' . GROWP_VERSIONING );
+} );
+
