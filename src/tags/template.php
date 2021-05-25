@@ -87,5 +87,20 @@ class GTemplate {
 		do_action("growp_get_content", $templatedata);
 		return $templatedata;
 	}
+	
+	/**
+	 * プロジェクトテンプレートを用いて記事を表示する
+	 */
+	public static function subloop( $posts, $project_template_name ) {
+		global $post;
+		if(!$posts){
+			return ;
+		}
+		foreach ( $posts as $post ) {
+			setup_postdata( $post );
+			GTemplate::get_project( $project_template_name );
+		}
+		wp_reset_postdata();
+	}
 
 }
