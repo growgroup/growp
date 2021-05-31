@@ -45,3 +45,4 @@ assets/components
 dist
 .idea
 adminer.php
+stats/
