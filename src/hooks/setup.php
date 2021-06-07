@@ -375,3 +375,16 @@ function growp_post_taxonomy_auto_slug( $term_id ) {
 	}
 }
 
+
+
+/**
+ * Yoast SEOにて固定ページのデフォルトのOGPを変更
+ */
+add_filter( 'wpseo_opengraph_image', function( $img ) {
+    if ( is_singular() && ! get_post_meta(get_the_ID(), "_yoast_wpseo_opengraph-image", true) ){
+        $s = get_option("wpseo_social");
+        $s = maybe_unserialize($s);
+        return $s["og_default_image"];
+     }
+     return $img;
+});
