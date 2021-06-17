@@ -125,6 +125,9 @@ function growp_add_editor_roles() {
 	$role->add_cap( 'promote_users' );
 	$role->add_cap( 'promote_user' );
 	$role->add_cap( 'list_users' );
+	$role->add_cap( 'unfiltered_html' ); // マルチサイトでHTMLが消えることを防ぐ
+	$adminrole = get_role( 'administrator' ); // マルチサイトでHTMLが消えることを防ぐ
+	$adminrole->add_cap( 'unfiltered_html' ); // マルチサイトでHTMLが消えることを防ぐ
 }
 
 add_action( 'admin_init', 'growp_add_editor_roles' );
