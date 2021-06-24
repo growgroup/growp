@@ -9,7 +9,7 @@
  */
 ?>
 
-<section class="error-404 not-found">
+<section class="error-404 not-found l-section">
 	<div class="l-container">
 		<header class="page-header">
 			<h1 class="c-heading is-xlg u-text-center">指定されたページは存在しません。</h1>
