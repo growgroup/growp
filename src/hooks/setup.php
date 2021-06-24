@@ -211,6 +211,58 @@ function growp_content_save_pre( $content ) {
 add_filter( 'content_save_pre', 'growp_content_save_pre' );
 
 
+function growp_kses_allowed_html( $allowedposttags ){
+
+    $allowed =  array(
+	    'src' => true,
+	    'width' => true,
+	    'height' => true,
+	    'id' => true,
+	    'class' => true,
+	    'frameborder' => true,
+	    'webkitAllowFullScreen' => true,
+	    'mozallowfullscreen' => true,
+	    'allowFullScreen' => true,
+	    'async'        => true,
+	    'action'       => true,
+	    'charset'      => true,
+	    'scrolling'    => true,
+	    'marginheight' => true,
+	    'marginwidth'  => true,
+	    'style'        => true,
+	    'placeholder'        => true,
+	    'type'        => true,
+	    'name'        => true,
+	    'onclick'        => true,
+	    'defer'        => true,
+	    'xmlns'        => true,
+	    'viewbox'        => true,
+	    'data-name'        => true,
+	    'transform'        => true,
+	    'd'        => true,
+	    'stroke-width'        => true,
+	    'stroke'        => true,
+	    'data-name'        => true,
+    );
+	$allowedposttags['iframe'] =$allowed;
+	$allowedposttags['input'] =$allowed;
+	$allowedposttags['textarea'] =$allowed;
+	$allowedposttags['select'] =$allowed;
+	$allowedposttags['option'] =$allowed;
+	$allowedposttags['form'] =$allowed;
+	$allowedposttags['button'] =$allowed;
+	$allowedposttags['script'] =$allowed;
+	$allowedposttags['style'] =$allowed;
+	$allowedposttags['canvas'] =$allowed;
+	$allowedposttags['path'] =$allowed;
+
+	return $allowedposttags;
+
+}
+
+add_filter('wp_kses_allowed_html','growp_kses_allowed_html', 1);
+
+
 /**
  * ページヘッダーのフィルター
  *
