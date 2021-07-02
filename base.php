@@ -13,10 +13,22 @@
 $content_save = GTemplate::get_content();
 $content      = do_shortcode( $content_save );
 
-// 見出し内の改行によるスペースを無くすための処理
-$content = str_replace( "\t", "", $content );
-$content = str_replace( "\n", "", $content );
-$content = str_replace( "\r", "", $content );
+// 表示するコンテンツから改行・タブを削除するか？
+$do_trim = true;
+
+// mw_wp_formを表示しているページでは処理をやめる
+if( mb_strpos( $content, "mw_wp_form" ) !== false ){
+	$do_trim = false;
+}
+
+// 整形処理
+if ( $do_trim ) {
+	$content = str_replace( "\t", "", $content );
+	$content = str_replace( "\n", "", $content );
+	$content = str_replace( "\r", "", $content );
+}
+
+
 
 wp_reset_query();
 
