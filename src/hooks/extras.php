@@ -262,3 +262,45 @@ function growp_remove_bar_menus( $wp_admin_bar ) {
 }
 
 add_action( 'admin_bar_menu', 'growp_remove_bar_menus', 99999 );
+
+
+
+
+/**
+ * ログインしているユーザだけに表示するショートコード
+ * [if-login] このメッセージはログインしているユーザだけに表示されます [/if-login]
+ *
+ * @param $atts
+ * @param null $content
+ *
+ * @return string
+ */
+function growp_if_login( $atts, $content = null ) {
+	if ( is_user_logged_in() ) {
+		return '' . do_shortcode( $content ) . '';
+	} else {
+		return '';
+	}
+}
+
+add_shortcode( 'if-login', 'growp_if_login' );
+
+/**
+ * ログインしていないユーザだけに表示するショートコード
+ * [if-login] このメッセージはログインしていないユーザだけに表示されます [/if-login]
+ *
+ * @param $atts
+ * @param null $content
+ *
+ * @return string
+ */
+function growp_if_not_login( $atts, $content = null ) {
+	if ( is_user_logged_in() ) {
+		return '';
+	} else {
+		return '' . do_shortcode( $content ) . '';
+	}
+}
+
+add_shortcode( 'if-not-login', 'growp_if_not_login' );
+
