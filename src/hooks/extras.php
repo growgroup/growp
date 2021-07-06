@@ -287,7 +287,7 @@ add_shortcode( 'if-login', 'growp_if_login' );
 
 /**
  * ログインしていないユーザだけに表示するショートコード
- * [if-login] このメッセージはログインしていないユーザだけに表示されます [/if-login]
+ * [if-not-login] このメッセージはログインしていないユーザだけに表示されます [/if-not-login]
  *
  * @param $atts
  * @param null $content
