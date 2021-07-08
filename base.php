@@ -32,7 +32,7 @@ if ( $do_trim ) {
 
 wp_reset_query();
 
-//if ( is_page() ) {
+//if ( is_user_logged_in() && is_page() ) {
 //        $post_id = get_the_ID();
 //        $_post   = get_post( $post_id );
 //        if ( ! $_post->post_content ) {
